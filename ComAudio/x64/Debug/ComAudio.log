@@ -1,0 +1,9 @@
+﻿  Moc'ing ComAudio.h...
+  Rcc'ing ComAudio.qrc...
+  Uic'ing ComAudio.ui...
+  RCC: Warning: No resources in 'C:\Users\cosmo\Documents\Workspace\Visual Studio 2017\source\repos\comp4985\CommAudio\ComAudio\ComAudio.qrc'.
+  ComAudio.cpp
+  main.cpp
+  qrc_ComAudio.cpp
+  moc_ComAudio.cpp
+  ComAudio.vcxproj -> C:\Users\cosmo\Documents\Workspace\Visual Studio 2017\source\repos\comp4985\CommAudio\x64\Debug\ComAudio.exe

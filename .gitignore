@@ -1,4 +1,6 @@
 /x64
+/GeneratedFiles
 /build
 /Debug
 /.vs
+*.user
