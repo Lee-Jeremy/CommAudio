@@ -35,7 +35,7 @@ void testCircBuffer()
 	QAudioBuffer* qb = new QAudioBuffer();
 
 	
-	cb << input;
+	*cb << input;
 
 
 

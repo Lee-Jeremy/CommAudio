@@ -155,17 +155,17 @@ int CircBuffer::read(void* dest, uint bytesToRead)
 }
 
 // Pull in, reads a constant 1024 Bytes per pull.
-qint8* operator<<(qint8* src, CircBuffer rhs)
+qint8* operator<<(CircBuffer& lhs, qint8* rhs)
 {
-	rhs.write(src, DEFAULT_WRITE_SIZE);
-	return src;
+	lhs.write(rhs, DEFAULT_WRITE_SIZE);
+	return rhs;
 }
 
 // Push out, pushes a constant 1024 Bytes per push
-QAudioBuffer& operator>>(QAudioBuffer& qb, CircBuffer rhs)
+QAudioBuffer& operator>>(QAudioBuffer& lhs, CircBuffer rhs)
 {
-	rhs.read(qb.data(), DEFAULT_READ_SIZE);
-	return qb;
+	rhs.read(lhs.data(), DEFAULT_READ_SIZE);
+	return lhs;
 }
 
 
