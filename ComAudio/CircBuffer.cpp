@@ -7,6 +7,7 @@ CircBuffer::CircBuffer()
 	, mBytesWritten(0)
 	, mWriteIndex(0)
 	, mReadIndex(0)
+	, mBufferSize(DEFAULT_BUFFER_SIZE)
 {
 	mBuffer = new qint8[DEFAULT_BUFFER_SIZE];
 	mEndPtr = mBuffer + DEFAULT_BUFFER_SIZE;
@@ -20,6 +21,7 @@ CircBuffer::CircBuffer(uint bufferSize)
 	, mBytesWritten(0)
 	, mWriteIndex(0)
 	, mReadIndex(0)
+	, mBufferSize(bufferSize)
 {
 	mBuffer = new qint8[bufferSize];
 	mEndPtr = mBuffer + bufferSize;
@@ -40,6 +42,7 @@ CircBuffer::~CircBuffer()
 }
 
 /*
+Write to the CircBuffer
 Returns 1 on success, 0 on failure
 */
 int CircBuffer::write(qint8* src, uint bytesToWrite)
@@ -99,9 +102,12 @@ int CircBuffer::write(qint8* src, uint bytesToWrite)
 }
 
 /*
+Read from the CircBuffer. 
+pass in either void* from the QAudioBuffer
+ie: 
 Returns 1 on success, 0 on failure
 */
-int CircBuffer::read(qint8* dest, uint bytesToRead)
+int CircBuffer::read(void* dest, uint bytesToRead)
 {
 	// If trying to read more bytes than written
 	int result;
@@ -123,7 +129,7 @@ int CircBuffer::read(qint8* dest, uint bytesToRead)
 	// Case: readPtr is ahead of writePtr
 	if (mReadPtr >= mWritePtr)	
 	{
-		uint diff = mEndPtr - mReadPtr;					// Difference betw. endPtr and readPtr
+		uint diff = mEndPtr - mReadPtr;						// Difference betw. endPtr and readPtr
 		// Case: reading segment wraps around to beginning
 		if (bytesToRead > diff)
 		{
@@ -147,6 +153,22 @@ int CircBuffer::read(qint8* dest, uint bytesToRead)
 
 	return 0;
 }
+
+// Pull in, reads a constant 1024 Bytes per pull.
+qint8* operator<<(qint8* src, CircBuffer rhs)
+{
+	rhs.write(src, DEFAULT_WRITE_SIZE);
+	return src;
+}
+
+// Push out, pushes a constant 1024 Bytes per push
+QAudioBuffer& operator>>(QAudioBuffer& qb, CircBuffer rhs)
+{
+	rhs.read(qb.data(), DEFAULT_READ_SIZE);
+	return qb;
+}
+
+
 
 uint CircBuffer::getBytesAvailable() { return mBytesAvailable; }
 

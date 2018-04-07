@@ -27,4 +27,16 @@ void testCircBuffer()
 	cb->read(output, 12);
 	cb->write(input, 14);
 	cb->read(output + 12, 29);
+
+	memset(output, 0, bufsize);
+	delete cb;
+	
+	cb = new CircBuffer(bufsize);
+	QAudioBuffer* qb = new QAudioBuffer();
+
+	
+	cb << input;
+
+
+
 }
