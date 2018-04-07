@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ComAudioClass</class>
- <widget class="QMainWindow" name="ComAudioClass">
+ <class>ComAudio</class>
+ <widget class="QMainWindow" name="ComAudio">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -30,12 +30,15 @@
           <property name="title">
            <string>Local Directory</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0" columnstretch="9,0">
-           <item row="0" column="0">
-            <widget class="QComboBox" name="comboBox_dir_path"/>
-           </item>
+          <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0" columnstretch="8,2">
            <item row="0" column="1">
             <widget class="QPushButton" name="pushButton_dir_browse">
+             <property name="maximumSize">
+              <size>
+               <width>65</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>Browse</string>
              </property>
@@ -43,6 +46,13 @@
            </item>
            <item row="1" column="0" colspan="2">
             <widget class="QListView" name="listView_dir_list"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLineEdit" name="lineEdit_dir_path">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

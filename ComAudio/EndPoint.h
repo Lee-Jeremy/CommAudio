@@ -1,4 +1,5 @@
 #pragma once
+#include "global.h"
 
 #define MAX_ADDR_LEN 255
 

@@ -1,9 +1,6 @@
 #pragma once
 #include "global.h"
 
-
-
-
 class Socket
 {
 public:

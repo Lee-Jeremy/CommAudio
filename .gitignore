@@ -2,3 +2,6 @@
 /build
 /Debug
 /.vs
+/.sln
+/ComAudio/x64
+/ComAudio/GeneratedFiles
