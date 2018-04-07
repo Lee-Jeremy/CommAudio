@@ -1,7 +1,10 @@
 /x64
+/GeneratedFiles
+/ComAudio/x64
+/ComAudio/GeneratedFiles
 /build
 /Debug
 /.vs
-/.sln
-/ComAudio/x64
-/ComAudio/GeneratedFiles
+/ComAudio/.user
+/ComAudio/.vcxproj
+/ComAudio/.filters
