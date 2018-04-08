@@ -154,19 +154,57 @@ int CircBuffer::read(void* dest, uint bytesToRead)
 	return 0;
 }
 
-// Pull in, reads a constant 1024 Bytes per pull.
+int CircBuffer::read(QByteArray& dest, uint bytesToRead)
+{
+	int diff = mEndPtr - mReadPtr;
+	if (bytesToRead > mBytesWritten || bytesToRead > (mWritePtr - mReadPtr) && (mWritePtr - mReadPtr) > 0) // May change last condition logic
+	{
+		return 0;
+	}
+	if (bytesToRead > diff)
+	{
+		dest.append((char*)mReadPtr, diff);
+		dest.append((char*)mBuffer, bytesToRead - diff);
+		mBytesAvailable += bytesToRead;
+		mBytesWritten -= bytesToRead;
+		mReadPtr = mBuffer + (bytesToRead - diff);
+		return bytesToRead;
+	}
+	else
+	{
+		dest.append((char*) mReadPtr, bytesToRead);
+		mBytesAvailable += bytesToRead;
+		mBytesWritten -= bytesToRead;
+		mReadPtr += bytesToRead;
+		return bytesToRead;
+	}
+
+	return 0;
+}
+
+// Pull in, writes a constant 1024 Bytes per pull to the circbuffer.
 qint8* operator<<(CircBuffer& lhs, qint8* rhs)
 {
 	lhs.write(rhs, DEFAULT_WRITE_SIZE);
 	return rhs;
 }
 
-// Push out, pushes a constant 1024 Bytes per push
-QAudioBuffer& operator>>(QAudioBuffer& lhs, CircBuffer rhs)
+// Push out, pushes a constant 1024 Bytes per push to a source buffer
+QAudioBuffer& operator>>(CircBuffer lhs, QAudioBuffer&rhs)
 {
-	rhs.read(lhs.data(), DEFAULT_READ_SIZE);
-	return lhs;
+	lhs.read(rhs.data(), DEFAULT_READ_SIZE);
+	return rhs;
 }
+
+// Push out, pushes a constant 1024 Bytes per push to a source buffer
+QByteArray& operator>>(CircBuffer lhs, QByteArray& rhs)
+{
+	lhs.read(rhs, DEFAULT_READ_SIZE);
+	return rhs;
+}
+
+
+
 
 
 
