@@ -4,13 +4,10 @@
 
 int main(int argc, char *argv[])
 {
-	
-	testCircBuffer();
-
-	//QApplication a(argc, argv);
-	//ComAudio w;
-	//w.show();
-	//return a.exec();
+	QApplication a(argc, argv);
+	ComAudio w;
+	w.show();
+	return a.exec();
 
 	return 0;
 }
