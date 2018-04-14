@@ -17,8 +17,9 @@
 		CircBuffer(uint bufferSize);
 		CircBuffer(CircBuffer& other);
 		~CircBuffer();
-		int write(qint8* src, uint inputSize);
-		int read(void* dest, uint numBytes);
+		int write(qint8* src, uint bytesToWrite);
+		int read(qint8* dest, uint bytesToRead);
+		int read(QByteArray& dest, uint bytesToRead);
 		uint getBytesAvailable();
 		uint getBytesWritten();
 
@@ -39,6 +40,6 @@
 	//FUCK I'LL DEAL WITH THIS LATER WHAT THE FUCK.
 
 	qint8* operator<<(CircBuffer& lhs, qint8* rhs);
-	QAudioBuffer& operator>>(QAudioBuffer& lhs, CircBuffer rhs);
+
 
 	void testCircBuffer();
