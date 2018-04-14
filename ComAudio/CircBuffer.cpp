@@ -107,7 +107,7 @@ pass in either void* from the QAudioBuffer
 ie: 
 Returns 1 on success, 0 on failure
 */
-int CircBuffer::read(void* dest, uint bytesToRead)
+int CircBuffer::read(qint8* dest, uint bytesToRead)
 {
 	// If trying to read more bytes than written
 	int result;
@@ -134,7 +134,7 @@ int CircBuffer::read(void* dest, uint bytesToRead)
 		if (bytesToRead > diff)
 		{
 			std::memcpy(dest, mReadPtr, diff);				// Copy from readPtr to endPtr
-			std::memcpy(dest, mBuffer, bytesToRead - diff);	// Copy remaining bytes from index 0
+			std::memcpy((qint8*) dest + diff, mBuffer, bytesToRead - diff);	// Copy remaining bytes from index 0
 			mBytesAvailable += bytesToRead;
 			mBytesWritten -= bytesToRead;
 			mReadPtr = mBuffer + (bytesToRead - diff);
@@ -154,6 +154,36 @@ int CircBuffer::read(void* dest, uint bytesToRead)
 	return 0;
 }
 
+int CircBuffer::read(QByteArray& dest, uint bytesToRead)
+{
+	// If trying to read more bytes than written
+	int diff = mEndPtr - mReadPtr;
+	if (bytesToRead > mBytesWritten && (mReadPtr != mBuffer && mWritePtr != mBuffer))
+	{
+		return 0;
+	}
+
+	if (diff < bytesToRead)
+	{
+		//const char* rdptr = (char*) mReadPtr;
+		//const char* rdptr2 = (char*) mBuffer;
+		dest.append((char*) mReadPtr, diff);
+		dest.append((char*) mBuffer, bytesToRead - diff);
+		mBytesWritten -= bytesToRead;
+		mBytesAvailable += bytesToRead;
+		mReadPtr = mBuffer + (bytesToRead - diff);
+	}
+	else
+	{
+		dest.append((const char*)mReadPtr, bytesToRead);
+		mBytesWritten -= bytesToRead;
+		mBytesAvailable += bytesToRead;
+		mReadPtr += bytesToRead;
+	}
+
+	return 0;
+}
+
 // Pull in, reads a constant 1024 Bytes per pull.
 qint8* operator<<(CircBuffer& lhs, qint8* rhs)
 {
@@ -162,10 +192,15 @@ qint8* operator<<(CircBuffer& lhs, qint8* rhs)
 }
 
 // Push out, pushes a constant 1024 Bytes per push
-QAudioBuffer& operator>>(QAudioBuffer& lhs, CircBuffer rhs)
+//QAudioBuffer& operator>>(QAudioBuffer& lhs, CircBuffer rhs)
+//{
+//	rhs.read(lhs.data(), DEFAULT_READ_SIZE);
+//	return lhs;
+//}
+
+QByteArray& operator>>(CircBuffer& lhs, QByteArray& rhs)
 {
-	rhs.read(lhs.data(), DEFAULT_READ_SIZE);
-	return lhs;
+	return rhs;
 }
 
 
