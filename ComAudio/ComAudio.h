@@ -34,8 +34,6 @@ public:
 	void metaDataChanged();
 
 public slots:
-	
-	void startTCPTask();
 
 private:
 	enum PlayMode { local, stream, test };

@@ -136,8 +136,3 @@ int TCPTask::handleMetadata(QString metadata)
 {
 	return 0;
 }
-
-void TCPTask::handleError()
-{
-	//qDebug() << ao->error();
-}
