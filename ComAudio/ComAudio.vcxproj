@@ -115,13 +115,12 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractSocket.cpp" />
     <ClCompile Include="ComAudio.cpp" />
     <ClCompile Include="EndPoint.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="TCPSocket.cpp" />
-    <ClCompile Include="UDPSocket.cpp" />
+    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
+    <ClCompile Include="TcpServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ComAudio.h" />
@@ -133,12 +132,11 @@
     <QtRcc Include="ComAudio.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractSocket.h" />
     <ClInclude Include="EndPoint.h" />
     <ClInclude Include="global.h" />
-    <ClInclude Include="Socket.h" />
-    <ClInclude Include="TCPSocket.h" />
-    <ClInclude Include="UDPSocket.h" />
+    <QtMoc Include="TcpServer.h" />
+    <QtMoc Include="TaskManager.h" />
+    <QtMoc Include="Task.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
