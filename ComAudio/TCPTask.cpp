@@ -18,8 +18,9 @@
 -- NOTES:
 */
 
-TCPTask::TCPTask(int task)
+TCPTask::TCPTask(int task, ComAudio* parent)
 	: mTask(task)
+	, mParent(parent)
 {
 	mBuffer = new QBuffer();
 	mByteArray = new QByteArray();
@@ -37,14 +38,18 @@ TCPTask::TCPTask(int task)
 
 TCPTask::~TCPTask()
 {
-
+	mSocket = new QTcpSocket(mParent);
 }
 
-int TCPTask::connect()
+int TCPTask::connect(QString& address, quint16 port)
 {
 	// Connect request
 	// Receive list of filenames
-	fileList = new QString[5];
+	QHostAddress addr(address);
+	mSocket->connectToHost(addr, port);
+
+	QByteArray temp = mSocket->read(1024);
+	fileList = QString(temp).split('/');
 	return 0;
 }
 
@@ -73,16 +78,6 @@ int TCPTask::transmit(QString filename, QMainWindow* parent, QAudioOutput* ao)
 	mByteArray = new QByteArray();
 	mBuffer = new QBuffer(mByteArray);
 	mBuffer->open(QIODevice::ReadWrite);
-
-	//while (!mCircBuffer->isReadable())
-	//{
-	//	int result = in.readRawData(buffer, 1000);
-	//	mCircBuffer->write((qint8*) buffer, 1000);
-	//}
-	//while (mCircBuffer->getBytesWritten() > 1000)
-	//{
-	//	mCircBuffer->read(mBuffer->buffer(), 1000);
-	//}
 
 	int numBytesRead;
 	int result;
@@ -119,7 +114,6 @@ int TCPTask::transmit(QString filename, QMainWindow* parent, QAudioOutput* ao)
 	{
 		numBytesRead = in.readRawData(buffer, 1000);
 		mByteArray->append(buffer, 1000);
-		
 	}
 	
 	return 0;

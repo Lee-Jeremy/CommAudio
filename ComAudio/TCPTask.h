@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QMainWindow>
+#include <QHostAddress>
 #include <stdlib.h>
 #include "CircBuffer.h"
 #include "ComAudio.h"
@@ -29,9 +30,9 @@ typedef struct metadata
 class TCPTask
 {
 public:
-	TCPTask(int task);
+	TCPTask(int task, ComAudio* parent);
 	~TCPTask();
-	int connect();
+	int connect(QString& address, quint16 port);
 	int requestFile(QString filename);
 	int transmit(QString filename, QMainWindow* ptr, QAudioOutput* ao);
 	int receive();
@@ -43,12 +44,13 @@ public slots:
 
 
 private:
+	ComAudio *		mParent;
 	QTcpSocket*		mSocket;
 	QBuffer*		mBuffer;
 	QByteArray*		mByteArray;
 	CircBuffer*		mCircBuffer;
 	metadata*		metadata;
-	QString*		fileList;
+	QStringList 	fileList;
 	QFile*			file;
 
 	int mTask;
