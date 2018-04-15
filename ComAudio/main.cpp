@@ -1,4 +1,5 @@
 #include "ComAudio.h"
+#include "CircBuffer.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
@@ -7,4 +8,6 @@ int main(int argc, char *argv[])
 	ComAudio w;
 	w.show();
 	return a.exec();
+
+	return 0;
 }
