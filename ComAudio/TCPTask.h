@@ -50,7 +50,6 @@ private:
 	metadata*		metadata;
 	QString*		fileList;
 	QFile*			file;
-	//QAudioOutput*	ao;
 
 	int mTask;
 	

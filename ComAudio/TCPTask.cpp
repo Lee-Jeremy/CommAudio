@@ -1,5 +1,23 @@
 #include "TCPTask.h"
 
+/*
+-- FUNCTION:
+--
+-- DATE:
+--
+-- REVISIONS:
+--
+-- DESIGNER:
+--
+-- PROGRAMMER:
+--
+-- INTERFACE:
+--
+-- RETURNS:
+--
+-- NOTES:
+*/
+
 TCPTask::TCPTask(int task)
 	: mTask(task)
 {
@@ -42,41 +60,47 @@ int TCPTask::requestFile(QString filename)
 	
 }
 
+
 int TCPTask::transmit(QString filename, QMainWindow* parent, QAudioOutput* ao)
 {
-	// open file
-	// while !eof
-	// read n bytes of file into temp buffer, send
-
 	file = new QFile(filename);
-	//char* buffer = (char*)malloc(10000 * sizeof(char));
+	char* buffer = (char*)malloc(1000 * sizeof(char));
 
 	bool ioresult = file->open(QIODevice::ReadOnly);
-	//QDataStream in(file);
-	//int result = in.readRawData(buffer, 1000);
-
-	//while (!in.atEnd())
-	//{
-
-	//}
+	QDataStream in(file);
 
 
+	mByteArray = new QByteArray();
+	mBuffer = new QBuffer(mByteArray);
+	mBuffer->open(QIODevice::ReadWrite);
 
 	//while (!mCircBuffer->isReadable())
 	//{
 	//	int result = in.readRawData(buffer, 1000);
 	//	mCircBuffer->write((qint8*) buffer, 1000);
 	//}
+	//while (mCircBuffer->getBytesWritten() > 1000)
+	//{
+	//	mCircBuffer->read(mBuffer->buffer(), 1000);
+	//}
+
+	int numBytesRead;
+	int result;
+
+	for (int i = 0; i < 200; i++)
+	{
+		numBytesRead = in.readRawData(buffer, 1000);
+		mByteArray->append(buffer, 1000);
+	}
 
 	QAudioFormat format;
-	format.setSampleRate(44100);
+	format.setSampleRate(96000);
 	format.setChannelCount(1);
 	format.setSampleSize(16);
 	format.setCodec("audio/pcm");
 	format.setByteOrder(QAudioFormat::LittleEndian);
 	format.setSampleType(QAudioFormat::SignedInt);
 	ao = new QAudioOutput(format);
-	//connect(ao, QAudioOutput::error, this, &TCPTask::handleError);
 
 	QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
 	if (!info.isFormatSupported(format)) {
@@ -84,11 +108,20 @@ int TCPTask::transmit(QString filename, QMainWindow* parent, QAudioOutput* ao)
 		format = info.nearestFormat(format);
 	}
 	ao->setVolume(1.0);
-	ao->start(file);
-	
+	ao->start(mBuffer);
+
 	int state = ao->state();
 	qDebug() << ao->error();
 	int error = ao->error();
+
+
+	while (!in.atEnd())
+	{
+		numBytesRead = in.readRawData(buffer, 1000);
+		mByteArray->append(buffer, 1000);
+		
+	}
+	
 	return 0;
 }
 
