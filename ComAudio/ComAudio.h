@@ -33,7 +33,9 @@ public:
 
 	void metaDataChanged();
 
-signals:
+public slots:
+	
+	void startTCPTask();
 
 private:
 	enum PlayMode { local, stream, test };
@@ -51,6 +53,7 @@ private:
 	QString fileListString;
 	QString pathLocal;
 	QString pathFile;
+
 	// audio player
 	QMediaPlayer *player;
 	PlayMode playMode;
@@ -71,4 +74,5 @@ private:
 	const QStringList FILE_FILTER = QStringList{ "*.wav" };
 	const qint64 SIZE_SEGMENT = 1024;
 	const int SLIDER_DIVISOR = 10;
+
 };

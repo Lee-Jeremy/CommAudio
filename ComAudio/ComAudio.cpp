@@ -1,5 +1,6 @@
 #include "ComAudio.h"
 
+
 ComAudio::ComAudio(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::ComAudio)
@@ -62,7 +63,7 @@ int ComAudio::initUi()
 	connect(ui->horizontalSlider_player_volume, &QSlider::sliderMoved, this, &ComAudio::setVolume);
 
 	fileListString = getFileList();
-
+  
 	return 0;
 }
 
@@ -121,6 +122,7 @@ void ComAudio::selectDir()
 		setDir();
 	}
 }
+
 
 void ComAudio::selectFile()
 {
