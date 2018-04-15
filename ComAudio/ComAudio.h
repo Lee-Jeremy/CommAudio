@@ -29,6 +29,7 @@ public:
 	void selectFile();
 	void playAudio();
 	void setVolume();
+	QString getFileList();
 
 	void metaDataChanged();
 
@@ -47,6 +48,7 @@ private:
 	// file browser
 	QFileSystemModel *dirModel;
 	QFileSystemModel *fileModel;
+	QString fileListString;
 	QString pathLocal;
 	QString pathFile;
 	// audio player
