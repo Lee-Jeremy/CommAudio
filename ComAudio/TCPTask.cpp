@@ -33,6 +33,8 @@ TCPTask::TCPTask(int task, ComAudio* parent)
 	}
 	else {
 		// initialize mSocket
+		// connect TCPSocket to this
+		QObject::connect(mSocket, SIGNAL(), this, &TCPTask::writeToBuffer);
 	}
 }
 
@@ -41,7 +43,7 @@ TCPTask::~TCPTask()
 	mSocket = new QTcpSocket(mParent);
 }
 
-int TCPTask::connect(QString& address, quint16 port)
+int TCPTask::connectToServer(QString& address, quint16 port)
 {
 	// Connect request
 	// Receive list of filenames
@@ -49,7 +51,7 @@ int TCPTask::connect(QString& address, quint16 port)
 	mSocket->connectToHost(addr, port);
 
 	QByteArray temp = mSocket->read(1024);
-	fileList = QString(temp).split('/');
+	fileList = QString(temp).split('\n');
 	return 0;
 }
 
@@ -62,69 +64,43 @@ int TCPTask::requestFile(QString filename)
 	// wait for reponse, signal rx_metadata, slot handle_metadata (fill metadata struct)
 	// return 1 on success, 0 on failure
 	// mSocket->
-	
+	return 0;
 }
 
 
 int TCPTask::transmit(QString filename, QMainWindow* parent, QAudioOutput* ao)
 {
-	file = new QFile(filename);
+	
 	char* buffer = (char*)malloc(1000 * sizeof(char));
+	int numBytesSent = 0;
+	bool ioresult;
+	
+	file = new QFile(filename);
 
-	bool ioresult = file->open(QIODevice::ReadOnly);
+	ioresult = file->open(QIODevice::ReadOnly);
+	if (ioresult == false)
+	{
+
+	}
 	QDataStream in(file);
 
-
-	mByteArray = new QByteArray();
-	mBuffer = new QBuffer(mByteArray);
-	mBuffer->open(QIODevice::ReadWrite);
-
-	int numBytesRead;
-	int result;
-
-	for (int i = 0; i < 200; i++)
-	{
-		numBytesRead = in.readRawData(buffer, 1000);
-		mByteArray->append(buffer, 1000);
-	}
-
-	QAudioFormat format;
-	format.setSampleRate(96000);
-	format.setChannelCount(1);
-	format.setSampleSize(16);
-	format.setCodec("audio/pcm");
-	format.setByteOrder(QAudioFormat::LittleEndian);
-	format.setSampleType(QAudioFormat::SignedInt);
-	ao = new QAudioOutput(format);
-
-	QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
-	if (!info.isFormatSupported(format)) {
-		qWarning() << "Raw audio format not supported by backend, cannot play audio.";
-		format = info.nearestFormat(format);
-	}
-	ao->setVolume(1.0);
-	ao->start(mBuffer);
-
-	int state = ao->state();
-	qDebug() << ao->error();
-	int error = ao->error();
-
-
-	while (!in.atEnd())
-	{
-		numBytesRead = in.readRawData(buffer, 1000);
-		mByteArray->append(buffer, 1000);
-	}
-	
 	return 0;
 }
 
-int TCPTask::receive()
+int TCPTask::receive(int numBytes)
 {
+	int numBytesRecv = 0;
+
 	if (mTask == TRANSFER)
 		return 0;
 	
-	
+	while (numBytesRecv < numBytes)
+	{
+
+	}
+
+
+	return 0;
 }
 
 int TCPTask::complete()
@@ -134,10 +110,21 @@ int TCPTask::complete()
 
 int TCPTask::handleMetadata(QString metadata)
 {
+
 	return 0;
 }
 
 void TCPTask::handleError()
 {
 	//qDebug() << ao->error();
+}
+
+void writeToBuffer()
+{
+
+}
+
+void disconnect()
+{
+
 }

@@ -32,16 +32,17 @@ class TCPTask
 public:
 	TCPTask(int task, ComAudio* parent);
 	~TCPTask();
-	int connect(QString& address, quint16 port);
+	int connectToServer(QString& address, quint16 port);
 	int requestFile(QString filename);
 	int transmit(QString filename, QMainWindow* ptr, QAudioOutput* ao);
-	int receive();
+	int receive(int numBytes);
 	int complete();
 	int handleMetadata(QString mdata);
 
 public slots:
 	void handleError();
-
+	void writeToBuffer();
+	void disconnect();
 
 private:
 	ComAudio *		mParent;
