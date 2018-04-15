@@ -31,10 +31,64 @@ int ComAudio::initUi()
 	ui->listView_dir_list->setModel(fileModel);
 	setDir();
 
+	connect(ui->lineEditIp, &QLineEdit::textChanged, this, &ComAudio::ipValueChanged);
+	connect(ui->lineEditPort, &QLineEdit::textChanged, this, &ComAudio::portValueChanged);
+
+
+	taskManager = new TaskManager(this, DEFAULT_PORT);
+	connect(taskManager, &TaskManager::clientConnectedVoip, this, &ComAudio::clientConnectedVoip);
+	connect(taskManager, &TaskManager::clientConnectedFileTransfer, this, &ComAudio::clientConnectedFileTransfer);
+	connect(taskManager, &TaskManager::clientConnectedStream, this, &ComAudio::clientConnectedStream);
+
+	connect(taskManager, &TaskManager::connectedToServerFileTransfer, this, &ComAudio::connectedToServerFileTransfer);
+	connect(taskManager, &TaskManager::connectedToServerStream, this, &ComAudio::connectedToServerStream);
+	connect(taskManager, &TaskManager::connectedToServerVoip, this, &ComAudio::connectedToServerVoip);
+
+
+
 	connect(ui->pushButton_dir_browse, &QPushButton::pressed, this, &ComAudio::selectDir);
 
 	return 0;
 }
+
+
+
+void ComAudio::connectedToServerVoip(QUdpSocket * sock)
+{
+
+}
+
+void ComAudio::connectedToServerStream(QTcpSocket * sock)
+{
+}
+
+void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
+{
+}
+
+void ComAudio::clientConnectedStream(QTcpSocket * sock)
+{
+}
+
+void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
+{
+}
+
+void ComAudio::clientConnectedVoip(QUdpSocket * sock)
+{
+}
+
+void ComAudio::portValueChanged()
+{
+	port = ui->lineEditPort->text().toInt();
+}
+
+void ComAudio::ipValueChanged()
+{
+	ipAddr = ui->lineEditIp->text();
+}
+
+
 
 void ComAudio::setDir()
 {

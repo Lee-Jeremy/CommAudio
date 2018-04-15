@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>616</width>
-    <height>577</height>
+    <width>735</width>
+    <height>779</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,106 +24,13 @@
        <attribute name="title">
         <string>Client</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_main_client" rowstretch="2,6,2" columnstretch="4,6">
-        <item row="1" column="0">
-         <widget class="QGroupBox" name="groupBox_dir">
-          <property name="title">
-           <string>Local Directory</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0" columnstretch="8,2">
-           <item row="0" column="1">
-            <widget class="QPushButton" name="pushButton_dir_browse">
-             <property name="maximumSize">
-              <size>
-               <width>65</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Browse</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
-            <widget class="QListView" name="listView_dir_list"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLineEdit" name="lineEdit_dir_path">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="1" rowspan="2">
-         <widget class="QTabWidget" name="tabWidget_taskViews">
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <widget class="QWidget" name="tab_taskViews_task1">
-           <attribute name="title">
-            <string>Task 1</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="tab_taskViews_task2">
-           <attribute name="title">
-            <string>Task 2</string>
-           </attribute>
-          </widget>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QGroupBox" name="groupBox_tasks">
-          <property name="title">
-           <string>Tasks</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_taskButtons">
-           <item row="1" column="0">
-            <widget class="QPushButton" name="pushButton_tasks_audioStream">
-             <property name="text">
-              <string>Audio Stream</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="pushButton_tasks_fileTransfer">
-             <property name="text">
-              <string>File Transfer</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QPushButton" name="pushButton_tasks_audioChat">
-             <property name="text">
-              <string>Audio Chat</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QPushButton" name="pushButton_tasks_multicast">
-             <property name="text">
-              <string>Multicast</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <layout class="QGridLayout" name="gridLayout_player" columnstretch="2,2,2,2,2">
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_player_title">
+       <layout class="QGridLayout" name="gridLayout_main_client" rowstretch="2,6,2,0,0,0" columnstretch="4,6">
+        <item row="5" column="0" colspan="2">
+         <layout class="QGridLayout" name="gridLayout_player" columnstretch="2,0,0,0,0">
+          <item row="1" column="3">
+           <widget class="QPushButton" name="pushButton_player_pause">
             <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="pushButton_player_play">
-            <property name="text">
-             <string>Play</string>
+             <string>Pause</string>
             </property>
            </widget>
           </item>
@@ -160,18 +67,19 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="3">
-           <widget class="QPushButton" name="pushButton_player_pause">
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_player_title">
             <property name="text">
-             <string>Pause</string>
+             <string/>
             </property>
            </widget>
           </item>
-          <item row="20" column="0">
-           <widget class="QLCDNumber" name="lcdNumber_player_passed"/>
-          </item>
-          <item row="20" column="4">
-           <widget class="QLCDNumber" name="lcdNumber_player_remaining"/>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="pushButton_player_play">
+            <property name="text">
+             <string>Play</string>
+            </property>
+           </widget>
           </item>
           <item row="1" column="4">
            <widget class="QSlider" name="horizontalSlider_player_volume">
@@ -193,6 +101,9 @@
             </property>
            </widget>
           </item>
+          <item row="20" column="4">
+           <widget class="QLCDNumber" name="lcdNumber_player_remaining"/>
+          </item>
           <item row="0" column="4">
            <widget class="QLabel" name="label_player_volume">
             <property name="text">
@@ -200,7 +111,125 @@
             </property>
            </widget>
           </item>
+          <item row="20" column="0">
+           <widget class="QLCDNumber" name="lcdNumber_player_passed"/>
+          </item>
          </layout>
+        </item>
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_tasks">
+          <property name="title">
+           <string>Tasks</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_taskButtons">
+           <item row="2" column="1">
+            <widget class="QPushButton" name="pushButton_tasks_multicast">
+             <property name="text">
+              <string>Multicast</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="pushButton_tasks_fileTransfer">
+             <property name="text">
+              <string>File Transfer</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QPushButton" name="pushButton_tasks_audioChat">
+             <property name="text">
+              <string>Audio Chat</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="pushButton_tasks_audioStream">
+             <property name="text">
+              <string>Audio Stream</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1" rowspan="5">
+         <widget class="QTabWidget" name="tabWidget_taskViews">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_taskViews_task1">
+           <attribute name="title">
+            <string>Task 1</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_taskViews_task2">
+           <attribute name="title">
+            <string>Task 2</string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QGroupBox" name="groupBoxIp">
+          <property name="title">
+           <string>Server</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>IP:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEditIp"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Port:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineEditPort"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="0" rowspan="2">
+         <widget class="QGroupBox" name="groupBox_dir">
+          <property name="title">
+           <string>Local Directory</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0" columnstretch="8,2">
+           <item row="0" column="1">
+            <widget class="QPushButton" name="pushButton_dir_browse">
+             <property name="maximumSize">
+              <size>
+               <width>65</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Browse</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QListView" name="listView_dir_list"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLineEdit" name="lineEdit_dir_path">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -278,8 +307,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>616</width>
-     <height>21</height>
+     <width>735</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
