@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QFileSystemModel>
 #include <QFileDialog>
+#include <QAudioOutput>
+#include "TCPTask.h"
 #include "ui_ComAudio.h"
 
 class ComAudio : public QMainWindow
@@ -18,7 +20,9 @@ public:
 	void setDir();
 	void selectDir();
 
-signals:
+public slots:
+	
+	void startTCPTask();
 
 private:
 	int initUi(); // initializes UI components
@@ -28,7 +32,8 @@ private:
 	QFileSystemModel *fileModel;
 	QString pathLocal;
 	QString pathFile;
+	QAudioOutput* ao;
 
 	const QString pathLocalInitial = QDir::currentPath();
-	const QStringList fileFilter = QStringList{ "*.aac" ,"*.wmv" ,"*.avi" ,"*.mpeg" ,"*.mov" ,"*.3gp" ,"*.flv" ,"*.mp3" };
+	const QStringList fileFilter = QStringList{ "*.aac" ,"*.wmv" ,"*.avi" ,"*.mpeg" ,"*.mov" ,"*.3gp" ,"*.flv" ,"*.mp3", "*.wav" };
 };

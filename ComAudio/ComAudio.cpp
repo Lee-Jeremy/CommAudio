@@ -1,5 +1,6 @@
 #include "ComAudio.h"
 
+
 ComAudio::ComAudio(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::ComAudio)
@@ -32,6 +33,7 @@ int ComAudio::initUi()
 	setDir();
 
 	connect(ui->pushButton_dir_browse, &QPushButton::pressed, this, &ComAudio::selectDir);
+	connect(ui->pushButton_player_play, &QPushButton::pressed, this, &ComAudio::startTCPTask);
 
 	return 0;
 }
@@ -52,4 +54,10 @@ void ComAudio::selectDir()
 		pathLocal = pathTemp;
 		setDir();
 	}
+}
+
+void ComAudio::startTCPTask()
+{
+	TCPTask* task = new TCPTask(5);
+	task->transmit("test.wav", this, ao);
 }

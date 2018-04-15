@@ -184,6 +184,11 @@ int CircBuffer::read(QByteArray& dest, uint bytesToRead)
 	return 0;
 }
 
+bool CircBuffer::isReadable()
+{
+	return (mBytesWritten >= mBufferSize - 1000);
+}
+
 // Pull in, reads a constant 1024 Bytes per pull.
 qint8* operator<<(CircBuffer& lhs, qint8* rhs)
 {
@@ -202,6 +207,7 @@ QByteArray& operator>>(CircBuffer& lhs, QByteArray& rhs)
 {
 	return rhs;
 }
+
 
 
 

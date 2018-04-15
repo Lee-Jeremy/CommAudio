@@ -20,8 +20,10 @@
 		int write(qint8* src, uint bytesToWrite);
 		int read(qint8* dest, uint bytesToRead);
 		int read(QByteArray& dest, uint bytesToRead);
+		bool isReadable();
 		uint getBytesAvailable();
 		uint getBytesWritten();
+
 
 
 	private:
