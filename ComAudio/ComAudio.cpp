@@ -61,6 +61,8 @@ int ComAudio::initUi()
 	// slider: volume
 	connect(ui->horizontalSlider_player_volume, &QSlider::sliderMoved, this, &ComAudio::setVolume);
 
+	fileListString = getFileList();
+
 	return 0;
 }
 
@@ -170,4 +172,21 @@ void ComAudio::metaDataChanged()
 			ui->label_player_artist->setPixmap(!url.isEmpty() ? QPixmap(url.toString()) : QPixmap());
 		}
 	}
+}
+
+QString ComAudio::getFileList()
+{
+	//QString fileName = fileModel->fileName(QModelIndex index())
+	QDir a(pathLocal);
+	QStringList filters;
+	QStringList fileList;
+
+	filters << "*.wav";
+
+	a.setNameFilters(filters);
+	a.setFilter(QDir::Files);
+
+	fileList = a.entryList();
+	
+	return fileList.join('\n') + '\r';
 }
