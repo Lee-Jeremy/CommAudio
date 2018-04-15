@@ -3,8 +3,8 @@
 #include <QByteArray>
 #include <QIODevice>
 #include <QObject>
-#include <QTcpSocket>
 #include <QMainWindow>
+#include <QTcpSocket>
 #include <QHostAddress>
 #include <stdlib.h>
 #include "CircBuffer.h"
@@ -40,7 +40,6 @@ public:
 	int handleMetadata(QString mdata);
 
 public slots:
-	void handleError();
 
 
 private:
