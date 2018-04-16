@@ -54,7 +54,7 @@ int ComAudio::initUi()
 
 
 
-void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
+void ComAudio::connectedToServerVoip(BerUdp * udp, QTcpSocket * tcp)
 {
 	//udp->write("test data");
 	UDPTask clientVoip(nullptr, udp, VOICE_STREAM);
@@ -78,7 +78,7 @@ void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 {
 }
 
-void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
+void ComAudio::clientConnectedVoip(BerUdp * udp, QTcpSocket * tcp)
 {
 
 	UDPTask serverVoip(nullptr, udp, VOICE_STREAM);

@@ -6,13 +6,14 @@
 #include <QAudioOutput>
 #include <QAudioInput>
 #include "global.h"
+#include "berudp.h"
 
 
 class UDPTask : public QObject
 {
 	Q_OBJECT
 public:
-	UDPTask(QObject* parent, QUdpSocket* socket, TaskType task);
+	UDPTask(QObject* parent, BerUdp* socket, TaskType task);
 	~UDPTask();
 	bool connectToHost();
 	int sendTo();
@@ -25,7 +26,7 @@ public slots:
 	void handleError();
 
 private:
-	QUdpSocket*		mSocket;
+	BerUdp*			mSocket;
 	QBuffer*		mBuffer;
 	QByteArray*		mByteArray;
 	QAudioOutput*	mAudioOutput;

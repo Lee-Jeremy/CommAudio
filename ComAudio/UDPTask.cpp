@@ -1,7 +1,7 @@
 #include "UDPTask.h"
 
 
-UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task)
+UDPTask::UDPTask(QObject* parent, BerUdp* socket, TaskType task)
 	: QObject(parent)
 	, mSocket(socket)
 	, mTask(task)
@@ -76,6 +76,9 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 
 	mAudioInput->start(mSocket);
 	mAudioOutput->start(mSocket);
+
+	//int sockstate = mSocket->state();
+	//int sockerror = mSocket->error();
 
 	/*if (mAudioOutput->state() == 2 && mAudioInput->state() == 2)
 	{
