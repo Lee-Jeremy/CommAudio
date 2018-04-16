@@ -52,11 +52,12 @@ signals:
 	public slots:
 	void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
 	void connectedToServerStream(QTcpSocket * sock);
-	void connectedToServerFileTransfer(QTcpSocket * sock);
+	void connectedToServerFileList(QTcpSocket * sock);
+	void connectedToServerFileTx(QTcpSocket * sock);
 
 	void clientConnectedStream(QTcpSocket *);
-	void clientConnectedFileTransfer(QTcpSocket *);
 	void clientConnectedFileList(QTcpSocket *);
+	void clientConnectedFileTx(QTcpSocket *);
 	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 
 	void portValueChanged();
@@ -64,7 +65,8 @@ signals:
 
 	void startStream();
 	void startVoip();
-	void startFileTransfer();
+	void startFileList();
+	void startFileTx();
 
 private:
 	enum PlayMode { local, stream, test };
@@ -80,7 +82,6 @@ private:
 	// file browser
 	QFileSystemModel *dirModel;
 	QFileSystemModel *fileModel;
-	QStringListModel *fileListModel;
 	QString fileListString;
 	QString pathLocal;
 	QString pathFile;
@@ -104,6 +105,10 @@ private:
 	QString trackInfo;
 	QString statusInfo;
 	// NEW audio player ----------------------------
+
+	// file Tx
+	QStringListModel *fileListModel;
+	QString fileToRecv;
 
 	const QString PATH_LOCAL_INIT = QDir::currentPath();
 	const QStringList FILE_FILTER = QStringList{ "*.wav" };

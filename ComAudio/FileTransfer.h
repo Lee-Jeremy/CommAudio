@@ -15,7 +15,7 @@ class FileTransfer : public QObject
 	Q_OBJECT
 
 public:
-	FileTransfer(QObject *parent, QTcpSocket* tcp);
+	FileTransfer(QObject *parent, QTcpSocket * tcp, QString fileName);
 	~FileTransfer();
 
 	void setOutputFile(QString path);

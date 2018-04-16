@@ -172,6 +172,19 @@
              </rect>
             </property>
            </widget>
+           <widget class="QPushButton" name="pushButton_fileTx_download">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>210</y>
+              <width>251</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Download</string>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="tab_taskViews_task2">
            <attribute name="title">

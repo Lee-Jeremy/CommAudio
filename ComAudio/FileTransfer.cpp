@@ -1,8 +1,8 @@
 #include "FileTransfer.h"
 
-FileTransfer::FileTransfer(QObject *parent, QTcpSocket * tcp)
+FileTransfer::FileTransfer(QObject *parent, QTcpSocket * tcp, QString fileName)
 	: QObject(parent)
-	, outputPath("./write-test.wav")
+	, outputPath("./" + fileName)
 	, tcp(tcp)
 {
 	outputFile.setFileName(outputPath);

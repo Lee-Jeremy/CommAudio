@@ -63,16 +63,18 @@ int ComAudio::initUi()
 	taskManager = new TaskManager(this, DEFAULT_PORT);
 	connect(ui->pushButton_main_server_start, &QPushButton::pressed, this, &ComAudio::startServer);
 	connect(taskManager, &TaskManager::clientConnectedVoip, this, &ComAudio::clientConnectedVoip);
-	connect(taskManager, &TaskManager::clientConnectedFileTransfer, this, &ComAudio::clientConnectedFileTransfer);
+	connect(taskManager, &TaskManager::clientConnectedFileList, this, &ComAudio::clientConnectedFileList);
+	connect(taskManager, &TaskManager::clientConnectedFileTx, this, &ComAudio::clientConnectedFileTx);
 	connect(taskManager, &TaskManager::clientConnectedStream, this, &ComAudio::clientConnectedStream);
-	connect(taskManager, &TaskManager::connectedToServerFileTransfer, this, &ComAudio::connectedToServerFileTransfer);
+	connect(taskManager, &TaskManager::connectedToServerFileList, this, &ComAudio::connectedToServerFileList);
+	connect(taskManager, &TaskManager::connectedToServerFileTx, this, &ComAudio::connectedToServerFileTx);
 	connect(taskManager, &TaskManager::connectedToServerStream, this, &ComAudio::connectedToServerStream);
 	connect(taskManager, &TaskManager::connectedToServerVoip, this, &ComAudio::connectedToServerVoip);
 
-
 	connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::startStream);
 	connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::startVoip);
-	connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::startFileTransfer);
+	connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::startFileList);
+	connect(ui->pushButton_fileTx_download, &QPushButton::pressed, this, &ComAudio::startFileTx);
 
 	connect(ui->pushButton_dir_browse, &QPushButton::pressed, this, &ComAudio::selectDir);
 	// list: file
@@ -82,8 +84,10 @@ int ComAudio::initUi()
 	// slider: volume
 	connect(ui->horizontalSlider_player_volume, &QSlider::sliderMoved, this, &ComAudio::setVolume);
 
-	fileListString = getFileList();
-  
+	// file transfer list
+	fileListModel = new QStringListModel();
+	ui->listView_fileTx_list->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
 	return 0;
 }
 
@@ -142,13 +146,20 @@ void ComAudio::connectedToServerStream(QTcpSocket * sock)
 	StreamRecv * sRecv = new StreamRecv(this, sock);
 }
 
-void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
+void ComAudio::connectedToServerFileList(QTcpSocket * sock)
 {
 	QString data = QString(sock->readAll());
 	QStringList list = data.split('\n');
 	fileListModel->setStringList(list);
 	ui->listView_fileTx_list->setModel(fileListModel);
-	FileTransfer* fileTransfer = new FileTransfer(this, sock);
+}
+
+void ComAudio::connectedToServerFileTx(QTcpSocket * sock)
+{
+	QModelIndex index = ui->listView_fileTx_list->currentIndex();
+	QString fileName = index.data(Qt::DisplayRole).toString();
+	sock->write(fileName.toUtf8());
+	FileTransfer* fileTransfer = new FileTransfer(this, sock, fileToRecv);
 }
 
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
@@ -157,18 +168,15 @@ void ComAudio::clientConnectedStream(QTcpSocket * sock)
 	stream->sendFile();
 }
 
-void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
-{
-	sock->write(getFileList().toUtf8());
-	StreamServe* stream = new StreamServe(sock, pathFile);
-	qDebug() << "File path: " << getFileList();
-	stream->sendFile();
-}
-
 void ComAudio::clientConnectedFileList(QTcpSocket * sock)
 {
-	StreamServe* stream = new StreamServe(sock, pathFile);
-	qDebug() << "File path: " << pathFile;
+	sock->write(getFileList().toUtf8());
+}
+
+void ComAudio::clientConnectedFileTx(QTcpSocket * sock)
+{
+	QString fileToSend = QString(sock->readAll());
+	StreamServe* stream = new StreamServe(sock, fileToSend);
 	stream->sendFile();
 }
 
@@ -202,15 +210,21 @@ void ComAudio::startVoip()
 	}
 }
 
-void ComAudio::startFileTransfer()
+void ComAudio::startFileList()
 {
-	if (taskManager->ConnectTo(ipAddr, port, TaskType::FILE_TRANSFER))
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::FILE_LIST))
 	{
 		//grey out other options
 	}
 }
 
-
+void ComAudio::startFileTx()
+{
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::FILE_TX))
+	{
+		//grey out other options
+	}
+}
 
 void ComAudio::setDir()
 {
@@ -285,7 +299,6 @@ void ComAudio::metaDataChanged()
 
 QString ComAudio::getFileList()
 {
-	//QString fileName = fileModel->fileName(QModelIndex index())
 	QDir a(pathLocal);
 	QStringList filters;
 	QStringList fileList;
@@ -296,6 +309,6 @@ QString ComAudio::getFileList()
 	a.setFilter(QDir::Files);
 
 	fileList = a.entryList();
-	
+
 	return fileList.join('\n');
 }
