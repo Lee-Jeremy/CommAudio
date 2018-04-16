@@ -1,11 +1,13 @@
 #include "UDPTask.h"
 
 
-UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task)
+UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp)
 	: QObject(parent)
 	, mSocket(socket)
 	, mTask(task)
 {	
+	mOutputSocket = new QUdpSocket(this->parent());
+	mOutputSocket->connectToHost(tcp->peerAddress(), DEFAULT_UDP_PORT);
 }
 
 UDPTask::~UDPTask()
@@ -32,6 +34,8 @@ int UDPTask::recvFrom()
 bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
 {
 	
+	
+
 
 	format = new QAudioFormat();
 	format->setSampleRate(VOIP_SAMPLERATE);
@@ -60,7 +64,7 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	mAudioInput->setBufferSize(VOIP_BUFFERSIZE);
 
 
-	mAudioInput->start(mSocket);
+	mAudioInput->start(mOutputSocket);
 	mDevice = mAudioOutput->start();
 	  
 	connect(mSocket, &QAbstractSocket::readyRead, this, &UDPTask::playData);

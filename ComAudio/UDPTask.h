@@ -7,6 +7,7 @@
 #include <QAudioInput>
 #include <QDataStream>
 #include <QIODevice>
+#include <QTcpSocket>
 #include "global.h"
 
 
@@ -14,7 +15,7 @@ class UDPTask : public QObject
 {
 	Q_OBJECT
 public:
-	UDPTask(QObject* parent, QUdpSocket* socket, TaskType task);
+	UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp);
 	~UDPTask();
 	bool connectToHost();
 	int sendTo();
@@ -29,6 +30,7 @@ public slots:
 
 private:
 	QUdpSocket*		mSocket;
+	QUdpSocket*		mOutputSocket;
 	QBuffer*		mBuffer;
 	QByteArray*		mByteArray;
 	QAudioOutput*	mAudioOutput;

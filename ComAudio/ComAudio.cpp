@@ -56,19 +56,7 @@ int ComAudio::initUi()
 
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
-	//char* buffer = char* ();
-	//int res = udp->write("test data 0");
-	//res = udp->write("test data 1");
-	//res = udp->write("test data 2");
-	//res = udp->write("test data 3");
-	//res = udp->write("test data 4");
-	//res = udp->write("test data 5");
-	//res = udp->write("test data 6");
-	//res = udp->write("test data 7");
-	//res = udp->write("test data 8");
-	//res = udp->write("test data 9");
-
-	clientVoip = new UDPTask(nullptr, udp, VOICE_STREAM);
+	clientVoip = new UDPTask(nullptr, udp, VOICE_STREAM, tcp);
 	bool result = clientVoip->startVOIP(mAudioOutput, mAudioInput, mFormat);
 	qDebug() << "Client VOIP result: " << result;
 }
@@ -91,10 +79,8 @@ void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 
 void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
-	char* buffer = new char[20];
-
-	//udp->readData(buffer, 10);
-	serverVoip = new UDPTask(nullptr, udp, VOICE_STREAM);
+	int res = udp->write("asdf1234");
+	serverVoip = new UDPTask(nullptr, udp, VOICE_STREAM, tcp);
 	bool result = serverVoip->startVOIP(mAudioOutput, mAudioInput, mFormat);
 	qDebug() << "Server VOIP result: " << result;
 
