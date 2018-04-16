@@ -9,7 +9,7 @@ class StreamServe : public QObject
 	Q_OBJECT
 
 public:
-	StreamServe(QObject *parent, QTcpSocket*, QString);
+	StreamServe(QTcpSocket*, QString);
 	~StreamServe();
 
 public slots:
