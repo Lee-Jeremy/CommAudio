@@ -57,6 +57,8 @@ private:
 	QAudioInput*	mAudioInput;
 	QAudioFormat*	mFormat;
 
+	UDPTask* clientVoip;
+
 	TaskManager * taskManager;
 
 	const QString pathLocalInitial = QDir::currentPath();
