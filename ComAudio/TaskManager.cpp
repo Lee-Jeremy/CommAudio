@@ -20,7 +20,6 @@ void TaskManager::start(short port)
 	server->listen(QHostAddress::Any, port);
 
 	connect(server, &TcpServer::newConnection, this, &TaskManager::onConnect, Qt::QueuedConnection);
-	qDebug() << "task manager created and socket connected to callback";
 }
 
 QTcpSocket * TaskManager::OpenTcpSocket()
@@ -41,7 +40,7 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	memset(buffer, 0, sizeof(struct StartPacket));
 	qint64 bytesRead = sock->read(buffer, sizeof(struct StartPacket));
 
-	
+
 
 	switch (buffer[0])
 	{
@@ -82,7 +81,7 @@ bool TaskManager::SendHandshake(QTcpSocket * s, TaskType t)
 	char buffer[sizeof(struct StartPacket)];
 	memset(buffer, t, sizeof(struct StartPacket));
 	s->write(buffer);
-	
+
 	return true;
 }
 
@@ -100,7 +99,7 @@ bool TaskManager::ConnectTo(QString ipaddr, short port, TaskType t)
 			this, &TaskManager::displayError);
 		return true;
 	}
-	
+
 	resetConnectionState();
 
 	return false;
@@ -112,7 +111,7 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 	case QAbstractSocket::RemoteHostClosedError:
 		break;
 	case QAbstractSocket::HostNotFoundError:
-		QMessageBox::information((QWidget*) this->parent(), tr("Task manager"),
+		QMessageBox::information((QWidget*)this->parent(), tr("Task manager"),
 			tr("The host was not found. Please check the "
 				"host name and port settings."));
 		break;
@@ -124,7 +123,7 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 				"settings are correct."));
 		break;
 	default:
-		QMessageBox::information((QWidget*) this->parent(), tr("task Manager"),
+		QMessageBox::information((QWidget*)this->parent(), tr("task Manager"),
 			tr("The following error occurred: %1.")
 			.arg(currentConnectingSocket->errorString()));
 	}
@@ -145,7 +144,7 @@ void TaskManager::connectedToServer()
 	{
 	case TaskType::VOICE_STREAM:
 		sock = new QUdpSocket();
-		
+
 		if (!currentConnectingSocket->waitForReadyRead(5000))
 		{
 			//timeout error
@@ -158,7 +157,7 @@ void TaskManager::connectedToServer()
 			sock->connectToHost(a, 42069);
 			emit connectedToServerVoip(sock, currentConnectingSocket);
 		}
-		
+
 		break;
 	case TaskType::FILE_TRANSFER:
 		if (!currentConnectingSocket->waitForReadyRead(5000))

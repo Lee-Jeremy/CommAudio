@@ -128,7 +128,10 @@ void ComAudio::setTrackInfo(const QString &info)
 
 void ComAudio::startServer()
 {
-	taskManager->start((ui->lineEdit_main_server_port->text()).toShort());
+	qDebug() << "hit";
+	double port = (ui->lineEdit_main_server_port->text()).toDouble();
+	taskManager->start(port);
+	qDebug() << "hit2";
 }
 
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
@@ -155,6 +158,7 @@ void ComAudio::clientConnectedStream(QTcpSocket * sock)
 void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 {
 	StreamServe* stream = new StreamServe(sock, pathFile);
+	qDebug() << "File path: " << pathFile;
 	stream->sendFile();
 }
 
