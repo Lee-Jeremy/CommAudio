@@ -37,6 +37,8 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	memset(buffer, 0, sizeof(struct StartPacket));
 	qint64 bytesRead = sock->read(buffer, sizeof(struct StartPacket));
 
+	int sockerror;
+	int sockstate;
 	
 
 	switch (buffer[0])
@@ -49,8 +51,10 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		udp = new QUdpSocket();
 		
 		//udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
-		udp->connectToHost(sock->peerAddress(), DEFAULT_UDP_PORT);
-		
+		udp->bind(QHostAddress::LocalHost, DEFAULT_UDP_PORT);
+		/*DEBUG*/
+		sockerror = udp->error();
+		sockstate = udp->state();
 		sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedVoip(udp, sock);
 		resetConnectionState();
@@ -146,7 +150,7 @@ void TaskManager::connectedToServer()
 	case TaskType::VOICE_STREAM:
 		sock = new QUdpSocket();
 		char buffer[sizeof(struct StartPacket)];
-		if (!currentConnectingSocket->waitForReadyRead(5000))
+		if (!currentConnectingSocket->waitForReadyRead(10000))
 		{
 			//timeout error
 			break;

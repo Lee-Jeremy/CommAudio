@@ -61,6 +61,9 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	mAudioOutput = output;
 	mAudioInput = input;
 
+	int sockstatus = mSocket->state();
+	int sockerror = mSocket->error();
+
 	//QAudioDeviceInfo info(QAudioDeviceInfo::defaultInputDevice());
 	//if (!info.isFormatSupported(*format))
 	//	format = info.nearestFormat(*format);
