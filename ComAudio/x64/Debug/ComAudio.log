@@ -1,1 +1,15 @@
-﻿  ComAudio.vcxproj -> C:\Users\cosmo\Documents\Workspace\Visual Studio 2017\source\repos\comp4985\ComAudio\x64\Debug\ComAudio.exe
+﻿  Moc'ing TabAudioChat.h...
+  Moc'ing TabMulticast.h...
+  ComAudio.cpp
+  TCPTask.cpp
+  TabAudioChat.cpp
+  TabMulticast.cpp
+  main.cpp
+c:\users\cosmo\documents\workspace\visual studio 2017\source\repos\comp4985\commaudio\comaudio\TCPTask.h(28): warning C4091: 'typedef ': ignored on left of 'metadata' when no variable is declared (compiling source file TCPTask.cpp)
+c:\users\cosmo\documents\workspace\visual studio 2017\source\repos\comp4985\commaudio\comaudio\tcptask.cpp(66): warning C4715: 'TCPTask::requestFile': not all control paths return a value
+c:\users\cosmo\documents\workspace\visual studio 2017\source\repos\comp4985\commaudio\comaudio\tcptask.cpp(128): warning C4715: 'TCPTask::receive': not all control paths return a value
+c:\users\cosmo\documents\workspace\visual studio 2017\source\repos\comp4985\commaudio\comaudio\TCPTask.h(28): warning C4091: 'typedef ': ignored on left of 'metadata' when no variable is declared (compiling source file main.cpp)
+  moc_ComAudio.cpp
+  moc_TabAudioChat.cpp
+  moc_TabMulticast.cpp
+  ComAudio.vcxproj -> C:\Users\cosmo\Documents\Workspace\Visual Studio 2017\source\repos\comp4985\CommAudio\x64\Debug\ComAudio.exe

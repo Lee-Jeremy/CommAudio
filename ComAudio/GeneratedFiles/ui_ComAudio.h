@@ -51,16 +51,16 @@ public:
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_6;
     QTabWidget *tabWidget_main;
-    QWidget *tab_main_client;
+    QWidget *tab_main_taskManager;
     QGridLayout *gridLayout_main_client;
     QGroupBox *groupBox_dir;
     QGridLayout *gridLayout_3;
-    QListView *listView_dir_list;
     QPushButton *pushButton_dir_browse;
+    QListView *listView_dir_list;
     QLineEdit *lineEdit_dir_path;
     QTabWidget *tabWidget_taskViews;
-    QWidget *tab_taskViews_task1;
-    QWidget *tab_taskViews_task2;
+    QWidget *tab_taskViews_filler1;
+    QWidget *tab_taskViews_filler2;
     QGroupBox *groupBox_tasks;
     QGridLayout *gridLayout_taskButtons;
     QPushButton *pushButton_tasks_audioStream;
@@ -79,7 +79,7 @@ public:
     QSlider *horizontalSlider_player_volume;
     QPushButton *pushButton_player_rewind;
     QLabel *label_player_volume;
-    QWidget *tab_main_server;
+    QWidget *tab_main_serverMonitor;
     QGridLayout *gridLayout_main_server;
     QLabel *label_main_server_port;
     QLineEdit *lineEdit_main_server_port;
@@ -96,7 +96,7 @@ public:
     {
         if (ComAudio->objectName().isEmpty())
             ComAudio->setObjectName(QStringLiteral("ComAudio"));
-        ComAudio->resize(616, 577);
+        ComAudio->resize(616, 608);
         actionOutput_Device = new QAction(ComAudio);
         actionOutput_Device->setObjectName(QStringLiteral("actionOutput_Device"));
         actionInput_Device = new QAction(ComAudio);
@@ -127,49 +127,51 @@ public:
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
         tabWidget_main = new QTabWidget(centralWidget);
         tabWidget_main->setObjectName(QStringLiteral("tabWidget_main"));
-        tab_main_client = new QWidget();
-        tab_main_client->setObjectName(QStringLiteral("tab_main_client"));
-        gridLayout_main_client = new QGridLayout(tab_main_client);
+        tab_main_taskManager = new QWidget();
+        tab_main_taskManager->setObjectName(QStringLiteral("tab_main_taskManager"));
+        gridLayout_main_client = new QGridLayout(tab_main_taskManager);
         gridLayout_main_client->setSpacing(6);
         gridLayout_main_client->setContentsMargins(11, 11, 11, 11);
         gridLayout_main_client->setObjectName(QStringLiteral("gridLayout_main_client"));
-        groupBox_dir = new QGroupBox(tab_main_client);
+        groupBox_dir = new QGroupBox(tab_main_taskManager);
         groupBox_dir->setObjectName(QStringLiteral("groupBox_dir"));
         gridLayout_3 = new QGridLayout(groupBox_dir);
         gridLayout_3->setSpacing(6);
         gridLayout_3->setContentsMargins(11, 11, 11, 11);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
+        pushButton_dir_browse = new QPushButton(groupBox_dir);
+        pushButton_dir_browse->setObjectName(QStringLiteral("pushButton_dir_browse"));
+        pushButton_dir_browse->setMaximumSize(QSize(65, 16777215));
+
+        gridLayout_3->addWidget(pushButton_dir_browse, 0, 1, 1, 1);
+
         listView_dir_list = new QListView(groupBox_dir);
         listView_dir_list->setObjectName(QStringLiteral("listView_dir_list"));
 
-        gridLayout_3->addWidget(listView_dir_list, 1, 0, 1, 3);
-
-        pushButton_dir_browse = new QPushButton(groupBox_dir);
-        pushButton_dir_browse->setObjectName(QStringLiteral("pushButton_dir_browse"));
-
-        gridLayout_3->addWidget(pushButton_dir_browse, 0, 2, 1, 1);
+        gridLayout_3->addWidget(listView_dir_list, 1, 0, 1, 2);
 
         lineEdit_dir_path = new QLineEdit(groupBox_dir);
         lineEdit_dir_path->setObjectName(QStringLiteral("lineEdit_dir_path"));
 
         gridLayout_3->addWidget(lineEdit_dir_path, 0, 0, 1, 1);
 
-        gridLayout_3->setColumnStretch(0, 9);
+        gridLayout_3->setColumnStretch(0, 8);
+        gridLayout_3->setColumnStretch(1, 2);
 
         gridLayout_main_client->addWidget(groupBox_dir, 1, 0, 1, 1);
 
-        tabWidget_taskViews = new QTabWidget(tab_main_client);
+        tabWidget_taskViews = new QTabWidget(tab_main_taskManager);
         tabWidget_taskViews->setObjectName(QStringLiteral("tabWidget_taskViews"));
-        tab_taskViews_task1 = new QWidget();
-        tab_taskViews_task1->setObjectName(QStringLiteral("tab_taskViews_task1"));
-        tabWidget_taskViews->addTab(tab_taskViews_task1, QString());
-        tab_taskViews_task2 = new QWidget();
-        tab_taskViews_task2->setObjectName(QStringLiteral("tab_taskViews_task2"));
-        tabWidget_taskViews->addTab(tab_taskViews_task2, QString());
+        tab_taskViews_filler1 = new QWidget();
+        tab_taskViews_filler1->setObjectName(QStringLiteral("tab_taskViews_filler1"));
+        tabWidget_taskViews->addTab(tab_taskViews_filler1, QString());
+        tab_taskViews_filler2 = new QWidget();
+        tab_taskViews_filler2->setObjectName(QStringLiteral("tab_taskViews_filler2"));
+        tabWidget_taskViews->addTab(tab_taskViews_filler2, QString());
 
         gridLayout_main_client->addWidget(tabWidget_taskViews, 0, 1, 2, 1);
 
-        groupBox_tasks = new QGroupBox(tab_main_client);
+        groupBox_tasks = new QGroupBox(tab_main_taskManager);
         groupBox_tasks->setObjectName(QStringLiteral("groupBox_tasks"));
         gridLayout_taskButtons = new QGridLayout(groupBox_tasks);
         gridLayout_taskButtons->setSpacing(6);
@@ -201,17 +203,17 @@ public:
         gridLayout_player = new QGridLayout();
         gridLayout_player->setSpacing(6);
         gridLayout_player->setObjectName(QStringLiteral("gridLayout_player"));
-        label_player_title = new QLabel(tab_main_client);
+        label_player_title = new QLabel(tab_main_taskManager);
         label_player_title->setObjectName(QStringLiteral("label_player_title"));
 
         gridLayout_player->addWidget(label_player_title, 1, 0, 1, 1);
 
-        pushButton_player_play = new QPushButton(tab_main_client);
+        pushButton_player_play = new QPushButton(tab_main_taskManager);
         pushButton_player_play->setObjectName(QStringLiteral("pushButton_player_play"));
 
         gridLayout_player->addWidget(pushButton_player_play, 1, 2, 1, 1);
 
-        horizontalSlider_player_progress = new QSlider(tab_main_client);
+        horizontalSlider_player_progress = new QSlider(tab_main_taskManager);
         horizontalSlider_player_progress->setObjectName(QStringLiteral("horizontalSlider_player_progress"));
         horizontalSlider_player_progress->setOrientation(Qt::Horizontal);
         horizontalSlider_player_progress->setInvertedAppearance(false);
@@ -219,34 +221,34 @@ public:
 
         gridLayout_player->addWidget(horizontalSlider_player_progress, 20, 1, 1, 3);
 
-        label_player_artist = new QLabel(tab_main_client);
+        label_player_artist = new QLabel(tab_main_taskManager);
         label_player_artist->setObjectName(QStringLiteral("label_player_artist"));
 
         gridLayout_player->addWidget(label_player_artist, 0, 0, 1, 1);
 
-        graphicsView_player_wave = new QGraphicsView(tab_main_client);
+        graphicsView_player_wave = new QGraphicsView(tab_main_taskManager);
         graphicsView_player_wave->setObjectName(QStringLiteral("graphicsView_player_wave"));
         graphicsView_player_wave->setMaximumSize(QSize(16777215, 20));
         graphicsView_player_wave->setInteractive(false);
 
         gridLayout_player->addWidget(graphicsView_player_wave, 0, 1, 1, 3);
 
-        pushButton_player_pause = new QPushButton(tab_main_client);
+        pushButton_player_pause = new QPushButton(tab_main_taskManager);
         pushButton_player_pause->setObjectName(QStringLiteral("pushButton_player_pause"));
 
         gridLayout_player->addWidget(pushButton_player_pause, 1, 3, 1, 1);
 
-        lcdNumber_player_passed = new QLCDNumber(tab_main_client);
+        lcdNumber_player_passed = new QLCDNumber(tab_main_taskManager);
         lcdNumber_player_passed->setObjectName(QStringLiteral("lcdNumber_player_passed"));
 
         gridLayout_player->addWidget(lcdNumber_player_passed, 20, 0, 1, 1);
 
-        lcdNumber_player_remaining = new QLCDNumber(tab_main_client);
+        lcdNumber_player_remaining = new QLCDNumber(tab_main_taskManager);
         lcdNumber_player_remaining->setObjectName(QStringLiteral("lcdNumber_player_remaining"));
 
         gridLayout_player->addWidget(lcdNumber_player_remaining, 20, 4, 1, 1);
 
-        horizontalSlider_player_volume = new QSlider(tab_main_client);
+        horizontalSlider_player_volume = new QSlider(tab_main_taskManager);
         horizontalSlider_player_volume->setObjectName(QStringLiteral("horizontalSlider_player_volume"));
         horizontalSlider_player_volume->setOrientation(Qt::Horizontal);
         horizontalSlider_player_volume->setTickPosition(QSlider::TicksBelow);
@@ -254,12 +256,12 @@ public:
 
         gridLayout_player->addWidget(horizontalSlider_player_volume, 1, 4, 1, 1);
 
-        pushButton_player_rewind = new QPushButton(tab_main_client);
+        pushButton_player_rewind = new QPushButton(tab_main_taskManager);
         pushButton_player_rewind->setObjectName(QStringLiteral("pushButton_player_rewind"));
 
         gridLayout_player->addWidget(pushButton_player_rewind, 1, 1, 1, 1);
 
-        label_player_volume = new QLabel(tab_main_client);
+        label_player_volume = new QLabel(tab_main_taskManager);
         label_player_volume->setObjectName(QStringLiteral("label_player_volume"));
 
         gridLayout_player->addWidget(label_player_volume, 0, 4, 1, 1);
@@ -277,42 +279,42 @@ public:
         gridLayout_main_client->setRowStretch(2, 2);
         gridLayout_main_client->setColumnStretch(0, 4);
         gridLayout_main_client->setColumnStretch(1, 6);
-        tabWidget_main->addTab(tab_main_client, QString());
-        tab_main_server = new QWidget();
-        tab_main_server->setObjectName(QStringLiteral("tab_main_server"));
-        gridLayout_main_server = new QGridLayout(tab_main_server);
+        tabWidget_main->addTab(tab_main_taskManager, QString());
+        tab_main_serverMonitor = new QWidget();
+        tab_main_serverMonitor->setObjectName(QStringLiteral("tab_main_serverMonitor"));
+        gridLayout_main_server = new QGridLayout(tab_main_serverMonitor);
         gridLayout_main_server->setSpacing(6);
         gridLayout_main_server->setContentsMargins(11, 11, 11, 11);
         gridLayout_main_server->setObjectName(QStringLiteral("gridLayout_main_server"));
-        label_main_server_port = new QLabel(tab_main_server);
+        label_main_server_port = new QLabel(tab_main_serverMonitor);
         label_main_server_port->setObjectName(QStringLiteral("label_main_server_port"));
         label_main_server_port->setMaximumSize(QSize(20, 16777215));
 
         gridLayout_main_server->addWidget(label_main_server_port, 0, 0, 1, 1);
 
-        lineEdit_main_server_port = new QLineEdit(tab_main_server);
+        lineEdit_main_server_port = new QLineEdit(tab_main_serverMonitor);
         lineEdit_main_server_port->setObjectName(QStringLiteral("lineEdit_main_server_port"));
         lineEdit_main_server_port->setMaximumSize(QSize(60, 16777215));
 
         gridLayout_main_server->addWidget(lineEdit_main_server_port, 0, 1, 1, 1);
 
-        pushButton_main_server_start = new QPushButton(tab_main_server);
+        pushButton_main_server_start = new QPushButton(tab_main_serverMonitor);
         pushButton_main_server_start->setObjectName(QStringLiteral("pushButton_main_server_start"));
         pushButton_main_server_start->setMaximumSize(QSize(50, 16777215));
 
         gridLayout_main_server->addWidget(pushButton_main_server_start, 0, 2, 1, 1);
 
-        plainTextEdit_main_server_console = new QPlainTextEdit(tab_main_server);
+        plainTextEdit_main_server_console = new QPlainTextEdit(tab_main_serverMonitor);
         plainTextEdit_main_server_console->setObjectName(QStringLiteral("plainTextEdit_main_server_console"));
 
         gridLayout_main_server->addWidget(plainTextEdit_main_server_console, 1, 4, 1, 1);
 
-        listView_main_server_clients = new QListView(tab_main_server);
+        listView_main_server_clients = new QListView(tab_main_serverMonitor);
         listView_main_server_clients->setObjectName(QStringLiteral("listView_main_server_clients"));
 
         gridLayout_main_server->addWidget(listView_main_server_clients, 1, 0, 1, 4);
 
-        pushButton_main_server_stop = new QPushButton(tab_main_server);
+        pushButton_main_server_stop = new QPushButton(tab_main_serverMonitor);
         pushButton_main_server_stop->setObjectName(QStringLiteral("pushButton_main_server_stop"));
         pushButton_main_server_stop->setMaximumSize(QSize(50, 16777215));
 
@@ -323,7 +325,7 @@ public:
         gridLayout_main_server->setColumnStretch(2, 1);
         gridLayout_main_server->setColumnStretch(3, 1);
         gridLayout_main_server->setColumnStretch(4, 6);
-        tabWidget_main->addTab(tab_main_server, QString());
+        tabWidget_main->addTab(tab_main_serverMonitor, QString());
 
         verticalLayout_6->addWidget(tabWidget_main);
 
@@ -373,8 +375,8 @@ public:
         groupBox_dir->setTitle(QApplication::translate("ComAudio", "Local Directory", nullptr));
         pushButton_dir_browse->setText(QApplication::translate("ComAudio", "Browse", nullptr));
         lineEdit_dir_path->setText(QString());
-        tabWidget_taskViews->setTabText(tabWidget_taskViews->indexOf(tab_taskViews_task1), QApplication::translate("ComAudio", "Task 1", nullptr));
-        tabWidget_taskViews->setTabText(tabWidget_taskViews->indexOf(tab_taskViews_task2), QApplication::translate("ComAudio", "Task 2", nullptr));
+        tabWidget_taskViews->setTabText(tabWidget_taskViews->indexOf(tab_taskViews_filler1), QApplication::translate("ComAudio", "Task 1", nullptr));
+        tabWidget_taskViews->setTabText(tabWidget_taskViews->indexOf(tab_taskViews_filler2), QApplication::translate("ComAudio", "Task 2", nullptr));
         groupBox_tasks->setTitle(QApplication::translate("ComAudio", "Tasks", nullptr));
         pushButton_tasks_audioStream->setText(QApplication::translate("ComAudio", "Audio Stream", nullptr));
         pushButton_tasks_fileTransfer->setText(QApplication::translate("ComAudio", "File Transfer", nullptr));
@@ -386,14 +388,14 @@ public:
         pushButton_player_pause->setText(QApplication::translate("ComAudio", "Pause", nullptr));
         pushButton_player_rewind->setText(QApplication::translate("ComAudio", "Rewind", nullptr));
         label_player_volume->setText(QString());
-        tabWidget_main->setTabText(tabWidget_main->indexOf(tab_main_client), QApplication::translate("ComAudio", "Client", nullptr));
+        tabWidget_main->setTabText(tabWidget_main->indexOf(tab_main_taskManager), QApplication::translate("ComAudio", "Task Manager", nullptr));
 #ifndef QT_NO_ACCESSIBILITY
-        tab_main_server->setAccessibleName(QString());
+        tab_main_serverMonitor->setAccessibleName(QString());
 #endif // QT_NO_ACCESSIBILITY
         label_main_server_port->setText(QApplication::translate("ComAudio", "Port", nullptr));
         pushButton_main_server_start->setText(QApplication::translate("ComAudio", "Start", nullptr));
         pushButton_main_server_stop->setText(QApplication::translate("ComAudio", "Stop", nullptr));
-        tabWidget_main->setTabText(tabWidget_main->indexOf(tab_main_server), QApplication::translate("ComAudio", "Server", nullptr));
+        tabWidget_main->setTabText(tabWidget_main->indexOf(tab_main_serverMonitor), QApplication::translate("ComAudio", "Server Monitor", nullptr));
         menuFile->setTitle(QApplication::translate("ComAudio", "File", nullptr));
         menuAbout->setTitle(QApplication::translate("ComAudio", "About", nullptr));
     } // retranslateUi

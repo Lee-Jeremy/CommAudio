@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>616</width>
-    <height>577</height>
+    <height>608</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,9 +20,9 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tab_main_client">
+      <widget class="QWidget" name="tab_main_taskManager">
        <attribute name="title">
-        <string>Client</string>
+        <string>Task Manager</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_main_client" rowstretch="2,6,2" columnstretch="4,6">
         <item row="1" column="0">
@@ -62,12 +62,12 @@
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="tab_taskViews_task1">
+          <widget class="QWidget" name="tab_taskViews_filler1">
            <attribute name="title">
             <string>Task 1</string>
            </attribute>
           </widget>
-          <widget class="QWidget" name="tab_taskViews_task2">
+          <widget class="QWidget" name="tab_taskViews_filler2">
            <attribute name="title">
             <string>Task 2</string>
            </attribute>
@@ -204,12 +204,12 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_main_server">
+      <widget class="QWidget" name="tab_main_serverMonitor">
        <property name="accessibleName">
         <string/>
        </property>
        <attribute name="title">
-        <string>Server</string>
+        <string>Server Monitor</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_main_server" rowstretch="0,0" columnstretch="1,1,1,1,6">
         <item row="0" column="0">

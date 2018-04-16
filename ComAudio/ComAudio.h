@@ -11,7 +11,22 @@
 #include <QBuffer>
 #include <QMediaPlaylist>
 #include <QMediaMetaData>
+#include <QInputDialog>
+#include "TabAudioChat.h"
+#include "TabAudioStream.h"
+#include "TabFileTx.h"
+#include "TabMulticast.h"
 #include "ui_ComAudio.h"
+
+namespace Task
+{
+	enum Type { fileTx, stream, chat, multicast };
+}
+
+namespace PlayMode
+{
+	enum Type { local, stream, test };
+}
 
 class ComAudio : public QMainWindow
 {
@@ -20,31 +35,48 @@ class ComAudio : public QMainWindow
 public:
 	ComAudio(QWidget *parent = Q_NULLPTR);
 	~ComAudio();
+
+	// audio player
 	void startPlaying(qint64 sizeTotal);
 	void feedAudio(QByteArray segment);
 
 	public slots:
+	// file browser
 	void setDir();
 	void selectDir();
 	void selectFile();
+
+	// audio player
 	void playAudio();
 	void setVolume();
-	QString getFileList();
-
 	void metaDataChanged();
 
-public slots:
+	// task tabs
+	// General
+	void initTab(Task::Type task);
+	void closeTab(QWidget* tab);
+
+	// File transfer
+	void initTabFileTx();
+	QString getFileList();
+
+	// Audio stream
+	void initTabAudioStream();
+
+	// Audio chat
+	void initTabAudioChat();
+
+	// Multicast
+	void initTabMulticast();
+
+signals:
 
 private:
-	enum PlayMode { local, stream, test };
-
 	int initUi(); // initializes UI components
-
-	// NEW audio player ----------------------------
 	void setTrackInfo(const QString &info);
-	// NEW audio player ----------------------------
 
 	Ui::ComAudio *ui;
+
 	// file browser
 	QFileSystemModel *dirModel;
 	QFileSystemModel *fileModel;
@@ -54,23 +86,21 @@ private:
 
 	// audio player
 	QMediaPlayer *player;
-	PlayMode playMode;
+	PlayMode::Type playMode;
 	QSlider *slider;
-
-	// NEW audio player ----------------------------
 	QFile* audioFile;
 	QByteArray* audioData;
 	qint64 pos;
 	QDataStream* audioStream;
-
 	QMediaPlaylist *playlist;
 	QString trackInfo;
 	QString statusInfo;
-	// NEW audio player ----------------------------
 
+	void ComAudio::debug(QString str);
+
+	// constants
 	const QString PATH_LOCAL_INIT = QDir::currentPath();
 	const QStringList FILE_FILTER = QStringList{ "*.wav" };
 	const qint64 SIZE_SEGMENT = 1024;
 	const int SLIDER_DIVISOR = 10;
-
 };
