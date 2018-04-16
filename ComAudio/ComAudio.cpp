@@ -159,7 +159,7 @@ void ComAudio::clientConnectedStream(QTcpSocket * sock)
 
 void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 {
-	sock->write(getFileList().toUtf8);
+	sock->write(getFileList().toUtf8());
 	StreamServe* stream = new StreamServe(sock, pathFile);
 	qDebug() << "File path: " << getFileList();
 	stream->sendFile();
