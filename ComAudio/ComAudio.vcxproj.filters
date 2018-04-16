@@ -36,9 +36,6 @@
     <ClCompile Include="ComAudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CircBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CircBufferTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,6 +54,15 @@
     <ClCompile Include="TabMulticast.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ComAudio.h">
@@ -72,6 +78,15 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TabMulticast.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Task.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TaskManager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TcpServer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -99,9 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CircBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TCPTask.h">

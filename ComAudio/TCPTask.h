@@ -7,7 +7,6 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 #include <stdlib.h>
-#include "CircBuffer.h"
 #include "ComAudio.h"
 
 #define  TRANSFER		5
@@ -47,7 +46,6 @@ private:
 	QTcpSocket*		mSocket;
 	QBuffer*		mBuffer;
 	QByteArray*		mByteArray;
-	CircBuffer*		mCircBuffer;
 	metadata*		metadata;
 	QStringList 	fileList;
 	QFile*			file;

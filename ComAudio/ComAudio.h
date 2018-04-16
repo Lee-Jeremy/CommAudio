@@ -11,12 +11,17 @@
 #include <QBuffer>
 #include <QMediaPlaylist>
 #include <QMediaMetaData>
+#include <QUdpSocket>
+#include <QLineEdit>
 #include <QInputDialog>
+#include <QSlider>
 #include "TabAudioChat.h"
 #include "TabAudioStream.h"
 #include "TabFileTx.h"
 #include "TabMulticast.h"
+#include "TaskManager.h"
 #include "ui_ComAudio.h"
+#include "windows.h"
 
 namespace Task
 {
@@ -65,6 +70,20 @@ public:
 
 	// Audio chat
 	void initTabAudioChat();
+	void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
+	void connectedToServerStream(QTcpSocket * sock);
+	void connectedToServerFileTransfer(QTcpSocket * sock);
+
+	void clientConnectedStream(QTcpSocket * );
+	void clientConnectedFileTransfer(QTcpSocket * );
+	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
+
+	void portValueChanged();
+	void ipValueChanged();
+
+	void startStream();
+	void startVoip();
+	void startFileTransfer();
 
 	// Multicast
 	void initTabMulticast();
@@ -83,6 +102,10 @@ private:
 	QString fileListString;
 	QString pathLocal;
 	QString pathFile;
+	short port;
+	QString ipAddr;
+
+	TaskManager * taskManager;
 
 	// audio player
 	QMediaPlayer *player;

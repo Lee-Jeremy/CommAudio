@@ -88,8 +88,26 @@ int ComAudio::initUi()
 	// -----------------------------------------------------------------
 
 	// audio volume slider ---------------------------------------------
-	// UI EVENT
 	connect(ui->horizontalSlider_player_volume, &QSlider::sliderMoved, this, &ComAudio::setVolume);
+	// -----------------------------------------------------------------
+
+	// connection ------------------------------------------------------
+	//connect(ui->lineEditIp, &QLineEdit::textChanged, this, &ComAudio::ipValueChanged);
+	//connect(ui->lineEditPort, &QLineEdit::textChanged, this, &ComAudio::portValueChanged);
+	// -----------------------------------------------------------------
+
+	// task manager ----------------------------------------------------
+	taskManager = new TaskManager(this, DEFAULT_PORT);
+	connect(taskManager, &TaskManager::clientConnectedVoip, this, &ComAudio::clientConnectedVoip);
+	connect(taskManager, &TaskManager::clientConnectedFileTransfer, this, &ComAudio::clientConnectedFileTransfer);
+	connect(taskManager, &TaskManager::clientConnectedStream, this, &ComAudio::clientConnectedStream);
+
+	connect(taskManager, &TaskManager::connectedToServerFileTransfer, this, &ComAudio::connectedToServerFileTransfer);
+	connect(taskManager, &TaskManager::connectedToServerStream, this, &ComAudio::connectedToServerStream);
+	connect(taskManager, &TaskManager::connectedToServerVoip, this, &ComAudio::connectedToServerVoip);
+
+	//connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::startStream);
+	//connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::startVoip);
 	// -----------------------------------------------------------------
 
 	// task tab view ---------------------------------------------------
@@ -102,11 +120,6 @@ int ComAudio::initUi()
 	connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::initTabAudioChat);
 	connect(ui->pushButton_tasks_multicast, &QPushButton::pressed, this, &ComAudio::initTabMulticast);
 	// -----------------------------------------------------------------
-
-	// task tab:file transfer ------------------------------------------
-	// -----------------------------------------------------------------
-
-	fileListString = getFileList();
 
 	return 0;
 }
@@ -129,6 +142,65 @@ void ComAudio::setTrackInfo(const QString &info)
 #pragma endregion Private functions
 
 #pragma region
+void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
+{
+	udp->write("test data");
+}
+
+void ComAudio::connectedToServerStream(QTcpSocket * sock)
+{
+}
+
+void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
+{
+}
+
+void ComAudio::clientConnectedStream(QTcpSocket * sock)
+{
+}
+
+void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
+{
+}
+
+void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
+{
+}
+
+void ComAudio::portValueChanged()
+{
+	//port = ui->lineEditPort->text().toInt();
+}
+
+void ComAudio::ipValueChanged()
+{
+	//ipAddr = ui->lineEditIp->text();
+}
+
+void ComAudio::startStream()
+{
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
+	{
+		//grey out other options
+	}
+}
+
+void ComAudio::startVoip()
+{
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
+	{
+		//grey out other options
+	}
+}
+
+void ComAudio::startFileTransfer()
+{
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::FILE_TRANSFER))
+	{
+		//grey out other options
+	}
+}
+
 void ComAudio::setDir()
 {
 	// TODO: fix bug -- showing directories on the list view.
