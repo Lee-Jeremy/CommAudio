@@ -42,6 +42,7 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	switch (buffer[0])
 	{
 	case SONG_STREAM:
+		sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedStream(sock);
 		resetConnectionState();
 		break;
@@ -53,6 +54,7 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		resetConnectionState();
 		break;
 	case FILE_TRANSFER:
+		sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedFileTransfer(sock);
 		resetConnectionState();
 		break;
@@ -159,7 +161,16 @@ void TaskManager::connectedToServer()
 		emit connectedToServerFileTransfer(currentConnectingSocket);
 		break;
 	case TaskType::SONG_STREAM:
-		emit connectedToServerStream(currentConnectingSocket);
+		char buffer[sizeof(struct StartPacket)];
+		if (!currentConnectingSocket->waitForReadyRead(5000))
+		{
+			//timeout error
+			break;
+		}
+		else
+		{
+			emit connectedToServerStream(currentConnectingSocket);
+		}
 		break;
 	}
 
