@@ -149,7 +149,6 @@ void TaskManager::connectedToServer()
 		}
 		else
 		{
-			
 			a = currentConnectingSocket->peerAddress();
 			port = currentConnectingSocket->peerPort();
 			sock->connectToHost(a, 42069);
@@ -158,7 +157,16 @@ void TaskManager::connectedToServer()
 		
 		break;
 	case TaskType::FILE_TRANSFER:
-		emit connectedToServerFileTransfer(currentConnectingSocket);
+		if (!currentConnectingSocket->waitForReadyRead(5000))
+		{
+			//timeout error
+			break;
+		}
+		else
+		{
+			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
+			emit connectedToServerFileTransfer(currentConnectingSocket);
+		}
 		break;
 	case TaskType::SONG_STREAM:
 		if (!currentConnectingSocket->waitForReadyRead(5000))

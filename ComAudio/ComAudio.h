@@ -19,6 +19,8 @@
 #include <QThread>
 
 #include "StreamServe.h"
+#include "StreamRecv.h"
+#include "FileTransfer.h"
 
 #include "TaskManager.h"
 #include "ui_ComAudio.h"

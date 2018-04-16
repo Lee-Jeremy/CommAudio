@@ -36,24 +36,39 @@
     <ClCompile Include="ComAudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AbstractSocket.cpp">
+    <ClCompile Include="StreamRecv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EndPoint.cpp">
+    <ClCompile Include="StreamServe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Socket.cpp">
+    <ClCompile Include="TaskManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TCPSocket.cpp">
+    <ClCompile Include="TcpServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UDPSocket.cpp">
+    <ClCompile Include="FileTransfer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ComAudio.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="StreamRecv.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="StreamServe.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TcpServer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TaskManager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FileTransfer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -68,22 +83,7 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EndPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Socket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TCPSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UDPSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

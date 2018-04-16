@@ -9,26 +9,23 @@
 #include <QAudioOutput>
 #include <QBuffer>
 
-class StreamRecv : public QObject
+
+class FileTransfer : public QObject
 {
 	Q_OBJECT
 
 public:
-	StreamRecv(QObject *parent, QTcpSocket*);
-	~StreamRecv();
+	FileTransfer(QObject *parent, QTcpSocket* tcp);
+	~FileTransfer();
 
+	void setOutputFile(QString path);
 
 public slots:
 	void readBytes();
 
 private:
 	QFile outputFile;
-	QFile inputFile;
+	QString outputPath;
 	QTcpSocket* tcp;
 	QByteArray data;
-	QByteArray * data2;
-	QBuffer* buffer;
-	QAudioOutput* aOutput;
-	bool firstRun;
-	QObject* audioParent;
 };

@@ -72,6 +72,7 @@ int ComAudio::initUi()
 
 	connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::startStream);
 	connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::startVoip);
+	connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::startFileTransfer);
 
 	connect(ui->pushButton_dir_browse, &QPushButton::pressed, this, &ComAudio::selectDir);
 	// list: file
@@ -134,28 +135,24 @@ void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
 {
-	
-
+	StreamRecv * sRecv = new StreamRecv(this, sock);
 }
 
 void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
 {
+	FileTransfer* fileTransfer = new FileTransfer(this, sock);
 }
 
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
 {
-	
 	StreamServe* stream = new StreamServe(sock, pathFile);
-
-	
 	stream->sendFile();
-
-
-
 }
 
 void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 {
+	StreamServe* stream = new StreamServe(sock, pathFile);
+	stream->sendFile();
 }
 
 void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)

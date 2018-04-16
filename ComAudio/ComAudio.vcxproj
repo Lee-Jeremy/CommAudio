@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ComAudio.cpp" />
+    <ClCompile Include="FileTransfer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StreamRecv.cpp" />
     <ClCompile Include="StreamServe.cpp" />
@@ -132,6 +133,7 @@
     <QtRcc Include="ComAudio.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="FileTransfer.h" />
     <ClInclude Include="global.h" />
     <QtMoc Include="StreamRecv.h" />
     <QtMoc Include="StreamServe.h" />
