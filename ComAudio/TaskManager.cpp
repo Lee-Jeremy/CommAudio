@@ -58,8 +58,7 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 
 		//bindresult = udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
 		//udp->connectToHost(QHostAddress::Any, DEFAULT_UDP_PORT);
-		/*DEBUG*/
-		//udp->open(QIODevice::ReadWrite);
+
 		sockerror = udp->error();
 		sockstate = udp->state();
 		numWritten = sock->write(buffer, sizeof(struct StartPacket));
@@ -141,7 +140,6 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 	}
 
 	resetConnectionState();
-
 }
 
 void TaskManager::connectedToServer()
@@ -167,7 +165,6 @@ void TaskManager::connectedToServer()
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
 			emit connectedToServerVoip(sock, currentConnectingSocket);
 		}
-		
 		break;
 	case TaskType::FILE_TRANSFER:
 		emit connectedToServerFileTransfer(currentConnectingSocket);

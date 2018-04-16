@@ -8,6 +8,25 @@ UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket*
 {	
 	mOutputSocket = new QUdpSocket(this->parent());
 	mOutputSocket->connectToHost(tcp->peerAddress(), DEFAULT_UDP_PORT);
+
+	mFormat = new QAudioFormat();
+	mFormat->setSampleRate(VOIP_SAMPLERATE);
+	mFormat->setSampleSize(VOIP_SAMPLESIZE);
+	mFormat->setChannelCount(VOIP_NUMCHANNEL);
+	mFormat->setCodec("audio/pcm");
+	mFormat->setByteOrder(QAudioFormat::LittleEndian);
+	mFormat->setSampleType(QAudioFormat::UnSignedInt);
+}
+
+UDPTask::UDPTask()
+{
+	mFormat = new QAudioFormat();
+	mFormat->setSampleRate(VOIP_SAMPLERATE);
+	mFormat->setSampleSize(VOIP_SAMPLESIZE);
+	mFormat->setChannelCount(VOIP_NUMCHANNEL);
+	mFormat->setCodec("audio/pcm");
+	mFormat->setByteOrder(QAudioFormat::LittleEndian);
+	mFormat->setSampleType(QAudioFormat::UnSignedInt);
 }
 
 UDPTask::~UDPTask()
@@ -44,11 +63,6 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	mAudioOutput = output;
 	mAudioInput = input;
 
-	int sockstatus = mSocket->state();
-	int sockerror = mSocket->error();
-	bool valid = mSocket->isValid();
-
-
 	//QAudioDeviceInfo info(QAudioDeviceInfo::defaultInputDevice());
 	//if (!info.isFormatSupported(*format))
 	//	format = info.nearestFormat(*format);
@@ -67,8 +81,6 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	bool bindresult = mSocket->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
 
 	connect(mSocket, SIGNAL(readyRead()), this, SLOT(playData()));
-	//bool bindresult = mSocket->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
-
 
 	/*if (mAudioOutput->state() == 2 && mAudioInput->state() == 2)
 	{
@@ -91,6 +103,31 @@ bool UDPTask::endVOIP()
 	}
 	return false;
 }
+
+bool UDPTask::startMulticastSend()
+{
+	mSocket = new QUdpSocket();
+	mSocket->bind(QHostAddress::Any, DEFAULT_MC_PORT);
+	mAudioInput = new QAudioInput(*mFormat);
+	mAudioInput->setBufferSize(VOIP_BUFFERSIZE);
+	mAudioInput->start(mSocket);
+
+	return true;
+}
+bool UDPTask::startMulticastListen()
+{
+	mSocket = new QUdpSocket();
+	mSocket->bind(QHostAddress::Any, DEFAULT_MC_PORT, QUdpSocket::ShareAddress);
+	connect(mSocket, SIGNAL(readyRead()), this, SLOT(playData()));
+	mAudioOutput = new QAudioOutput(*mFormat, this->parent());
+	mAudioOutput->setBufferSize(VOIP_BUFFERSIZE);
+	mSocket->joinMulticastGroup(QHostAddress(DEFAULT_MC_IP));
+	mDevice = mAudioOutput->start();
+
+	return true;
+}
+
+
 
 void UDPTask::handleError()
 {

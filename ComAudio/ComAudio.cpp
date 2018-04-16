@@ -47,6 +47,9 @@ int ComAudio::initUi()
 
 	connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::startStream);
 	connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::startVoip);
+	connect(ui->pushButton_tasks_multicast, &QPushButton::pressed, this, &ComAudio::startMulticastTx);
+	// temporarily using this to test, we'll have to add another button to handle MulticastRx
+	connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::startMulticastRx);
 	connect(ui->pushButton_dir_browse, &QPushButton::pressed, this, &ComAudio::selectDir);
 
 	return 0;
@@ -116,6 +119,17 @@ void ComAudio::startFileTransfer()
 	}
 }
 
+void ComAudio::startMulticastTx()
+{
+	serverVoip = new UDPTask();
+	serverVoip->startMulticastSend();
+}
+
+void ComAudio::startMulticastRx()
+{
+	serverVoip = new UDPTask();
+	serverVoip->startMulticastListen();
+}
 
 
 void ComAudio::setDir()

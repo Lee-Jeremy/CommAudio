@@ -40,7 +40,9 @@ public slots:
 
 	void startStream();
 	void startVoip();
-	void startFileTransfer();
+	void startFileTransfer(); 
+	void startMulticastTx();
+	void startMulticastRx();
 
 private:
 	int initUi(); // initializes UI components
@@ -53,15 +55,14 @@ private:
 	short port;
 	QString ipAddr;
 
-	UDPTask* serverVoip;
-
 	QAudioOutput*	mAudioOutput;
 	QAudioInput*	mAudioInput;
 	QAudioFormat*	mFormat;
 
+	TaskManager * taskManager;
+	UDPTask* serverVoip;
 	UDPTask* clientVoip;
 
-	TaskManager * taskManager;
 
 	const QString pathLocalInitial = QDir::currentPath();
 	const QStringList fileFilter = QStringList{ "*.aac" ,"*.wmv" ,"*.avi" ,"*.mpeg" ,"*.mov" ,"*.3gp" ,"*.flv" ,"*.mp3" };

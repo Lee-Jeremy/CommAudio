@@ -16,6 +16,7 @@ class UDPTask : public QObject
 	Q_OBJECT
 public:
 	UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp);
+	UDPTask();
 	~UDPTask();
 	bool connectToHost();
 	int sendTo();
@@ -23,6 +24,8 @@ public:
 	bool start();
 	bool startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format);
 	bool endVOIP();
+	bool startMulticastSend();
+	bool startMulticastListen();
 
 public slots:
 	void handleError();
@@ -33,6 +36,7 @@ private:
 	QUdpSocket*		mOutputSocket;
 	QBuffer*		mBuffer;
 	QByteArray*		mByteArray;
+	QAudioFormat*	mFormat;
 	QAudioOutput*	mAudioOutput;
 	QAudioInput*	mAudioInput;
 	QIODevice*		mDevice;

@@ -27,7 +27,8 @@ public:
 	bool ConnectTo(QString ipaddr, short port, TaskType t);
 	void resetConnectionState();
 
-	
+	void startMulticastServer();
+	void connectedToMulticastServer();
 	
 public slots:
 	void onConnect();
