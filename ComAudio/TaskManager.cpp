@@ -47,7 +47,7 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		break;
 	case VOICE_STREAM:
 		udp = new QUdpSocket();
-		udp->bind(QHostAddress::Any, DEFAULT_PORT);
+		udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
 		sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedVoip(udp, sock);
 		resetConnectionState();

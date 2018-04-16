@@ -6,7 +6,10 @@
 #include <QFileDialog>
 #include <QUdpSocket>
 #include <QLineEdit>
+#include <QAudioOutput>
+#include <QAudioInput>
 #include "TaskManager.h"
+#include "UDPTask.h"
 #include "ui_ComAudio.h"
 #include "windows.h"
 
@@ -48,6 +51,9 @@ private:
 	QString pathFile;
 	short port;
 	QString ipAddr;
+
+	QAudioOutput*	mAudioOutput;
+	QAudioInput*	mAudioInput;
 
 	TaskManager * taskManager;
 
