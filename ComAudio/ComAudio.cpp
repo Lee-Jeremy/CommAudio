@@ -86,7 +86,7 @@ int ComAudio::initUi()
 	return 0;
 }
 
-<<<<<<< HEAD
+
 void ComAudio::startPlaying(qint64 sizeTotal)
 {
 	if (audioData != nullptr)
@@ -125,7 +125,6 @@ void ComAudio::setTrackInfo(const QString &info)
 	}
 }
 
-=======
 
 
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
@@ -135,6 +134,8 @@ void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
 {
+	
+
 }
 
 void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
@@ -143,6 +144,18 @@ void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
 
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
 {
+	QThread*  thread = new QThread();
+	StreamServe* stream = new StreamServe(nullptr, sock, pathFile);
+
+	stream->moveToThread(thread);
+
+	connect(thread, SIGNAL(started()), stream, SLOT(sendBytes()));
+	connect(stream, SIGNAL(finished()), thread, SLOT(quit()));
+	connect(stream, SIGNAL(finished()), stream, SLOT(deleteLater()));
+	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+
+	thread->start();
+
 }
 
 void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
@@ -189,7 +202,6 @@ void ComAudio::startFileTransfer()
 
 
 
->>>>>>> feature-tcpSocket
 void ComAudio::setDir()
 {
 	// TODO: fix bug -- showing directories on the list view.

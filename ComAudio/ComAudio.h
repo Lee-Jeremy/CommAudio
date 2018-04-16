@@ -14,6 +14,12 @@
 #include <QUdpSocket>
 #include <QLineEdit>
 #include <QSlider>
+#include <QPushButton>
+#include <QAbstractItemView>
+#include <QThread>
+
+#include "StreamServe.h"
+
 #include "TaskManager.h"
 #include "ui_ComAudio.h"
 #include "windows.h"
@@ -97,4 +103,5 @@ private:
 	const qint64 SIZE_SEGMENT = 1024;
 	const int SLIDER_DIVISOR = 10;
 
+	QFile* outputFile;
 };
