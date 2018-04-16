@@ -10,7 +10,6 @@
 #include <global.h>
 #include <qdebug.h>
 #include <cstring>
-#include "berudp.h"
 
 
 class TaskManager : public QObject
@@ -37,12 +36,12 @@ public slots:
 
 signals:
 	
-	void clientConnectedVoip(BerUdp *, QTcpSocket *);
+	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 	void clientConnectedStream(QTcpSocket *);
 	void clientConnectedFileTransfer(QTcpSocket *);
 
 	void connectedToServerFileTransfer(QTcpSocket * sock);
-	void connectedToServerVoip(BerUdp * udp, QTcpSocket * tcp);
+	void connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp);
 	void connectedToServerStream(QTcpSocket * sock);
 
 private:

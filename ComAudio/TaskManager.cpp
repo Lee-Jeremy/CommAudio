@@ -26,7 +26,7 @@ QTcpSocket * TaskManager::OpenTcpSocket()
 
 bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 {
-	BerUdp * udp;
+	QUdpSocket * udp;
 	QHostAddress a;
 	quint16 port;
 
@@ -46,10 +46,11 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		resetConnectionState();
 		break;
 	case VOICE_STREAM:
-		udp = new BerUdp();
+		udp = new QUdpSocket();
 		
 		//udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
-		udp->setHostToWrite(sock->peerAddress(), DEFAULT_UDP_PORT);
+		udp->connectToHost(sock->peerAddress(), DEFAULT_UDP_PORT);
+		
 		sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedVoip(udp, sock);
 		resetConnectionState();
@@ -135,7 +136,7 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 void TaskManager::connectedToServer()
 {
 	this->tcpConnections->push_back(currentConnectingSocket);
-	BerUdp * sock;
+	QUdpSocket * sock;
 	QHostAddress a;
 	quint16 port;
 	SendHandshake(currentConnectingSocket, currentConnectingType);
@@ -143,7 +144,7 @@ void TaskManager::connectedToServer()
 	switch (currentConnectingType)
 	{
 	case TaskType::VOICE_STREAM:
-		sock = new BerUdp();
+		sock = new QUdpSocket();
 		char buffer[sizeof(struct StartPacket)];
 		if (!currentConnectingSocket->waitForReadyRead(5000))
 		{
@@ -155,7 +156,7 @@ void TaskManager::connectedToServer()
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
 			a = currentConnectingSocket->peerAddress();
 			port = currentConnectingSocket->peerPort();
-			sock->setHostToWrite(a, 42069);
+			sock->connectToHost(a, 42069);
 			emit connectedToServerVoip(sock, currentConnectingSocket);
 		}
 		

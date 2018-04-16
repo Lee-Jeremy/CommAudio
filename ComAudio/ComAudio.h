@@ -13,7 +13,6 @@
 #include <QDebug>
 #include "ui_ComAudio.h"
 #include "windows.h"
-#include "berudp.h"
 
 class ComAudio : public QMainWindow
 {
@@ -28,13 +27,13 @@ public:
 	void selectDir();
 	
 public slots:
-	void connectedToServerVoip(BerUdp * sock, QTcpSocket *);
+	void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
 	void connectedToServerStream(QTcpSocket * sock);
 	void connectedToServerFileTransfer(QTcpSocket * sock);
 
 	void clientConnectedStream(QTcpSocket * );
 	void clientConnectedFileTransfer(QTcpSocket * );
-	void clientConnectedVoip(BerUdp *, QTcpSocket *);
+	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 
 	void portValueChanged();
 	void ipValueChanged();
