@@ -149,8 +149,8 @@ void ComAudio::clientConnectedStream(QTcpSocket * sock)
 
 	stream->moveToThread(thread);
 
-	connect(thread, SIGNAL(started()), stream, SLOT(sendBytes()));
-	connect(stream, SIGNAL(finished()), thread, SLOT(quit()));
+	connect(thread, &QThread::started, stream, &StreamServe::sendFile);
+	connect(stream, &StreamServe::finished, thread, &QThread::quit);
 	connect(stream, SIGNAL(finished()), stream, SLOT(deleteLater()));
 	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
@@ -178,7 +178,7 @@ void ComAudio::ipValueChanged()
 
 void ComAudio::startStream()
 {
-	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::SONG_STREAM))
 	{
 		//grey out other options
 	}

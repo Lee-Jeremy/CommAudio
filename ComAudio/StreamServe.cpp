@@ -29,4 +29,5 @@ void StreamServe::sendFile()
 	}
 
 	outgoing->close();
+	emit finished();
 }

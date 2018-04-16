@@ -15,6 +15,9 @@ public:
 public slots:
 	void sendFile();
 
+signals:
+	void finished();
+
 private:
 	QFile* outgoing;
 	QTcpSocket* tcp;
