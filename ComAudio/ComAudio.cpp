@@ -61,10 +61,10 @@ int ComAudio::initUi()
 
 
 	taskManager = new TaskManager(this, DEFAULT_PORT);
+	connect(ui->pushButton_main_server_start, &QPushButton::pressed, this, &ComAudio::startServer);
 	connect(taskManager, &TaskManager::clientConnectedVoip, this, &ComAudio::clientConnectedVoip);
 	connect(taskManager, &TaskManager::clientConnectedFileTransfer, this, &ComAudio::clientConnectedFileTransfer);
 	connect(taskManager, &TaskManager::clientConnectedStream, this, &ComAudio::clientConnectedStream);
-
 	connect(taskManager, &TaskManager::connectedToServerFileTransfer, this, &ComAudio::connectedToServerFileTransfer);
 	connect(taskManager, &TaskManager::connectedToServerStream, this, &ComAudio::connectedToServerStream);
 	connect(taskManager, &TaskManager::connectedToServerVoip, this, &ComAudio::connectedToServerVoip);
@@ -126,7 +126,10 @@ void ComAudio::setTrackInfo(const QString &info)
 	}
 }
 
-
+void ComAudio::startServer()
+{
+	taskManager->start((ui->lineEdit_main_server_port->text()).toShort());
+}
 
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {

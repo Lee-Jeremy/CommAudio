@@ -26,8 +26,7 @@ public:
 	bool SendHandshake(QTcpSocket * s, TaskType t);
 	bool ConnectTo(QString ipaddr, short port, TaskType t);
 	void resetConnectionState();
-
-	
+	void start(short port);
 	
 public slots:
 	void onConnect();
@@ -49,4 +48,5 @@ private:
 	TaskType currentConnectingType;
 	bool isConnecting;
 	QVector<QTcpSocket *> * tcpConnections;
+	short portToConn;
 };

@@ -46,14 +46,15 @@ public:
 
 	void metaDataChanged();
 
+signals:
 
-public slots:
+	public slots:
 	void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
 	void connectedToServerStream(QTcpSocket * sock);
 	void connectedToServerFileTransfer(QTcpSocket * sock);
 
-	void clientConnectedStream(QTcpSocket * );
-	void clientConnectedFileTransfer(QTcpSocket * );
+	void clientConnectedStream(QTcpSocket *);
+	void clientConnectedFileTransfer(QTcpSocket *);
 	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 
 	void portValueChanged();
@@ -67,6 +68,7 @@ private:
 	enum PlayMode { local, stream, test };
 
 	int initUi(); // initializes UI components
+	void startServer();
 
 	// NEW audio player ----------------------------
 	void setTrackInfo(const QString &info);

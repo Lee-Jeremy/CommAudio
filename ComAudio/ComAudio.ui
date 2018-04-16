@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget_main">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_main_client">
        <attribute name="title">
@@ -162,6 +162,16 @@
            <attribute name="title">
             <string>Task 1</string>
            </attribute>
+           <widget class="QListView" name="listView">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>256</width>
+              <height>192</height>
+             </rect>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="tab_taskViews_task2">
            <attribute name="title">
@@ -308,7 +318,7 @@
      <x>0</x>
      <y>0</y>
      <width>735</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -7,16 +7,20 @@ TaskManager::TaskManager(QObject *parent, short port)
 {
 	isConnecting = false;
 	tcpConnections = new QVector<QTcpSocket *>();
+	portToConn = port;
+}
 
+TaskManager::~TaskManager()
+{
+}
+
+void TaskManager::start(short port)
+{
 	server = new TcpServer(this);
 	server->listen(QHostAddress::Any, port);
 
 	connect(server, &TcpServer::newConnection, this, &TaskManager::onConnect, Qt::QueuedConnection);
 	qDebug() << "task manager created and socket connected to callback";
-}
-
-TaskManager::~TaskManager()
-{
 }
 
 QTcpSocket * TaskManager::OpenTcpSocket()

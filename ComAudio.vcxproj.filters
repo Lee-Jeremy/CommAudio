@@ -36,10 +36,25 @@
     <ClCompile Include="ComAudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreamRecv.cpp">
+    <ClCompile Include="CircBufferTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreamServe.cpp">
+    <ClCompile Include="TCPTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TabFileTx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TabAudioStream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TabAudioChat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TabMulticast.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TaskManager.cpp">
@@ -48,35 +63,47 @@
     <ClCompile Include="TcpServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileTransfer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AbstractSocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ComAudio.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="StreamRecv.h">
+    <QtMoc Include="TabFileTx.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="StreamServe.h">
+    <QtMoc Include="TabAudioStream.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="TcpServer.h">
+    <QtMoc Include="TabAudioChat.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TabMulticast.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Task.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TaskManager.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="FileTransfer.h">
+    <QtMoc Include="TcpServer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ComAudio.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="TabFileTx.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="TabAudioStream.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="TabAudioChat.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="TabMulticast.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -89,7 +116,7 @@
     <ClInclude Include="global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractSocket.h">
+    <ClInclude Include="TCPTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
