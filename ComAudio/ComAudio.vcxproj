@@ -116,9 +116,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ComAudio.cpp" />
-    <ClCompile Include="EndPoint.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="StreamRecv.cpp" />
+    <ClCompile Include="StreamServe.cpp" />
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="TcpServer.cpp" />
   </ItemGroup>
@@ -132,11 +132,11 @@
     <QtRcc Include="ComAudio.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EndPoint.h" />
     <ClInclude Include="global.h" />
+    <QtMoc Include="StreamRecv.h" />
+    <QtMoc Include="StreamServe.h" />
     <QtMoc Include="TcpServer.h" />
     <QtMoc Include="TaskManager.h" />
-    <QtMoc Include="Task.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

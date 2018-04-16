@@ -1,7 +1,7 @@
 #include "StreamServe.h"
 
-StreamServe::StreamServe(QObject *parent, QTcpSocket* tcp, QString path)
-	: QObject(parent)
+StreamServe::StreamServe(QTcpSocket* tcp, QString path)
+	: QObject(nullptr)
 	, tcp(tcp)
 	, path(path)
 {
