@@ -4,12 +4,20 @@
 
 #include "Winsock2.h"
 
-#define SOCKET_DGRAM 10
-#define SOCKET_STREAM 20
+#define SOCKET_DGRAM		10
+#define SOCKET_STREAM		20
 
-#define DEFAULT_PORT 9898
 
-#define START_SIZE 1000
+#define DEFAULT_PORT		9898
+#define DEFAULT_UDP_PORT	42069
+#define DEFAULT_TCP_PORT	42070
+
+#define START_SIZE			1000
+
+#define VOIP_SAMPLERATE		48000
+#define VOIP_SAMPLESIZE		16
+#define VOIP_NUMCHANNEL		2
+#define VOIP_BUFFERSIZE		16384
 
 
 typedef struct StartPacket {

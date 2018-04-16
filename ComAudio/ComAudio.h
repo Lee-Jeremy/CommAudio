@@ -19,7 +19,12 @@
 #include "TabAudioStream.h"
 #include "TabFileTx.h"
 #include "TabMulticast.h"
+
+#include <QAudioOutput>
+#include <QAudioInput>
 #include "TaskManager.h"
+#include "UDPTask.h"
+#include <QDebug>
 #include "ui_ComAudio.h"
 #include "windows.h"
 
@@ -45,7 +50,7 @@ public:
 	void startPlaying(qint64 sizeTotal);
 	void feedAudio(QByteArray segment);
 
-	public slots:
+public slots:
 	// file browser
 	void setDir();
 	void selectDir();
@@ -60,6 +65,8 @@ public:
 	// General
 	void initTab(Task::Type task);
 	void closeTab(QWidget* tab);
+	void startServer();
+	void serverPortValueChanged();
 
 	// File transfer
 	void initTabFileTx();
@@ -78,8 +85,6 @@ public:
 	void clientConnectedFileTransfer(QTcpSocket * );
 	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 
-	void portValueChanged();
-	void ipValueChanged();
 
 	void startStream();
 	void startVoip();
@@ -103,7 +108,16 @@ private:
 	QString pathLocal;
 	QString pathFile;
 	short port;
+	short serverPort;
 	QString ipAddr;
+
+	UDPTask* serverVoip;
+
+	QAudioOutput*	mAudioOutput;
+	QAudioInput*	mAudioInput;
+	QAudioFormat*	mFormat;
+
+	UDPTask* clientVoip;
 
 	TaskManager * taskManager;
 

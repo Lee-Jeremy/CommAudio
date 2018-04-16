@@ -126,6 +126,7 @@
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="TcpServer.cpp" />
     <ClCompile Include="TCPTask.cpp" />
+    <ClCompile Include="UDPTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ComAudio.h" />
@@ -146,9 +147,10 @@
     <QtMoc Include="TabAudioStream.h" />
     <QtMoc Include="TabAudioChat.h" />
     <QtMoc Include="TabMulticast.h" />
-    <QtMoc Include="Task.h" />
-    <QtMoc Include="TaskManager.h" />
+    <QtMoc Include="UDPTask.h" />
     <QtMoc Include="TcpServer.h" />
+    <QtMoc Include="TaskManager.h" />
+    <QtMoc Include="Task.h" />
     <ClInclude Include="TCPTask.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

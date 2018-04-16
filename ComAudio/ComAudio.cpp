@@ -1,8 +1,60 @@
+/*------------------------------------------------------------------------------------------------------------------
+-- SOURCE FILE: ComAudio.cpp -  A General Use Audio Client/Server Application
+--
+-- PROGRAM: ComAudio.exe
+--
+-- FUNCTIONS:
+--		void startPlaying(qint64 sizeTotal);
+--		void feedAudio(QByteArray segment);
+--		void setDir();
+--		void selectDir();
+--		void selectFile();
+--		void playAudio();
+--		void setVolume();
+--		void metaDataChanged();
+--		void initTab(Task::Type task);
+--		void closeTab(QWidget* tab);
+--		void startServer();
+--		void serverPortValueChanged();
+--		void initTabFileTx();
+--		QString getFileList();
+--		void initTabAudioStream();
+--		void initTabAudioChat();
+--		void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
+--		void connectedToServerStream(QTcpSocket * sock);
+--		void connectedToServerFileTransfer(QTcpSocket * sock);
+--		void clientConnectedStream(QTcpSocket * );
+--		void clientConnectedFileTransfer(QTcpSocket * );
+--		void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
+--		void portValueChanged();
+--		void ipValueChanged();
+--		void startStream();
+--		void startVoip();
+--		void startFileTransfer();
+--		void initTabMulticast();
+--
+-- DATE: April 15th 2018
+--
+--
+-- DESIGNER: Delan Elliot, Jeremy Lee, Wilson Hu, Jeff Chou
+--
+-- PROGRAMMER: Delan Elliot, Jeremy Lee, Wilson Hu, Jeff Chou
+--
+-- NOTES:
+-- This is the QT main UI class. As such, there are a lot of "connect" calls here.
+--
+-- Our high level design uses the TaskManager class to handle connecting to clients and then signal call back functions
+-- which handle the higher level logic. Each of the call back functions (E.G. clientConnectedStream) receives the connected 
+-- socket - the implicit contract is that these callbacks will only receive a connected socket, otherwise they will not 
+-- be called.
+----------------------------------------------------------------------------------------------------------------------*/
+
 #include "ComAudio.h"
 
 ComAudio::ComAudio(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::ComAudio)
+	, taskManager(nullptr)
 {
 	int resultInitUi;
 
@@ -47,6 +99,7 @@ int ComAudio::initUi()
 {
 	ui->setupUi(this);
 
+	serverPort = DEFAULT_PORT;
 	// file browser ----------------------------------------------------
 	pathLocal = PATH_LOCAL_INIT;
 	fileModel = new QFileSystemModel(this);
@@ -94,10 +147,11 @@ int ComAudio::initUi()
 	// connection ------------------------------------------------------
 	//connect(ui->lineEditIp, &QLineEdit::textChanged, this, &ComAudio::ipValueChanged);
 	//connect(ui->lineEditPort, &QLineEdit::textChanged, this, &ComAudio::portValueChanged);
+	connect(ui->lineEdit_main_server_port, &QLineEdit::textChanged, this, &ComAudio::serverPortValueChanged);
 	// -----------------------------------------------------------------
 
 	// task manager ----------------------------------------------------
-	taskManager = new TaskManager(this, DEFAULT_PORT);
+	//taskManager = new TaskManager(this, DEFAULT_PORT);
 	connect(taskManager, &TaskManager::clientConnectedVoip, this, &ComAudio::clientConnectedVoip);
 	connect(taskManager, &TaskManager::clientConnectedFileTransfer, this, &ComAudio::clientConnectedFileTransfer);
 	connect(taskManager, &TaskManager::clientConnectedStream, this, &ComAudio::clientConnectedStream);
@@ -144,7 +198,8 @@ void ComAudio::setTrackInfo(const QString &info)
 #pragma region
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
-	udp->write("test data");
+	clientVoip = new UDPTask(nullptr, udp, VOICE_STREAM, tcp);
+	clientVoip->startVOIP(mAudioOutput, mAudioInput, mFormat);
 }
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
@@ -165,20 +220,22 @@ void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 
 void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
+	serverVoip = new UDPTask(nullptr, udp, VOICE_STREAM, tcp);
+	serverVoip->startVOIP(mAudioOutput, mAudioInput, mFormat);
 }
 
-void ComAudio::portValueChanged()
-{
-	//port = ui->lineEditPort->text().toInt();
-}
 
-void ComAudio::ipValueChanged()
+void ComAudio::serverPortValueChanged()
 {
-	//ipAddr = ui->lineEditIp->text();
+	serverPort = ui->lineEdit_main_server_port->text().toInt();
 }
 
 void ComAudio::startStream()
 {
+	if (taskManager == nullptr)
+	{
+		return;
+	}
 	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
 	{
 		//grey out other options
@@ -187,6 +244,10 @@ void ComAudio::startStream()
 
 void ComAudio::startVoip()
 {
+	if (taskManager == nullptr)
+	{
+		return;
+	}
 	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
 	{
 		//grey out other options
@@ -195,10 +256,19 @@ void ComAudio::startVoip()
 
 void ComAudio::startFileTransfer()
 {
+	if (taskManager == nullptr)
+	{
+		return;
+	}
 	if (taskManager->ConnectTo(ipAddr, port, TaskType::FILE_TRANSFER))
 	{
 		//grey out other options
 	}
+}
+
+void ComAudio::startServer()
+{
+	taskManager = new TaskManager(this, serverPort);
 }
 
 void ComAudio::setDir()
@@ -286,11 +356,13 @@ void ComAudio::initTab(Task::Type task)
 	case Task::Type::fileTx:
 		newTab = new TabFileTx(this);
 		tabName = ((TabFileTx*)newTab)->TAB_NAME;
+		ok = true;
 		connect(((TabFileTx*)newTab), &TabFileTx::sigCloseTab, this, &ComAudio::closeTab);
 		break;
 	case Task::Type::stream:
 		newTab = new TabAudioStream(this);
 		tabName = ((TabAudioStream*)newTab)->TAB_NAME;
+		ok = true;
 		connect(((TabAudioStream*)newTab), &TabAudioStream::sigCloseTab, this, &ComAudio::closeTab);
 		break;
 	case Task::Type::chat:
@@ -330,8 +402,10 @@ void ComAudio::initTab(Task::Type task)
 		}
 		break;
 	}
-
-	ui->tabWidget_taskViews->addTab(newTab, tabName);
+	if (ok)
+	{
+		ui->tabWidget_taskViews->addTab(newTab, tabName);
+	}	
 }
 
 void ComAudio::closeTab(QWidget* tab)

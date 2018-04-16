@@ -37,6 +37,10 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	memset(buffer, 0, sizeof(struct StartPacket));
 	qint64 bytesRead = sock->read(buffer, sizeof(struct StartPacket));
 
+	int sockerror;
+	int sockstate;
+	int numWritten;
+	bool bindresult;
 	
 
 	switch (buffer[0])
@@ -46,9 +50,19 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		resetConnectionState();
 		break;
 	case VOICE_STREAM:
-		udp = new QUdpSocket();
-		udp->bind(QHostAddress::Any, DEFAULT_PORT);
-		sock->write(buffer, sizeof(struct StartPacket));
+
+		//udp = new QUdpSocket();
+		//udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
+
+		udp = new QUdpSocket(this->parent());
+
+		//bindresult = udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
+		//udp->connectToHost(QHostAddress::Any, DEFAULT_UDP_PORT);
+		/*DEBUG*/
+		//udp->open(QIODevice::ReadWrite);
+		sockerror = udp->error();
+		sockstate = udp->state();
+		numWritten = sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedVoip(udp, sock);
 		resetConnectionState();
 		break;
@@ -66,7 +80,10 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 
 void TaskManager::resetConnectionState()
 {
-	disconnect(currentConnectingSocket, &QTcpSocket::connected, this, &TaskManager::connectedToServer);
+	//if (currentConnectingSocket != nullptr)
+	//{
+	//	disconnect(currentConnectingSocket, &QTcpSocket::connected, this, &TaskManager::connectedToServer);
+	//}
 	isConnecting = false;
 	currentConnectingSocket = nullptr;
 }
@@ -140,7 +157,7 @@ void TaskManager::connectedToServer()
 	case TaskType::VOICE_STREAM:
 		sock = new QUdpSocket();
 		char buffer[sizeof(struct StartPacket)];
-		if (!currentConnectingSocket->waitForReadyRead(5000))
+		if (!currentConnectingSocket->waitForReadyRead(30000))
 		{
 			//timeout error
 			break;
@@ -148,9 +165,6 @@ void TaskManager::connectedToServer()
 		else
 		{
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
-			a = currentConnectingSocket->peerAddress();
-			port = currentConnectingSocket->peerPort();
-			sock->connectToHost(a, 42069);
 			emit connectedToServerVoip(sock, currentConnectingSocket);
 		}
 		
