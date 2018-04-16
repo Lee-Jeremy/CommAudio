@@ -39,6 +39,8 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 
 	int sockerror;
 	int sockstate;
+	int numWritten;
+	bool bindresult;
 	
 
 	switch (buffer[0])
@@ -50,12 +52,17 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	case VOICE_STREAM:
 		udp = new QUdpSocket();
 		
-		//udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
-		udp->bind(QHostAddress::LocalHost, DEFAULT_UDP_PORT);
-		/*DEBUG*/
+		sockerror = 0;
 		sockerror = udp->error();
 		sockstate = udp->state();
-		sock->write(buffer, sizeof(struct StartPacket));
+		//udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
+		bindresult = udp->bind(a, DEFAULT_UDP_PORT);
+		udp->connectToHost(a, DEFAULT_UDP_PORT);
+		/*DEBUG*/
+		//udp->open(QIODevice::ReadWrite);
+		sockerror = udp->error();
+		sockstate = udp->state();
+		numWritten = sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedVoip(udp, sock);
 		resetConnectionState();
 		break;

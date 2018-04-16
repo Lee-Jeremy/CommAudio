@@ -5,6 +5,7 @@
 #include <QUdpSocket>
 #include <QAudioOutput>
 #include <QAudioInput>
+#include <QDataStream>
 #include "global.h"
 
 

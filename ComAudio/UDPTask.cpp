@@ -63,6 +63,8 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 
 	int sockstatus = mSocket->state();
 	int sockerror = mSocket->error();
+	bool valid = mSocket->isValid();
+
 
 	//QAudioDeviceInfo info(QAudioDeviceInfo::defaultInputDevice());
 	//if (!info.isFormatSupported(*format))
@@ -74,14 +76,14 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	mAudioOutput->setBufferSize(VOIP_BUFFERSIZE);
 	mAudioInput->setBufferSize(VOIP_BUFFERSIZE);
 
-	//mBuffer = new QBuffer();
-	//mBuffer->open(QBuffer::ReadWrite);
 
 	//mAudioInput->start(mSocket);
 	mAudioOutput->start(mSocket);
 
-	//int sockstate = mSocket->state();
-	//int sockerror = mSocket->error();
+
+	sockstatus = mSocket->state();
+	sockerror = mSocket->error();
+	valid = mSocket->isValid();
 
 	/*if (mAudioOutput->state() == 2 && mAudioInput->state() == 2)
 	{

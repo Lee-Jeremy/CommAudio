@@ -56,7 +56,7 @@ int ComAudio::initUi()
 
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
-	//udp->write("test data");
+	int res = udp->write("test data");
 	UDPTask clientVoip(nullptr, udp, VOICE_STREAM);
 	bool result = clientVoip.startVOIP(mAudioOutput, mAudioInput, mFormat);
 	qDebug() << "Client VOIP result: " << result;
@@ -80,7 +80,7 @@ void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 
 void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
-
+	int res = udp->write("test data");
 	UDPTask serverVoip(nullptr, udp, VOICE_STREAM);
 	bool result = serverVoip.startVOIP(mAudioOutput, mAudioInput, mFormat);
 	qDebug() << "Server VOIP result: " << result;
