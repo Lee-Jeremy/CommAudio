@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget_main">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_main_client">
        <attribute name="title">
@@ -162,7 +162,7 @@
            <attribute name="title">
             <string>Task 1</string>
            </attribute>
-           <widget class="QListView" name="listView">
+           <widget class="QListView" name="listView_fileTx_list">
             <property name="geometry">
              <rect>
               <x>10</x>

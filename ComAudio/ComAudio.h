@@ -17,6 +17,7 @@
 #include <QPushButton>
 #include <QAbstractItemView>
 #include <QThread>
+#include <QStringListModel>
 
 #include "StreamServe.h"
 #include "StreamRecv.h"
@@ -79,6 +80,7 @@ private:
 	// file browser
 	QFileSystemModel *dirModel;
 	QFileSystemModel *fileModel;
+	QStringListModel *fileListModel;
 	QString fileListString;
 	QString pathLocal;
 	QString pathFile;

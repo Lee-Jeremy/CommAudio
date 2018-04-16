@@ -128,10 +128,8 @@ void ComAudio::setTrackInfo(const QString &info)
 
 void ComAudio::startServer()
 {
-	qDebug() << "hit";
 	double port = (ui->lineEdit_main_server_port->text()).toDouble();
 	taskManager->start(port);
-	qDebug() << "hit2";
 }
 
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
@@ -146,8 +144,10 @@ void ComAudio::connectedToServerStream(QTcpSocket * sock)
 
 void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
 {
-	QByteArray list = sock->readAll();
-	qDebug() << QString(list);
+	QString data = QString(sock->readAll());
+	QStringList list = data.split('\n');
+	fileListModel->setStringList(list);
+	ui->listView_fileTx_list->setModel(fileListModel);
 	FileTransfer* fileTransfer = new FileTransfer(this, sock);
 }
 
@@ -297,5 +297,5 @@ QString ComAudio::getFileList()
 
 	fileList = a.entryList();
 	
-	return fileList.join('\n') + '\r';
+	return fileList.join('\n');
 }
