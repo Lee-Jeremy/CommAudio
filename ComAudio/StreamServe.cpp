@@ -16,8 +16,9 @@ StreamServe::~StreamServe()
 
 void StreamServe::sendFile()
 {
-	outgoing = new QFile(path);
-	if (outgoing->open(QIODevice::ReadOnly))
+	outgoing = new QFile();
+	outgoing->setFileName(path);
+	if (!outgoing->open(QIODevice::ReadOnly))
 	{
 		return;
 	}

@@ -144,17 +144,13 @@ void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
 
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
 {
-	QThread*  thread = new QThread();
+	
 	StreamServe* stream = new StreamServe(sock, pathFile);
 
-	stream->moveToThread(thread);
+	
+	stream->sendFile();
 
-	connect(thread, &QThread::started, stream, &StreamServe::sendFile);
-	connect(stream, &StreamServe::finished, thread, &QThread::quit);
-	connect(stream, SIGNAL(finished()), stream, SLOT(deleteLater()));
-	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
-	thread->start();
 
 }
 

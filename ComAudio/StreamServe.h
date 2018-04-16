@@ -12,7 +12,6 @@ public:
 	StreamServe(QTcpSocket*, QString);
 	~StreamServe();
 
-public slots:
 	void sendFile();
 
 signals:
