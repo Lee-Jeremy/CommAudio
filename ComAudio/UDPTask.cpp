@@ -59,12 +59,16 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	mAudioOutput->setBufferSize(VOIP_BUFFERSIZE);
 	mAudioInput->setBufferSize(VOIP_BUFFERSIZE);
 
+
 	mAudioInput->start(mSocket);
 	mDevice = mAudioOutput->start();
+	  
+	connect(mSocket, &QAbstractSocket::readyRead, this, &UDPTask::playData);
+	bool bindresult = mSocket->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
 
-	playData();
 	connect(mSocket, SIGNAL(readyRead()), this, SLOT(playData()));
 	//bool bindresult = mSocket->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
+
 
 	/*if (mAudioOutput->state() == 2 && mAudioInput->state() == 2)
 	{
@@ -94,6 +98,7 @@ void UDPTask::handleError()
 
 void UDPTask::playData()
 {
+	qDebug() << "Entered playData!";
 	//You need to read datagrams from the udp socket
 	while (mSocket->hasPendingDatagrams())
 	{

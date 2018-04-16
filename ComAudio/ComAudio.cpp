@@ -91,9 +91,11 @@ void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 
 void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
-	int res = udp->write("test data");
-	UDPTask serverVoip(nullptr, udp, VOICE_STREAM);
-	bool result = serverVoip.startVOIP(mAudioOutput, mAudioInput, mFormat);
+	char* buffer = new char[20];
+
+	//udp->readData(buffer, 10);
+	serverVoip = new UDPTask(nullptr, udp, VOICE_STREAM);
+	bool result = serverVoip->startVOIP(mAudioOutput, mAudioInput, mFormat);
 	qDebug() << "Server VOIP result: " << result;
 
 }

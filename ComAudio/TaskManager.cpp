@@ -50,8 +50,12 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		resetConnectionState();
 		break;
 	case VOICE_STREAM:
-		udp = new QUdpSocket();
+
+		//udp = new QUdpSocket();
 		//udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
+
+		udp = new QUdpSocket(this->parent());
+
 		//bindresult = udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
 		//udp->connectToHost(QHostAddress::Any, DEFAULT_UDP_PORT);
 		/*DEBUG*/

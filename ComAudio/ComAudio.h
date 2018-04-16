@@ -53,6 +53,8 @@ private:
 	short port;
 	QString ipAddr;
 
+	UDPTask* serverVoip;
+
 	QAudioOutput*	mAudioOutput;
 	QAudioInput*	mAudioInput;
 	QAudioFormat*	mFormat;
