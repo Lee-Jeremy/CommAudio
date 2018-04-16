@@ -146,6 +146,8 @@ void ComAudio::connectedToServerStream(QTcpSocket * sock)
 
 void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
 {
+	QByteArray list = sock->readAll();
+	qDebug() << QString(list);
 	FileTransfer* fileTransfer = new FileTransfer(this, sock);
 }
 
@@ -156,6 +158,14 @@ void ComAudio::clientConnectedStream(QTcpSocket * sock)
 }
 
 void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
+{
+	sock->write(getFileList().toUtf8);
+	StreamServe* stream = new StreamServe(sock, pathFile);
+	qDebug() << "File path: " << getFileList();
+	stream->sendFile();
+}
+
+void ComAudio::clientConnectedFileList(QTcpSocket * sock)
 {
 	StreamServe* stream = new StreamServe(sock, pathFile);
 	qDebug() << "File path: " << pathFile;

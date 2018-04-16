@@ -55,6 +55,7 @@ signals:
 
 	void clientConnectedStream(QTcpSocket *);
 	void clientConnectedFileTransfer(QTcpSocket *);
+	void clientConnectedFileList(QTcpSocket *);
 	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 
 	void portValueChanged();

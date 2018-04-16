@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QFileSystemModel>
 #include <QUdpSocket>
 #include <QMessageBox>
 #include <QVector>
@@ -34,16 +35,18 @@ public slots:
 	void displayError(QAbstractSocket::SocketError);
 
 signals:
-	
 	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 	void clientConnectedStream(QTcpSocket *);
 	void clientConnectedFileTransfer(QTcpSocket *);
+	void clientConnectedFileList(QTcpSocket *);
 
 	void connectedToServerFileTransfer(QTcpSocket * sock);
 	void connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp);
 	void connectedToServerStream(QTcpSocket * sock);
 
 private:
+
+
 	QTcpSocket * currentConnectingSocket;
 	TaskType currentConnectingType;
 	bool isConnecting;
