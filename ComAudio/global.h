@@ -17,7 +17,7 @@
 #define VOIP_SAMPLERATE		48000
 #define VOIP_SAMPLESIZE		16
 #define VOIP_NUMCHANNEL		2
-#define VOIP_BUFFERSIZE		8192
+#define VOIP_BUFFERSIZE		16384
 
 
 typedef struct StartPacket {

@@ -55,6 +55,7 @@ private:
 
 	QAudioOutput*	mAudioOutput;
 	QAudioInput*	mAudioInput;
+	QAudioFormat*	mFormat;
 
 	TaskManager * taskManager;
 

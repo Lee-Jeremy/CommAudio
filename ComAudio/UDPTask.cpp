@@ -48,33 +48,41 @@ bool UDPTask::start()
 	return false;
 }
 
-bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input)
+bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
 {
-	QAudioFormat format;
-	format.setSampleRate(VOIP_SAMPLERATE);
-	format.setSampleSize(VOIP_SAMPLESIZE);
-	format.setChannelCount(VOIP_NUMCHANNEL);
-	format.setCodec("audio/pcm");
-	format.setByteOrder(QAudioFormat::LittleEndian);
-	format.setSampleType(QAudioFormat::UnSignedInt);
+	format = new QAudioFormat();
+	format->setSampleRate(VOIP_SAMPLERATE);
+	format->setSampleSize(VOIP_SAMPLESIZE);
+	format->setChannelCount(VOIP_NUMCHANNEL);
+	format->setCodec("audio/pcm");
+	format->setByteOrder(QAudioFormat::LittleEndian);
+	format->setSampleType(QAudioFormat::UnSignedInt);
 
 	mAudioOutput = output;
 	mAudioInput = input;
 
-	mAudioOutput = new QAudioOutput(format);
-	mAudioInput = new QAudioInput(format);
-	
-	//mAudioOutput->setBufferSize(VOIP_BUFFERSIZE);
-	//mAudioInput->setBufferSize(VOIP_BUFFERSIZE);
+	//QAudioDeviceInfo info(QAudioDeviceInfo::defaultInputDevice());
+	//if (!info.isFormatSupported(*format))
+	//	format = info.nearestFormat(*format);
 
+	mAudioOutput = new QAudioOutput(*format, this->parent());
+	mAudioInput = new QAudioInput(*format);
 	
+	mAudioOutput->setBufferSize(VOIP_BUFFERSIZE);
+	mAudioInput->setBufferSize(VOIP_BUFFERSIZE);
 
-	if (mAudioOutput->state() == 2 && mAudioInput->state() == 2)
+	mBuffer = new QBuffer();
+	mBuffer->open(QBuffer::ReadWrite);
+
+	mAudioInput->start(mSocket);
+	mAudioOutput->start(mSocket);
+
+	/*if (mAudioOutput->state() == 2 && mAudioInput->state() == 2)
 	{
 		mAudioOutput->start(mSocket);
 		mAudioInput->start(mSocket);
 		return true;
-	}
+	}*/
 	return false;
 }
 

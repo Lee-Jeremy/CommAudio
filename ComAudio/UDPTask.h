@@ -18,7 +18,7 @@ public:
 	int sendTo();
 	int recvFrom();
 	bool start();
-	bool startVOIP(QAudioOutput* output, QAudioInput* input);
+	bool startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format);
 	bool endVOIP();
 
 public slots:

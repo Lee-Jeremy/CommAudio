@@ -56,9 +56,9 @@ int ComAudio::initUi()
 
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
-	udp->write("test data");
+	//udp->write("test data");
 	UDPTask clientVoip(nullptr, udp, VOICE_STREAM);
-	bool result = clientVoip.startVOIP(mAudioOutput, mAudioInput);
+	bool result = clientVoip.startVOIP(mAudioOutput, mAudioInput, mFormat);
 	qDebug() << "Client VOIP result: " << result;
 }
 
@@ -82,7 +82,7 @@ void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
 
 	UDPTask serverVoip(nullptr, udp, VOICE_STREAM);
-	bool result = serverVoip.start();
+	bool result = serverVoip.startVOIP(mAudioOutput, mAudioInput, mFormat);
 	qDebug() << "Server VOIP result: " << result;
 
 }
@@ -107,6 +107,8 @@ void ComAudio::startStream()
 
 void ComAudio::startVoip()
 {
+	//.UDPTask clientVoip(nullptr, nullptr, VOICE_STREAM);
+	//bool result = clientVoip.startVOIP(mAudioOutput, mAudioInput);
 	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
 	{
 		//grey out other options
