@@ -3,14 +3,16 @@
 #include <QBuffer>
 #include <QByteArray>
 #include <QUdpSocket>
-#include "CircBuffer.h"
-#include "ComAudio.h"
+#include <QAudioOutput>
+#include <QAudioInput>
 #include "global.h"
 
-class UDPTask
+
+class UDPTask : public QObject
 {
+	Q_OBJECT
 public:
-	UDPTask(QUdpSocket* socket, TaskType task);
+	UDPTask(QObject* parent, QUdpSocket* socket, TaskType task);
 	~UDPTask();
 	bool connectToHost();
 	int sendTo();
@@ -18,18 +20,14 @@ public:
 	bool start();
 	bool startVOIP(QAudioOutput* output, QAudioInput* input);
 	bool endVOIP();
-	int startMulticast();
-	int endMulticast();
 
 public slots:
 	void handleError();
 
 private:
-	ComAudio*		mParent;
 	QUdpSocket*		mSocket;
 	QBuffer*		mBuffer;
 	QByteArray*		mByteArray;
-	QUdpSocket*		mSocket;
 	QAudioOutput*	mAudioOutput;
 	QAudioInput*	mAudioInput;
 

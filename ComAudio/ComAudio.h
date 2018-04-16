@@ -10,6 +10,7 @@
 #include <QAudioInput>
 #include "TaskManager.h"
 #include "UDPTask.h"
+#include <QDebug>
 #include "ui_ComAudio.h"
 #include "windows.h"
 

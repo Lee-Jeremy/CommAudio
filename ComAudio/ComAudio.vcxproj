@@ -121,6 +121,7 @@
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="TcpServer.cpp" />
+    <ClCompile Include="UDPTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ComAudio.h" />
@@ -134,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="EndPoint.h" />
     <ClInclude Include="global.h" />
+    <QtMoc Include="UDPTask.h" />
     <QtMoc Include="TcpServer.h" />
     <QtMoc Include="TaskManager.h" />
     <QtMoc Include="Task.h" />

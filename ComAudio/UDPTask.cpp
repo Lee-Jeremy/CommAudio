@@ -1,7 +1,9 @@
 #include "UDPTask.h"
 
-UDPTask::UDPTask(QUdpSocket* socket, TaskType task)
-	: mSocket(socket)
+
+UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task)
+	: QObject(parent)
+	, mSocket(socket)
 	, mTask(task)
 {	
 
@@ -86,6 +88,6 @@ bool UDPTask::endVOIP()
 	return false;
 }
 
-void handleError()
+void UDPTask::handleError()
 {
 }
