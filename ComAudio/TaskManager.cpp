@@ -66,7 +66,10 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 
 void TaskManager::resetConnectionState()
 {
-	disconnect(currentConnectingSocket, &QTcpSocket::connected, this, &TaskManager::connectedToServer);
+	if (currentConnectingSocket != nullptr)
+	{
+		disconnect(currentConnectingSocket, &QTcpSocket::connected, this, &TaskManager::connectedToServer);
+	}
 	isConnecting = false;
 	currentConnectingSocket = nullptr;
 }
