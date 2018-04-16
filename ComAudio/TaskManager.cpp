@@ -165,9 +165,6 @@ void TaskManager::connectedToServer()
 		else
 		{
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
-			a = currentConnectingSocket->peerAddress();
-			port = currentConnectingSocket->peerPort();
-			sock->connectToHost(a, 42069);
 			emit connectedToServerVoip(sock, currentConnectingSocket);
 		}
 		
