@@ -24,7 +24,7 @@ TCPTask::TCPTask(int task, ComAudio* parent)
 {
 	mBuffer = new QBuffer();
 	mByteArray = new QByteArray();
-	mCircBuffer = new CircBuffer();
+	//mCircBuffer = new CircBuffer();
 
 	metadata = (struct metadata*) malloc(sizeof(struct metadata));
 	if (task == TRANSFER)
