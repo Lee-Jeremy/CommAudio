@@ -136,12 +136,12 @@ void TaskManager::connectedToServer()
 	QHostAddress a;
 	quint16 port;
 	SendHandshake(currentConnectingSocket, currentConnectingType);
-
+	char buffer[sizeof(struct StartPacket)];
 	switch (currentConnectingType)
 	{
 	case TaskType::VOICE_STREAM:
 		sock = new QUdpSocket();
-		char buffer[sizeof(struct StartPacket)];
+		
 		if (!currentConnectingSocket->waitForReadyRead(5000))
 		{
 			//timeout error
@@ -149,7 +149,7 @@ void TaskManager::connectedToServer()
 		}
 		else
 		{
-			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
+			
 			a = currentConnectingSocket->peerAddress();
 			port = currentConnectingSocket->peerPort();
 			sock->connectToHost(a, 42069);
@@ -161,7 +161,6 @@ void TaskManager::connectedToServer()
 		emit connectedToServerFileTransfer(currentConnectingSocket);
 		break;
 	case TaskType::SONG_STREAM:
-		char buffer[sizeof(struct StartPacket)];
 		if (!currentConnectingSocket->waitForReadyRead(5000))
 		{
 			//timeout error
@@ -169,6 +168,7 @@ void TaskManager::connectedToServer()
 		}
 		else
 		{
+			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
 			emit connectedToServerStream(currentConnectingSocket);
 		}
 		break;
