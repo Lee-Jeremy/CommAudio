@@ -45,7 +45,8 @@ int ComAudio::initUi()
 	connect(taskManager, &TaskManager::connectedToServerVoip, this, &ComAudio::connectedToServerVoip);
 
 
-
+	connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::startStream);
+	connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::startVoip);
 	connect(ui->pushButton_dir_browse, &QPushButton::pressed, this, &ComAudio::selectDir);
 
 	return 0;
@@ -55,7 +56,8 @@ int ComAudio::initUi()
 
 void ComAudio::connectedToServerVoip(QUdpSocket * sock)
 {
-
+	Sleep(2000);
+	sock->write("test data");
 }
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
@@ -86,6 +88,21 @@ void ComAudio::portValueChanged()
 void ComAudio::ipValueChanged()
 {
 	ipAddr = ui->lineEditIp->text();
+}
+
+void ComAudio::startStream()
+{
+	taskManager->ConnectTo(ipAddr, port, TaskType::SONG_STREAM);
+}
+
+void ComAudio::startVoip()
+{
+	taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM);
+}
+
+void ComAudio::startFileTransfer()
+{
+	taskManager->ConnectTo(ipAddr, port, TaskType::FILE_TRANSFER);
 }
 
 

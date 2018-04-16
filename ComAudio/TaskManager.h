@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QUdpSocket>
+#include <QMessageBox>
 #include <QVector>
 #include <QList>
 #include <TcpServer.h>
@@ -24,12 +25,14 @@ public:
 	bool AcceptHandshake(QTcpSocket * sock);
 	bool SendHandshake(QTcpSocket * s, TaskType t);
 	bool ConnectTo(QString ipaddr, short port, TaskType t);
+	void resetConnectionState();
 
 	
 	
 public slots:
 	void onConnect();
 	void connectedToServer();
+	void displayError(QAbstractSocket::SocketError);
 
 signals:
 	

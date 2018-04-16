@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include "TaskManager.h"
 #include "ui_ComAudio.h"
+#include "windows.h"
 
 class ComAudio : public QMainWindow
 {
@@ -20,7 +21,7 @@ public:
 	public slots:
 	void setDir();
 	void selectDir();
-
+	
 public slots:
 	void connectedToServerVoip(QUdpSocket * sock);
 	void connectedToServerStream(QTcpSocket * sock);
@@ -32,6 +33,10 @@ public slots:
 
 	void portValueChanged();
 	void ipValueChanged();
+
+	void startStream();
+	void startVoip();
+	void startFileTransfer();
 
 private:
 	int initUi(); // initializes UI components

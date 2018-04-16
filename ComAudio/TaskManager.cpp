@@ -5,6 +5,7 @@
 TaskManager::TaskManager(QObject *parent, short port)
 	: QObject(parent)
 {
+	isConnecting = false;
 	tcpConnections = new QVector<QTcpSocket *>();
 
 	server = new TcpServer(this);
@@ -32,8 +33,8 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	sock->waitForReadyRead();
 	qDebug() << sock->bytesAvailable();
 
-	char buffer[START_SIZE];
-	memset(buffer, 0, START_SIZE);
+	char buffer[sizeof(struct StartPacket)];
+	memset(buffer, 0, sizeof(struct StartPacket));
 	qint64 bytesRead = sock->read(buffer, sizeof(struct StartPacket));
 
 	
@@ -42,16 +43,20 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	{
 	case SONG_STREAM:
 		emit clientConnectedStream(sock);
+		resetConnectionState();
 		break;
 	case VOICE_STREAM:
 		udp = new QUdpSocket();
 		a = udp->peerAddress();
 		port = udp->peerPort();
 		udp->bind(QHostAddress::Any, DEFAULT_PORT);
+		sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedVoip(udp);
+		resetConnectionState();
 		break;
 	case FILE_TRANSFER:
 		emit clientConnectedFileTransfer(sock);
+		resetConnectionState();
 		break;
 	default:
 		break;
@@ -61,10 +66,16 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	return false;
 }
 
+void TaskManager::resetConnectionState()
+{
+	isConnecting = false;
+	currentConnectingSocket = nullptr;
+}
+
 bool TaskManager::SendHandshake(QTcpSocket * s, TaskType t)
 {
-	char buffer[10];
-	memset(buffer, t, START_SIZE);
+	char buffer[sizeof(struct StartPacket)];
+	memset(buffer, t, sizeof(struct StartPacket));
 	s->write(buffer);
 	
 	return true;
@@ -79,11 +90,39 @@ bool TaskManager::ConnectTo(QString ipaddr, short port, TaskType t)
 		currentConnectingType = t;
 		currentConnectingSocket->connectToHost(ipaddr, port);
 		connect(currentConnectingSocket, &QTcpSocket::connected, this, &TaskManager::connectedToServer);
+
+		connect(currentConnectingSocket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
+			this, &TaskManager::displayError);
 		return true;
 	}
 	
 
 	return false;
+}
+
+void TaskManager::displayError(QAbstractSocket::SocketError socketError)
+{
+	switch (socketError) {
+	case QAbstractSocket::RemoteHostClosedError:
+		break;
+	case QAbstractSocket::HostNotFoundError:
+		QMessageBox::information((QWidget*) this->parent(), tr("Task manager"),
+			tr("The host was not found. Please check the "
+				"host name and port settings."));
+		break;
+	case QAbstractSocket::ConnectionRefusedError:
+		QMessageBox::information((QWidget*)this->parent(), tr("task Manager"),
+			tr("The connection was refused by the peer. "
+				"Make sure the fortune server is running, "
+				"and check that the host name and port "
+				"settings are correct."));
+		break;
+	default:
+		QMessageBox::information((QWidget*) this->parent(), tr("task Manager"),
+			tr("The following error occurred: %1.")
+			.arg(currentConnectingSocket->errorString()));
+	}
+
 }
 
 void TaskManager::connectedToServer()
@@ -98,10 +137,21 @@ void TaskManager::connectedToServer()
 	{
 	case TaskType::VOICE_STREAM:
 		sock = new QUdpSocket();
-		a = currentConnectingSocket->peerAddress();
-		port = currentConnectingSocket->peerPort();
-		sock->bind(QHostAddress::Any, DEFAULT_PORT);
-		emit connectedToServerVoip(sock);
+		char buffer[sizeof(struct StartPacket)];
+		if (!currentConnectingSocket->waitForReadyRead(5000))
+		{
+			//timeout error
+			break;
+		}
+		else
+		{
+			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
+			a = currentConnectingSocket->peerAddress();
+			port = currentConnectingSocket->peerPort();
+			sock->connectToHost(a, 42069);
+			emit connectedToServerVoip(sock);
+		}
+		
 		break;
 	case TaskType::FILE_TRANSFER:
 		emit connectedToServerFileTransfer(currentConnectingSocket);
@@ -115,7 +165,6 @@ void TaskManager::connectedToServer()
 	currentConnectingSocket = nullptr;
 	isConnecting = false;
 }
-
 
 
 void TaskManager::onConnect()
