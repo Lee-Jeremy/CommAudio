@@ -11,7 +11,12 @@
 #include <QBuffer>
 #include <QMediaPlaylist>
 #include <QMediaMetaData>
+#include <QUdpSocket>
+#include <QLineEdit>
+#include <QSlider>
+#include "TaskManager.h"
 #include "ui_ComAudio.h"
+#include "windows.h"
 
 class ComAudio : public QMainWindow
 {
@@ -33,7 +38,22 @@ public:
 
 	void metaDataChanged();
 
+
 public slots:
+	void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
+	void connectedToServerStream(QTcpSocket * sock);
+	void connectedToServerFileTransfer(QTcpSocket * sock);
+
+	void clientConnectedStream(QTcpSocket * );
+	void clientConnectedFileTransfer(QTcpSocket * );
+	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
+
+	void portValueChanged();
+	void ipValueChanged();
+
+	void startStream();
+	void startVoip();
+	void startFileTransfer();
 
 private:
 	enum PlayMode { local, stream, test };
@@ -51,6 +71,10 @@ private:
 	QString fileListString;
 	QString pathLocal;
 	QString pathFile;
+	short port;
+	QString ipAddr;
+
+	TaskManager * taskManager;
 
 	// audio player
 	QMediaPlayer *player;
