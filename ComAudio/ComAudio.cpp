@@ -54,10 +54,9 @@ int ComAudio::initUi()
 
 
 
-void ComAudio::connectedToServerVoip(QUdpSocket * sock)
+void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
-	Sleep(2000);
-	sock->write("test data");
+	udp->write("test data");
 }
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
@@ -76,7 +75,7 @@ void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 {
 }
 
-void ComAudio::clientConnectedVoip(QUdpSocket * sock)
+void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
 }
 
@@ -92,17 +91,26 @@ void ComAudio::ipValueChanged()
 
 void ComAudio::startStream()
 {
-	taskManager->ConnectTo(ipAddr, port, TaskType::SONG_STREAM);
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
+	{
+		//grey out other options
+	}
 }
 
 void ComAudio::startVoip()
 {
-	taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM);
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
+	{
+		//grey out other options
+	}
 }
 
 void ComAudio::startFileTransfer()
 {
-	taskManager->ConnectTo(ipAddr, port, TaskType::FILE_TRANSFER);
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::FILE_TRANSFER))
+	{
+		//grey out other options
+	}
 }
 
 

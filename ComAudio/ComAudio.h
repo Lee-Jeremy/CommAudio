@@ -23,13 +23,13 @@ public:
 	void selectDir();
 	
 public slots:
-	void connectedToServerVoip(QUdpSocket * sock);
+	void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
 	void connectedToServerStream(QTcpSocket * sock);
 	void connectedToServerFileTransfer(QTcpSocket * sock);
 
 	void clientConnectedStream(QTcpSocket * );
 	void clientConnectedFileTransfer(QTcpSocket * );
-	void clientConnectedVoip(QUdpSocket * );
+	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 
 	void portValueChanged();
 	void ipValueChanged();

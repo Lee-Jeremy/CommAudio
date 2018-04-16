@@ -47,11 +47,9 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		break;
 	case VOICE_STREAM:
 		udp = new QUdpSocket();
-		a = udp->peerAddress();
-		port = udp->peerPort();
 		udp->bind(QHostAddress::Any, DEFAULT_PORT);
 		sock->write(buffer, sizeof(struct StartPacket));
-		emit clientConnectedVoip(udp);
+		emit clientConnectedVoip(udp, sock);
 		resetConnectionState();
 		break;
 	case FILE_TRANSFER:
@@ -68,6 +66,7 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 
 void TaskManager::resetConnectionState()
 {
+	disconnect(currentConnectingSocket, &QTcpSocket::connected, this, &TaskManager::connectedToServer);
 	isConnecting = false;
 	currentConnectingSocket = nullptr;
 }
@@ -96,6 +95,7 @@ bool TaskManager::ConnectTo(QString ipaddr, short port, TaskType t)
 		return true;
 	}
 	
+	resetConnectionState();
 
 	return false;
 }
@@ -123,6 +123,8 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 			.arg(currentConnectingSocket->errorString()));
 	}
 
+	resetConnectionState();
+
 }
 
 void TaskManager::connectedToServer()
@@ -149,7 +151,7 @@ void TaskManager::connectedToServer()
 			a = currentConnectingSocket->peerAddress();
 			port = currentConnectingSocket->peerPort();
 			sock->connectToHost(a, 42069);
-			emit connectedToServerVoip(sock);
+			emit connectedToServerVoip(sock, currentConnectingSocket);
 		}
 		
 		break;
@@ -161,9 +163,7 @@ void TaskManager::connectedToServer()
 		break;
 	}
 
-	disconnect(currentConnectingSocket, &QTcpSocket::connected, this, &TaskManager::connectedToServer);
-	currentConnectingSocket = nullptr;
-	isConnecting = false;
+	resetConnectionState();
 }
 
 

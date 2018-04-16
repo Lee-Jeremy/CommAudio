@@ -36,12 +36,12 @@ public slots:
 
 signals:
 	
-	void clientConnectedVoip(QUdpSocket *);
+	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 	void clientConnectedStream(QTcpSocket *);
 	void clientConnectedFileTransfer(QTcpSocket *);
 
 	void connectedToServerFileTransfer(QTcpSocket * sock);
-	void connectedToServerVoip(QUdpSocket * sock);
+	void connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp);
 	void connectedToServerStream(QTcpSocket * sock);
 
 private:
