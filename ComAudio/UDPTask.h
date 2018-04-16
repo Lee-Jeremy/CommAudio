@@ -6,6 +6,7 @@
 #include <QAudioOutput>
 #include <QAudioInput>
 #include <QDataStream>
+#include <QIODevice>
 #include "global.h"
 
 
@@ -24,13 +25,15 @@ public:
 
 public slots:
 	void handleError();
+	void playData();
 
 private:
-	QUdpSocket*			mSocket;
+	QUdpSocket*		mSocket;
 	QBuffer*		mBuffer;
 	QByteArray*		mByteArray;
 	QAudioOutput*	mAudioOutput;
 	QAudioInput*	mAudioInput;
+	QIODevice*		mDevice;
 
 	TaskType mTask;
 };

@@ -56,8 +56,8 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		sockerror = udp->error();
 		sockstate = udp->state();
 		//udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
-		bindresult = udp->bind(a, DEFAULT_UDP_PORT);
-		udp->connectToHost(a, DEFAULT_UDP_PORT);
+		bindresult = udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
+		//udp->connectToHost(QHostAddress::Any, DEFAULT_UDP_PORT);
 		/*DEBUG*/
 		//udp->open(QIODevice::ReadWrite);
 		sockerror = udp->error();

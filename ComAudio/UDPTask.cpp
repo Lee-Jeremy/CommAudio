@@ -6,7 +6,6 @@ UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task)
 	, mSocket(socket)
 	, mTask(task)
 {	
-
 }
 
 UDPTask::~UDPTask()
@@ -29,27 +28,11 @@ int UDPTask::recvFrom()
 	return 0;
 }
 
-bool UDPTask::start()
-{
-	switch (mTask)
-	{
-		case VOICE_STREAM:
-			// call startVOIP
-			return true;
-		case MULTICAST_SEND:
-			// call startMulticastSend
-			return true;
-		case MULTICAST_LISTEN:
-			// call startMulticastListen
-			return true;
-		default:
-			break;
-	}
-	return false;
-}
 
 bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
 {
+	
+
 	format = new QAudioFormat();
 	format->setSampleRate(VOIP_SAMPLERATE);
 	format->setSampleSize(VOIP_SAMPLESIZE);
@@ -77,8 +60,9 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	mAudioInput->setBufferSize(VOIP_BUFFERSIZE);
 
 
-	//mAudioInput->start(mSocket);
-	mAudioOutput->start(mSocket);
+	mDevice = mAudioOutput->start();
+
+	connect(mSocket, SIGNAL(readyRead()), this, SLOT(playData()));
 
 
 	sockstatus = mSocket->state();
@@ -109,4 +93,16 @@ bool UDPTask::endVOIP()
 
 void UDPTask::handleError()
 {
+}
+
+void UDPTask::playData()
+{
+	//You need to read datagrams from the udp socket
+	while (mSocket->hasPendingDatagrams())
+	{
+		QByteArray data;
+		data.resize(mSocket->pendingDatagramSize());
+		mSocket->readDatagram(data.data(), data.size());
+		mDevice->write(data.data(), data.size());
+	}
 }
