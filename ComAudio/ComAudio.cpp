@@ -171,8 +171,7 @@ int ComAudio::initUi()
 
 
 
-	// TODO connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::startFileList);
-	// TODO: connect(ui->pushButton_fileTx_download, &QPushButton::pressed, this, &ComAudio::startFileTx);
+
 
 
 	// task tab view ---------------------------------------------------
@@ -180,9 +179,7 @@ int ComAudio::initUi()
 	ui->tabWidget_taskViews->removeTab(0);
 
 
-	// file transfer list
-	fileListModel = new QStringListModel();
-	//TO DO ui->listView_fileTx_list->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
 
 	connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::initTabAudioStream);
 	connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::initTabFileTx);
@@ -239,19 +236,19 @@ void ComAudio::connectedToServerFileList(QTcpSocket * sock)
 	QString data = QString(sock->readAll());
 	QStringList list = data.split('\n');
 	fileListModel->setStringList(list);
-	// TODO ui->listView_fileTx_list->setModel(fileListModel);
+	qobject_cast<TabFileTx*>(fileSelectionTab)->ui->listView_files->setModel(fileListModel);
 }
 
 void ComAudio::connectedToServerFileTx(QTcpSocket * sock)
 {
-	// TODO QModelIndex index = ui->listView_fileTx_list->currentIndex();
-	/*QString fileName = index.data(Qt::DisplayRole).toString();
+	QModelIndex index = qobject_cast<TabFileTx *>(fileSelectionTab)->ui->listView_files->currentIndex();
+	QString fileName = index.data(Qt::DisplayRole).toString();
 
 	qDebug() << "filename: " << fileName;
 	QByteArray buf = QByteArray(fileName.toUtf8());
 	buf.resize(255);
 	sock->write(buf, 255);
-	FileTransfer* fileTransfer = new FileTransfer(this, sock, fileName);*/
+	FileTransfer* fileTransfer = new FileTransfer(this, sock, fileName);
 
 }
 
@@ -454,12 +451,23 @@ void ComAudio::initTab(Task::Type task)
 	{
 	case Task::Type::fileTx:
 		newTab = new TabFileTx(this);
+		fileSelectionTab = newTab;
+
+		// file transfer list
+		fileListModel = new QStringListModel();
+		(qobject_cast<TabFileTx*>(newTab))->ui->listView_files->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
 		tabName = ((TabFileTx*)newTab)->TAB_NAME;
 		ok = true;
 		connect(((TabFileTx*)newTab), &TabFileTx::sigCloseTab, this, &ComAudio::closeTab);
 		break;
 	case Task::Type::stream:
 		newTab = new TabAudioStream(this);
+		fileSelectionTab = newTab;
+
+		fileListModel = new QStringListModel();
+		(qobject_cast<TabFileTx*>(newTab))->ui->listView_files->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
 		tabName = ((TabAudioStream*)newTab)->TAB_NAME;
 		ok = true;
 		connect(((TabAudioStream*)newTab), &TabAudioStream::sigCloseTab, this, &ComAudio::closeTab);

@@ -128,10 +128,7 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 		break;
 	case QAbstractSocket::ConnectionRefusedError:
 		QMessageBox::information((QWidget*)this->parent(), tr("task Manager"),
-			tr("The connection was refused by the peer. "
-				"Make sure the fortune server is running, "
-				"and check that the host name and port "
-				"settings are correct."));
+			tr("The connection was refused by the peer. "));
 		break;
 	default:
 		QMessageBox::information((QWidget*)this->parent(), tr("task Manager"),

@@ -67,7 +67,6 @@ TabMulticast::TabMulticast(Mode mode, QWidget *parent)
 		ui->lineEdit_port->setDisabled(true);
 		ui->pushButton_connect->setText("Start Broadcasting");
 		QObject::connect(ui->pushButton_start, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startMulticastTx);
-
 	}
 
 	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::stopCurrentTask);

@@ -155,6 +155,8 @@ private:
 	QString trackInfo;
 	QString statusInfo;
 
+	QWidget* fileSelectionTab;
+
 
 	void ComAudio::debug(QString str);
 
