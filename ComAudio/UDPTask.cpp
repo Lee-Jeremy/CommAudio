@@ -1,44 +1,60 @@
 /*-----------------------------------------------------------------------------------------
---	SOURCE FILE:
+--	SOURCE FILE:	UDPTask.cpp
 --
---	PROGRAM:
+--	PROGRAM:		CommAudio
 --
---	FUNCTIONS:
+--	FUNCTIONS:		UDPTask()
+--					UDPTask()
+--					~UDPTask()
+--					connectToHost()
+--					startVOIP()
+--					endVOIP()
+--					startMulticastSend()
+--					startMulticastListen()
+--					handleError()
+--					playData()
+--					sendDatagram()
 --
---	DATE:
+--	DATE:			Apr. 14, 2018
 --
---	REVISION:
+--	REVISION:		Apr. 15, 2018
+--					Apr. 16, 2018
 --
---	DESIGNER:
+--	DESIGNER:		W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:		W. Hu, D. Elliot
 --
 --	NOTES:
+--	This class contains the methods used to perform UDP related program tasks:
+--		i) 1..1 VOIP chat
+--		ii) 1..* multicast VOIP
 --
---
+--	The slot callback functions are used to handle reading or sending data when
+--	data is received at their respective QIODevice.
 -----------------------------------------------------------------------------------------*/
 
 #include "UDPTask.h"
 
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	UDPTask
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
+--					- Moved format initialization to constructor
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu, D. Elliot
 --
---	INTERFACE:
+--	INTERFACE:	UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp)
 --
 --	RETURNS:
 --
 --	NOTES:
---
---
+--	This is a parameterized constructor used to initialize the UDPTask object for
+--	1..1 VOIP chat.
 -----------------------------------------------------------------------------------------*/
 UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp)
 	: QObject(parent)
@@ -59,22 +75,23 @@ UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket*
 
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	UDPTask
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu, D. Elliot
 --
---	INTERFACE:
+--	INTERFACE:	UDPTask::UDPTask(QObject* parent)
 --
---	RETURNS:
+--	RETURNS:	
 --
 --	NOTES:
---
+--	This is a 1 parameter constructor used to initialize the UDPTask object for
+--	listening or sending to a multicast address.
 --
 -----------------------------------------------------------------------------------------*/
 UDPTask::UDPTask(QObject* parent)
@@ -91,22 +108,23 @@ UDPTask::UDPTask(QObject* parent)
 
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	~UDPTask
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu, D. Elliot
 --
---	INTERFACE:
+--	INTERFACE:	~UDPTask()
 --
 --	RETURNS:
 --
 --	NOTES:
---
+--	This detructor is used to delete the UDPTask object and its member variables from
+--	memory. Delete should be called when the object's associated task completes.
 --
 -----------------------------------------------------------------------------------------*/
 UDPTask::~UDPTask()
@@ -116,51 +134,25 @@ UDPTask::~UDPTask()
 
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	startVOIP
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu, D. Elliot
 --
---	INTERFACE:
+--	INTERFACE:	bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
 --
---	RETURNS:
---
---	NOTES:
---
---
------------------------------------------------------------------------------------------*/
-bool UDPTask::connectToHost()
-{
-	return false;
-}
-
-
-/*-----------------------------------------------------------------------------------------
---
---	FUNCTIONS:
---
---	DATE:
---
---	REVISIONS:
---
---	DESIGNER:
---
---	PROGRAMMER:
---
---	INTERFACE:
---
---	RETURNS:
+--	RETURNS:	
 --
 --	NOTES:
 --
 --
 -----------------------------------------------------------------------------------------*/
-bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
+void UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
 {
 	format = new QAudioFormat();
 	format->setSampleRate(VOIP_SAMPLERATE);
@@ -191,35 +183,28 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	bool bindresult = mSocket->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
 
 	connect(mSocket, SIGNAL(readyRead()), this, SLOT(playData()));
-
-	/*if (mAudioOutput->state() == 2 && mAudioInput->state() == 2)
-	{
-		mAudioOutput->start(mSocket);
-		mAudioInput->start(mSocket);
-		return true;
-	}*/
-	return false;
 }
 
 
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	endVOIP
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu, D. Elliot
 --
---	INTERFACE:
+--	INTERFACE:	bool UDPTask::endVOIP()
 --
---	RETURNS:
+--	RETURNS:	Returns boolean indicating success or failure of the close operation.
 --
 --	NOTES:
---
+--	This function is used to terminate the VOIP session. It should be called when the user
+--	chooses to end the task.
 --
 -----------------------------------------------------------------------------------------*/
 bool UDPTask::endVOIP()
@@ -238,91 +223,98 @@ bool UDPTask::endVOIP()
 
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	startMulticastSend
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu, D. Elliot
 --
---	INTERFACE:
+--	INTERFACE:	bool UDPTask::startMulticastSend()
 --
---	RETURNS:
+--	RETURNS:	Returns boolean value indicating success or failure in connecting to
+--					a multicast address
 --
 --	NOTES:
+--	This function is used to connect to a multicast address for transmission, and
+--	is called when the user presses the 'Multicast Tx' button. 
 --
+--	This function binds two QUdpSockets to an IPv4 and IPv6 address, initializes
+--  a QAudioInput object, and connects the QAudioInput object to the sendDatagram()
+--  callback function. The sendDatagram function is used to handle data read by the
+--	QAudioInput object.
+--
+--	The multicast address and port are currently hard-coded.
+--
+--	It is based in part on Qt's Multicast example documentation. 
 --
 -----------------------------------------------------------------------------------------*/
 bool UDPTask::startMulticastSend()
 {
 	mSocket = new QUdpSocket();
-	mSocketIPv6 = new QUdpSocket();
+	//mSocketIPv6 = new QUdpSocket();
 
 	mSocket->bind(QHostAddress(QHostAddress::AnyIPv4), 0);
-	mSocketIPv6->bind(QHostAddress(QHostAddress::AnyIPv6), mSocket->localPort());
+	//mSocketIPv6->bind(QHostAddress(QHostAddress::AnyIPv6), mSocket->localPort());
 
 	mDestAddr4 = new QHostAddress(QStringLiteral("123.123.123.123"));
 
 	mSocket->setSocketOption(QAbstractSocket::MulticastTtlOption, 5);
 
-	for (int i = 0; i < 100; i++)
-	{
-		QByteArray datagram = "asdfasdfasdfasdfasdfasdf";
-		mSocket->writeDatagram(datagram, *mDestAddr4, DEFAULT_MC_PORT);
-	}
+	mAudioInput = new QAudioInput(*mFormat, this->parent());
 
-
-	int state4 = mSocket->state();
-	int state6 = mSocketIPv6->state();
-
-	mAudioInput = new QAudioInput(*mFormat);
 	mAudioInput->setBufferSize(VOIP_BUFFERSIZE);
 	mAudioInput->setNotifyInterval(1);
 
-	mByteArray = new QByteArray();
+	mDevice = mAudioInput->start();
+
+	/*mByteArray = new QByteArray();
 	mBuffer = new QBuffer(mByteArray);
-	mBuffer->open(QBuffer::ReadWrite);
+	mBuffer->open(QBuffer::ReadWrite);*/
 
-	connect(mAudioInput, SIGNAL(notify()), this, SLOT(sendDatagram()));
-
-	mAudioInput->start(mBuffer);
+	connect(mDevice, SIGNAL(readyRead()), this, SLOT(sendDatagram()));
 
 	return true;
 }
 
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	startMulticastListen
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu
 --
---	INTERFACE:
+--	INTERFACE:	bool UDPTask::startMulticastListen()
 --
---	RETURNS:
+--	RETURNS:	Returns boolean value indicating success or failure to connect to the
+--					multicast address.
 --
 --	NOTES:
+--	This function is used to connect to a multicast address for listening. It is called
+--	when the user presses the 'Multicast Rx' button. 
 --
+--	It initializes an QAudioOutput object and connects it to the playData() callback 
+--  function which is used to handle incoming audio data from the socket.
 --
 -----------------------------------------------------------------------------------------*/
 bool UDPTask::startMulticastListen()
 {
 	mSocket = new QUdpSocket();
-	mSocketIPv6 = new QUdpSocket();
+	//mSocketIPv6 = new QUdpSocket();
 
 	mGroupAddr4 = new QHostAddress(QStringLiteral("123.123.123.123"));
-	mGroupAddr6 = new QHostAddress(QStringLiteral("ff12::2115"));
+	//mGroupAddr6 = new QHostAddress(QStringLiteral("ff12::2115"));
 
 	mSocket->bind(QHostAddress::AnyIPv4, DEFAULT_MC_PORT, QUdpSocket::ShareAddress);
-	mSocketIPv6->bind(QHostAddress::AnyIPv6, DEFAULT_MC_PORT, QUdpSocket::ShareAddress);
+	//mSocketIPv6->bind(QHostAddress::AnyIPv6, DEFAULT_MC_PORT, QUdpSocket::ShareAddress);
 
 	mSocket->setSocketOption(QAbstractSocket::MulticastTtlOption, 5);
 	mSocket->joinMulticastGroup(*mGroupAddr4);
@@ -338,32 +330,25 @@ bool UDPTask::startMulticastListen()
 	return true;
 }
 
-
-
-void UDPTask::handleError()
-{
-}
-
-
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	playData
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu, D. Elliot
 --
---	INTERFACE:
+--	INTERFACE:	void UDPTask::playData()	
 --
---	RETURNS:
+--	RETURNS:	
 --
 --	NOTES:
---
---
+--	This function is a slot (callback) function used to play audio data received from a
+--	QUdpSocket.
 -----------------------------------------------------------------------------------------*/
 void UDPTask::playData()
 {
@@ -377,30 +362,31 @@ void UDPTask::playData()
 	}
 }
 
-
 /*-----------------------------------------------------------------------------------------
 --
---	FUNCTIONS:
+--	FUNCTION:	sendDatagram
 --
---	DATE:
+--	DATE:		Apr. 14, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
 --
---	DESIGNER:
+--	DESIGNER:	W. Hu, D. Elliot, J. Lee, J. Chou
 --
---	PROGRAMMER:
+--	PROGRAMMER:	W. Hu, D. Elliot
 --
---	INTERFACE:
+--	INTERFACE:	void UDPTask::sendDatagram()
 --
---	RETURNS:
+--	RETURNS:	
 --
 --	NOTES:
+--	This function is a slot (callback) function used to send data read from a QAudioInput
+--  object to a multicast address.
 --
---
+--	This function is based on Qt's Multicast Example documentation.
 -----------------------------------------------------------------------------------------*/
 void UDPTask::sendDatagram()
 {
-	QByteArray datagram = "asdfasdfasdfasdfasdfasdf";
+	QByteArray datagram = mDevice->readAll();
 	mSocket->writeDatagram(datagram, *mDestAddr4, DEFAULT_MC_PORT);
-	mSocket->writeDatagram(datagram, *mDestAddr6, DEFAULT_MC_PORT);
+//	mSocket->writeDatagram(datagram, *mDestAddr6, DEFAULT_MC_PORT);
 }

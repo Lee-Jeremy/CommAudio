@@ -19,17 +19,12 @@ public:
 	UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp);
 	UDPTask(QObject* parent);
 	~UDPTask();
-	bool connectToHost();
-	int sendTo();
-	int recvFrom();
-	bool start();
-	bool startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format);
+	void startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format);
 	bool endVOIP();
 	bool startMulticastSend();
 	bool startMulticastListen();
 
 public slots:
-	void handleError();
 	void playData();
 	void sendDatagram();
 
