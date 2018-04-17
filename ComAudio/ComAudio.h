@@ -15,6 +15,7 @@
 #include <QLineEdit>
 #include <QInputDialog>
 #include <QSlider>
+
 #include "TabAudioChat.h"
 #include "TabAudioStream.h"
 #include "TabFileTx.h"
@@ -22,6 +23,15 @@
 
 #include <QAudioOutput>
 #include <QAudioInput>
+
+#include <QPushButton>
+#include <QAbstractItemView>
+#include <QThread>
+
+#include "StreamServe.h"
+#include "StreamRecv.h"
+#include "FileTransfer.h"
+
 #include "TaskManager.h"
 #include "UDPTask.h"
 #include <QDebug>
@@ -140,4 +150,7 @@ private:
 	const QStringList FILE_FILTER = QStringList{ "*.wav" };
 	const qint64 SIZE_SEGMENT = 1024;
 	const int SLIDER_DIVISOR = 10;
+
+	QFile* outputFile;
+
 };

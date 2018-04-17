@@ -164,9 +164,12 @@ int ComAudio::initUi()
 	//connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::startVoip);
 	// -----------------------------------------------------------------
 
+
 	// task tab view ---------------------------------------------------
 	ui->tabWidget_taskViews->removeTab(0);
 	ui->tabWidget_taskViews->removeTab(0);
+
+
 
 	// UI EVENT
 	connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::initTabAudioStream);
@@ -177,6 +180,9 @@ int ComAudio::initUi()
 
 	return 0;
 }
+
+
+
 
 void ComAudio::setTrackInfo(const QString &info)
 {
@@ -195,7 +201,9 @@ void ComAudio::setTrackInfo(const QString &info)
 }
 #pragma endregion Private functions
 
+
 #pragma region
+
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
 	clientVoip = new UDPTask(nullptr, udp, VOICE_STREAM, tcp);
@@ -204,18 +212,24 @@ void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
 {
+	StreamRecv * sRecv = new StreamRecv(this, sock);
 }
 
 void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
 {
+	FileTransfer* fileTransfer = new FileTransfer(this, sock);
 }
 
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
 {
+	StreamServe* stream = new StreamServe(sock, pathFile);
+	stream->sendFile();
 }
 
 void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 {
+	StreamServe* stream = new StreamServe(sock, pathFile);
+	stream->sendFile();
 }
 
 void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
@@ -232,11 +246,13 @@ void ComAudio::serverPortValueChanged()
 
 void ComAudio::startStream()
 {
+
 	if (taskManager == nullptr)
 	{
 		return;
 	}
-	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
+	if (taskManager->ConnectTo(ipAddr, port, TaskType::SONG_STREAM))
+
 	{
 		//grey out other options
 	}
@@ -270,6 +286,7 @@ void ComAudio::startServer()
 {
 	taskManager = new TaskManager(this, serverPort);
 }
+
 
 void ComAudio::setDir()
 {

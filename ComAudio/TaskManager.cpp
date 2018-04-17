@@ -46,20 +46,13 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	switch (buffer[0])
 	{
 	case SONG_STREAM:
+		sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedStream(sock);
 		resetConnectionState();
 		break;
 	case VOICE_STREAM:
-
-		//udp = new QUdpSocket();
-		//udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
-
 		udp = new QUdpSocket(this->parent());
 
-		//bindresult = udp->bind(QHostAddress::Any, DEFAULT_UDP_PORT);
-		//udp->connectToHost(QHostAddress::Any, DEFAULT_UDP_PORT);
-		/*DEBUG*/
-		//udp->open(QIODevice::ReadWrite);
 		sockerror = udp->error();
 		sockstate = udp->state();
 		numWritten = sock->write(buffer, sizeof(struct StartPacket));
@@ -67,6 +60,7 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		resetConnectionState();
 		break;
 	case FILE_TRANSFER:
+		sock->write(buffer, sizeof(struct StartPacket));
 		emit clientConnectedFileTransfer(sock);
 		resetConnectionState();
 		break;
@@ -80,10 +74,6 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 
 void TaskManager::resetConnectionState()
 {
-	//if (currentConnectingSocket != nullptr)
-	//{
-	//	disconnect(currentConnectingSocket, &QTcpSocket::connected, this, &TaskManager::connectedToServer);
-	//}
 	isConnecting = false;
 	currentConnectingSocket = nullptr;
 }
@@ -151,12 +141,12 @@ void TaskManager::connectedToServer()
 	QHostAddress a;
 	quint16 port;
 	SendHandshake(currentConnectingSocket, currentConnectingType);
-
+	char buffer[sizeof(struct StartPacket)];
 	switch (currentConnectingType)
 	{
 	case TaskType::VOICE_STREAM:
 		sock = new QUdpSocket();
-		char buffer[sizeof(struct StartPacket)];
+
 		if (!currentConnectingSocket->waitForReadyRead(30000))
 		{
 			//timeout error
@@ -170,10 +160,28 @@ void TaskManager::connectedToServer()
 		
 		break;
 	case TaskType::FILE_TRANSFER:
-		emit connectedToServerFileTransfer(currentConnectingSocket);
+		if (!currentConnectingSocket->waitForReadyRead(5000))
+		{
+			//timeout error
+			break;
+		}
+		else
+		{
+			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
+			emit connectedToServerFileTransfer(currentConnectingSocket);
+		}
 		break;
 	case TaskType::SONG_STREAM:
-		emit connectedToServerStream(currentConnectingSocket);
+		if (!currentConnectingSocket->waitForReadyRead(5000))
+		{
+			//timeout error
+			break;
+		}
+		else
+		{
+			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
+			emit connectedToServerStream(currentConnectingSocket);
+		}
 		break;
 	}
 

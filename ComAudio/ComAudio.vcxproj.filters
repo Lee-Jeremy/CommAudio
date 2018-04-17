@@ -36,12 +36,6 @@
     <ClCompile Include="ComAudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CircBufferTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TabFileTx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,13 +48,22 @@
     <ClCompile Include="TabMulticast.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Task.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TaskManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StreamRecv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamServe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="TcpServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTransfer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UDPTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,13 +83,22 @@
     <QtMoc Include="TabMulticast.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="Task.h">
+    <QtMoc Include="StreamRecv.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="StreamServe.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TcpServer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TaskManager.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="TcpServer.h">
+    <QtMoc Include="FileTransfer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="UDPTask.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -114,9 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TCPTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

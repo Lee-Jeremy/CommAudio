@@ -115,17 +115,17 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CircBufferTests.cpp" />
     <ClCompile Include="ComAudio.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TabAudioChat.cpp" />
     <ClCompile Include="TabAudioStream.cpp" />
     <ClCompile Include="TabFileTx.cpp" />
     <ClCompile Include="TabMulticast.cpp" />
-    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="FileTransfer.cpp" />
+    <ClCompile Include="StreamRecv.cpp" />
+    <ClCompile Include="StreamServe.cpp" />
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="TcpServer.cpp" />
-    <ClCompile Include="TCPTask.cpp" />
     <ClCompile Include="UDPTask.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,8 +150,9 @@
     <QtMoc Include="UDPTask.h" />
     <QtMoc Include="TcpServer.h" />
     <QtMoc Include="TaskManager.h" />
-    <QtMoc Include="Task.h" />
-    <ClInclude Include="TCPTask.h" />
+    <QtMoc Include="FileTransfer.h" />
+    <QtMoc Include="StreamRecv.h" />
+    <QtMoc Include="StreamServe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
