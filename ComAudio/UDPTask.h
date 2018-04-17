@@ -8,10 +8,11 @@
 #include <QDataStream>
 #include <QIODevice>
 #include <QTcpSocket>
+#include "Task.h"
 #include "global.h"
 
 
-class UDPTask : public QObject
+class UDPTask : public QObject, public Task
 {
 	Q_OBJECT
 public:
@@ -20,7 +21,8 @@ public:
 	bool connectToHost();
 	int sendTo();
 	int recvFrom();
-	bool start();
+	void stop();
+	void start();
 	bool startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format);
 	bool endVOIP();
 

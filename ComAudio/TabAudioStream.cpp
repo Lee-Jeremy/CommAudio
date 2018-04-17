@@ -55,9 +55,12 @@ TabAudioStream::TabAudioStream(QWidget *parent)
 	ui->setupUi(this);
 
 	QObject::connect(ui->pushButton_connect, &QPushButton::pressed, this, &TabAudioStream::connect);
-	QObject::connect(ui->pushButton_start, &QPushButton::pressed, this, &TabAudioStream::start);
-	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, this, &TabAudioStream::stop);
+	QObject::connect(ui->pushButton_start, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startStream);
+	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::stopCurrentTask);
 	QObject::connect(ui->pushButton_close, &QPushButton::pressed, this, &TabAudioStream::closeWindow);
+
+	QObject::connect(ui->lineEdit_ip, &QLineEdit::textChanged, this, &TabAudioStream::ipChanged);
+	QObject::connect(ui->lineEdit_port, &QLineEdit::textChanged, this, &TabAudioStream::portChanged);
 }
 
 /*----------------------------------------------------------------------
@@ -152,6 +155,19 @@ void TabAudioStream::stop()
 {
 
 }
+
+
+void TabAudioStream::ipChanged()
+{
+	((ComAudio*)this->parent())->ipAddr = ui->lineEdit_ip->text();
+}
+
+void TabAudioStream::portChanged()
+{
+	((ComAudio*)this->parent())->clientPort = ui->lineEdit_port->text().toInt();
+}
+
+
 
 /*----------------------------------------------------------------------
 -- FUNCTION:	closeWindow

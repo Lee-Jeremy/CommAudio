@@ -18,6 +18,18 @@ void FileTransfer::setOutputFile(QString path)
 	outputPath = path;
 }
 
+void FileTransfer::stop()
+{
+	disconnect(tcp, 0, 0, 0);
+	outputFile.close();
+}
+
+
+void FileTransfer::start()
+{
+
+}
+
 
 void FileTransfer::readBytes()
 {

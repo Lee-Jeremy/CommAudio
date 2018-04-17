@@ -4,6 +4,7 @@ StreamServe::StreamServe(QTcpSocket* tcp, QString path)
 	: QObject(nullptr)
 	, tcp(tcp)
 	, path(path)
+	, running(true)
 {
 }
 
@@ -14,6 +15,16 @@ StreamServe::~StreamServe()
 }
 
 
+void StreamServe::stop()
+{
+	running = false;
+}
+
+void StreamServe::start()
+{
+
+}
+
 void StreamServe::sendFile()
 {
 	outgoing = new QFile();
@@ -23,7 +34,7 @@ void StreamServe::sendFile()
 		return;
 	}
 
-	while (!outgoing->atEnd())
+	while (!outgoing->atEnd() && running)
 	{
 		QByteArray line = outgoing->readLine();
 		tcp->write(line);

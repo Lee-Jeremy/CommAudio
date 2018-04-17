@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include "ui_TabAudioStream.h"
+#include "ComAudio.h"
 
 class TabAudioStream : public QWidget
 {
@@ -22,5 +23,7 @@ private:
 	void connect();
 	void start();
 	void stop();
+	void ipChanged();
+	void portChanged();
 	void closeWindow();
 };

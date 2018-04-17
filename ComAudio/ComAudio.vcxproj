@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h" />
+    <ClInclude Include="Task.h" />
     <QtMoc Include="TabFileTx.h" />
     <QtMoc Include="TabAudioStream.h" />
     <QtMoc Include="TabAudioChat.h" />

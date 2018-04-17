@@ -57,18 +57,22 @@ TabAudioChat::TabAudioChat(Mode mode, QWidget *parent)
 
 	if (mode == Mode::client) // client mode
 	{
-		QObject::connect(ui->pushButton_connect, &QPushButton::pressed, this, &TabAudioChat::connect);
+		QObject::connect(ui->pushButton_start, &QPushButton::pressed, this, &TabAudioChat::connect);
 	} 
 	else if (mode == Mode::server) // server mode
 	{
 		ui->lineEdit_ip->setDisabled(true);
 		ui->lineEdit_port->setDisabled(true);
-		ui->pushButton_connect->setText("Accept");
-		QObject::connect(ui->pushButton_connect, &QPushButton::pressed, this, &TabAudioChat::accept);
+		ui->pushButton_start->setText("Accept");
+		QObject::connect(ui->pushButton_start, &QPushButton::pressed, this, &TabAudioChat::accept);
 	}
 
-	QObject::connect(ui->pushButton_start, &QPushButton::pressed, this, &TabAudioChat::start);
-	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, this, &TabAudioChat::stop);
+	QObject::connect(ui->lineEdit_ip, &QLineEdit::textChanged, this, &TabAudioChat::ipChanged);
+	QObject::connect(ui->lineEdit_port, &QLineEdit::textChanged, this, &TabAudioChat::portChanged);
+
+	QObject::connect(ui->pushButton_start, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startVoip);
+
+	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::stopCurrentTask);
 	QObject::connect(ui->pushButton_close, &QPushButton::pressed, this, &TabAudioChat::closeWindow);
 }
 
@@ -165,27 +169,15 @@ void TabAudioChat::start()
 
 }
 
-/*----------------------------------------------------------------------
--- FUNCTION:	stop
---
--- DATE:		April 16, 2018
---
--- DESIGNER:	Jeremy Lee
---
--- PROGRAMMER:	Jeremy Lee, Delan Elliot
---
--- INTERFACE:	void stop()
---
--- ARGUMENT:    void
---
--- RETURNS:	    void
---
--- NOTES:
--- Function called by the "Stop" push button.
-----------------------------------------------------------------------*/
-void TabAudioChat::stop()
-{
 
+void TabAudioChat::ipChanged()
+{
+	((ComAudio*)this->parent())->ipAddr = ui->lineEdit_ip->text();
+}
+
+void TabAudioChat::portChanged()
+{
+	((ComAudio*)this->parent())->clientPort = ui->lineEdit_port->text().toInt();
 }
 
 /*----------------------------------------------------------------------

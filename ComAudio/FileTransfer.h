@@ -8,9 +8,10 @@
 #include <QByteArray>
 #include <QAudioOutput>
 #include <QBuffer>
+#include "Task.h"
 
 
-class FileTransfer : public QObject
+class FileTransfer : public QObject, public Task
 {
 	Q_OBJECT
 
@@ -18,7 +19,12 @@ public:
 	FileTransfer(QObject *parent, QTcpSocket* tcp);
 	~FileTransfer();
 
+
 	void setOutputFile(QString path);
+
+	void stop();
+
+	void start();
 
 public slots:
 	void readBytes();
