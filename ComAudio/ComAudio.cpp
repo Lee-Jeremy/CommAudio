@@ -256,7 +256,7 @@ void ComAudio::connectedToServerStreamFileList(QTcpSocket * sock)
 	QString data = QString(sock->readAll());
 	QStringList list = data.split('\n');
 	fileListModel->setStringList(list);
-	qobject_cast<TabFileTx*>(fileSelectionTab)->ui->listView_files->setModel(fileListModel);
+	qobject_cast<TabAudioStream*>(fileSelectionTab)->ui->listView_files->setModel(fileListModel);
 }
 
 void ComAudio::connectedToServerFileTx(QTcpSocket * sock)
@@ -378,6 +378,22 @@ void ComAudio::startFileList()
 	}
 
 	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::FILE_LIST))
+
+	{
+		//grey out other options
+	}
+}
+
+
+void ComAudio::startStreamFileList()
+{
+
+	if (taskManager == nullptr)
+	{
+		return;
+	}
+
+	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::STREAM_FILE_LIST))
 
 	{
 		//grey out other options

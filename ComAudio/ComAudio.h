@@ -108,6 +108,7 @@ public slots:
 	void startMulticastRx();
 
 	void startFileList();
+	void startStreamFileList();
 	void startFileTx();
 
 
