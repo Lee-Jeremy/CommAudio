@@ -113,7 +113,9 @@ public slots:
 
 	// Multicast
 	void initTabMulticast();
-
+	
+	void setIp(const QString&);
+	void setPort(const QString&);
 
 private:
 	int initUi(); // initializes UI components

@@ -67,8 +67,8 @@ TabAudioChat::TabAudioChat(Mode mode, QWidget *parent)
 		QObject::connect(ui->pushButton_start, &QPushButton::pressed, this, &TabAudioChat::accept);
 	}
 
-	QObject::connect(ui->lineEdit_ip, &QLineEdit::textChanged, this, &TabAudioChat::ipChanged);
-	QObject::connect(ui->lineEdit_port, &QLineEdit::textChanged, this, &TabAudioChat::portChanged);
+	QObject::connect(ui->lineEdit_ip, &QLineEdit::textChanged, qobject_cast<ComAudio*>(this->parent()), &ComAudio::setIp);
+	QObject::connect(ui->lineEdit_port, &QLineEdit::textChanged, qobject_cast<ComAudio*>(this->parent()), &ComAudio::setPort);
 
 	QObject::connect(ui->pushButton_start, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startVoip);
 
@@ -170,15 +170,6 @@ void TabAudioChat::start()
 }
 
 
-void TabAudioChat::ipChanged()
-{
-	((ComAudio*)this->parent())->ipAddr = ui->lineEdit_ip->text();
-}
-
-void TabAudioChat::portChanged()
-{
-	((ComAudio*)this->parent())->clientPort = ui->lineEdit_port->text().toInt();
-}
 
 /*----------------------------------------------------------------------
 -- FUNCTION:	closeWindow

@@ -6,7 +6,7 @@
 -- FUNCTIONS:
 --		void startPlaying(qint64 sizeTotal);
 --		void feedAudio(QByteArray segment);
---		void setDir();
+--		void setDir();/
 --		void selectDir();
 --		void selectFile();
 --		void playAudio();
@@ -93,6 +93,7 @@ void ComAudio::feedAudio(QByteArray segment)
 	audioData->insert(pos, segment);
 	pos += segment.size();
 }
+
 #pragma endregion Public functions
 
 #pragma region
@@ -529,6 +530,16 @@ void ComAudio::initTabAudioChat()
 void ComAudio::initTabMulticast()
 {
 	initTab(Task::Type::multicast);
+}
+
+void ComAudio::setIp(const QString& addr)
+{
+	ipAddr = addr;
+}
+
+void ComAudio::setPort(const QString& port)
+{
+	clientPort = port.toInt();
 }
 
 QString ComAudio::getFileList()
