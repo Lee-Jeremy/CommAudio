@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QWidget>
+#include <QObject>
+#include <ComAudio.h>
 #include "ui_TabAudioChat.h"
 
 class TabAudioChat : public QWidget
@@ -19,11 +21,14 @@ public:
 
 signals:
 	void sigCloseTab(QWidget* tab);
+	void stop();
 
 private:
 	void connect();
 	void accept();
 	void start();
 	void stop();
+	void ipChanged();
+	void portChanged();
 	void closeWindow();
 };

@@ -11,7 +11,7 @@
 #include "global.h"
 
 
-class UDPTask : public QObject
+class UDPTask : public QObject, Task
 {
 	Q_OBJECT
 public:
@@ -20,6 +20,7 @@ public:
 	bool connectToHost();
 	int sendTo();
 	int recvFrom();
+	void stop();
 	bool start();
 	bool startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format);
 	bool endVOIP();

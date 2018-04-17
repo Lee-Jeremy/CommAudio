@@ -8,14 +8,17 @@
 #include <QByteArray>
 #include <QAudioOutput>
 #include <QBuffer>
+#include "Task.h"
 
-class StreamRecv : public QObject
+class StreamRecv : public QObject, Task
 {
 	Q_OBJECT
 
 public:
 	StreamRecv(QObject *parent, QTcpSocket*);
 	~StreamRecv();
+
+	void stop();
 
 
 public slots:

@@ -60,6 +60,9 @@ public:
 	void startPlaying(qint64 sizeTotal);
 	void feedAudio(QByteArray segment);
 
+	QString ipAddr;
+	short clientPort;
+
 public slots:
 	// file browser
 	void setDir();
@@ -103,7 +106,6 @@ public slots:
 	// Multicast
 	void initTabMulticast();
 
-signals:
 
 private:
 	int initUi(); // initializes UI components
@@ -117,9 +119,9 @@ private:
 	QString fileListString;
 	QString pathLocal;
 	QString pathFile;
-	short port;
+
 	short serverPort;
-	QString ipAddr;
+
 
 	UDPTask* serverVoip;
 
@@ -151,6 +153,7 @@ private:
 	const qint64 SIZE_SEGMENT = 1024;
 	const int SLIDER_DIVISOR = 10;
 
+	Task currentTask;
 	QFile* outputFile;
 
 };

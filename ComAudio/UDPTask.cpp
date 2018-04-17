@@ -30,6 +30,11 @@ int UDPTask::recvFrom()
 	return 0;
 }
 
+void UDPTask::stop()
+{
+	endVOIP();
+}
+
 
 bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
 {

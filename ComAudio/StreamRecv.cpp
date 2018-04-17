@@ -4,12 +4,11 @@ StreamRecv::StreamRecv(QObject *parent, QTcpSocket* tcp)
 	: QObject(parent)
 	, tcp(tcp)
 	, audioParent(parent)
-	, data2(new QByteArray())
+	, tmpData(new QByteArray())
 {
 
 	firstRun = true;
 	connect(tcp, &QAbstractSocket::readyRead, this, &StreamRecv::readBytes);
-	//TODO add disconnection handling
 }
 
 StreamRecv::~StreamRecv()
@@ -17,12 +16,17 @@ StreamRecv::~StreamRecv()
 }
 
 
+void StreamRecv::stop()
+{
+	disconnect(tcp, 0, 0, 0);
+}
+
 
 void StreamRecv::readBytes()
 {
 	data = tcp->readAll();
 
-	data2->append(data);
+	tmpData->append(data);
 
 
 	if (firstRun)
@@ -46,7 +50,7 @@ void StreamRecv::readBytes()
 		aOutput = new QAudioOutput(format, audioParent);
 		aOutput->setVolume(1);
 		
-		buffer = new QBuffer(data2);
+		buffer = new QBuffer(tmpData);
 		buffer->open(QIODevice::ReadOnly);
 
 		connect(aOutput, &QAudioOutput::stateChanged, [](QAudio::State newState)
@@ -67,11 +71,8 @@ void StreamRecv::readBytes()
 			{
 				qDebug() << "stopped unexepctedly playing sound";
 			}
-			
 		});
 
-		
 		aOutput->start(buffer);
 	}
-	
 }

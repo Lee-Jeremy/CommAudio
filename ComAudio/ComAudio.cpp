@@ -251,7 +251,7 @@ void ComAudio::startStream()
 	{
 		return;
 	}
-	if (taskManager->ConnectTo(ipAddr, port, TaskType::SONG_STREAM))
+	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::SONG_STREAM))
 
 	{
 		//grey out other options
@@ -264,7 +264,7 @@ void ComAudio::startVoip()
 	{
 		return;
 	}
-	if (taskManager->ConnectTo(ipAddr, port, TaskType::VOICE_STREAM))
+	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::VOICE_STREAM))
 	{
 		//grey out other options
 	}
@@ -276,7 +276,7 @@ void ComAudio::startFileTransfer()
 	{
 		return;
 	}
-	if (taskManager->ConnectTo(ipAddr, port, TaskType::FILE_TRANSFER))
+	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::FILE_TRANSFER))
 	{
 		//grey out other options
 	}
