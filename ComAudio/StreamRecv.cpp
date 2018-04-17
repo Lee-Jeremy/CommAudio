@@ -18,7 +18,8 @@ StreamRecv::~StreamRecv()
 
 void StreamRecv::stop()
 {
-	disconnect(tcp, 0, 0, 0);
+	disconnect(this, 0, 0, 0);
+	aOutput->suspend();
 }
 
 void StreamRecv::start()

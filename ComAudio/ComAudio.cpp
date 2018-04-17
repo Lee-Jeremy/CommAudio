@@ -230,6 +230,7 @@ void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
 {
+	
 	QModelIndex index = qobject_cast<TabAudioStream *>(fileSelectionTab)->ui->listView_files->currentIndex();
 	QString fileName = index.data(Qt::DisplayRole).toString();
 
@@ -238,6 +239,8 @@ void ComAudio::connectedToServerStream(QTcpSocket * sock)
 	QByteArray buf = QByteArray(fileName.toUtf8());
 	buf.resize(255);
 	sock->write(buf, 255);
+
+
 
 	StreamRecv * sRecv = new StreamRecv(this, sock);
 	currentTask = sRecv;
