@@ -90,10 +90,12 @@ public slots:
 	void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
 	void connectedToServerStream(QTcpSocket * sock);
 	void connectedToServerFileList(QTcpSocket * sock);
+	void connectedToServerStreamFileList(QTcpSocket * sock);
 	void connectedToServerFileTx(QTcpSocket * sock);
 
 	void clientConnectedStream(QTcpSocket *);
 	void clientConnectedFileList(QTcpSocket *);
+	void clientConnectedStreamFileList(QTcpSocket *);
 	void clientConnectedFileTx(QTcpSocket *);
 	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 

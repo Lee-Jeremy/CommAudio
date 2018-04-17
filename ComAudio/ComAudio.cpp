@@ -157,9 +157,12 @@ int ComAudio::initUi()
 	connect(ui->pushButton_main_server_start, &QPushButton::pressed, this, &ComAudio::startServer);
 	connect(taskManager, &TaskManager::clientConnectedVoip, this, &ComAudio::clientConnectedVoip);
 	connect(taskManager, &TaskManager::clientConnectedFileList, this, &ComAudio::clientConnectedFileList);
+	connect(taskManager, &TaskManager::clientConnectedStreamFileList, this, &ComAudio::clientConnectedStreamFileList);
 	connect(taskManager, &TaskManager::clientConnectedFileTx, this, &ComAudio::clientConnectedFileTx);
 	connect(taskManager, &TaskManager::clientConnectedStream, this, &ComAudio::clientConnectedStream);
+
 	connect(taskManager, &TaskManager::connectedToServerFileList, this, &ComAudio::connectedToServerFileList);
+	connect(taskManager, &TaskManager::connectedToServerStreamFileList, this, &ComAudio::connectedToServerStreamFileList);
 	connect(taskManager, &TaskManager::connectedToServerFileTx, this, &ComAudio::connectedToServerFileTx);
 	connect(taskManager, &TaskManager::connectedToServerStream, this, &ComAudio::connectedToServerStream);
 	connect(taskManager, &TaskManager::connectedToServerVoip, this, &ComAudio::connectedToServerVoip);
@@ -227,11 +230,28 @@ void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
 {
+	QModelIndex index = qobject_cast<TabAudioStream *>(fileSelectionTab)->ui->listView_files->currentIndex();
+	QString fileName = index.data(Qt::DisplayRole).toString();
+
+	
+	fileName.remove('\r');
+	QByteArray buf = QByteArray(fileName.toUtf8());
+	buf.resize(255);
+	sock->write(buf, 255);
+
 	StreamRecv * sRecv = new StreamRecv(this, sock);
 	currentTask = sRecv;
 }
 
 void ComAudio::connectedToServerFileList(QTcpSocket * sock)
+{
+	QString data = QString(sock->readAll());
+	QStringList list = data.split('\n');
+	fileListModel->setStringList(list);
+	qobject_cast<TabFileTx*>(fileSelectionTab)->ui->listView_files->setModel(fileListModel);
+}
+
+void ComAudio::connectedToServerStreamFileList(QTcpSocket * sock)
 {
 	QString data = QString(sock->readAll());
 	QStringList list = data.split('\n');
@@ -250,22 +270,40 @@ void ComAudio::connectedToServerFileTx(QTcpSocket * sock)
 	buf.resize(255);
 	sock->write(buf, 255);
 	FileTransfer* fileTransfer = new FileTransfer(this, sock, fileName);
+	currentTask = fileTransfer;
 
 }
 
+
+
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
 {
-	StreamServe* stream = new StreamServe(sock, pathFile);
+	QByteArray buf;
+	if (sock->waitForReadyRead(30000))
+	{
+		buf = sock->read(255);
+	}
+
+	QString f = QString(buf);
+	StreamServe* stream = new StreamServe(sock, f);
 	currentTask = stream;
 	stream->sendFile();
 }
 
 void ComAudio::clientConnectedFileList(QTcpSocket * sock)
 {
-	StreamServe* stream = new StreamServe(sock, pathFile);
-	currentTask = stream;
+	//StreamServe* stream = new StreamServe(sock, pathFile);
+	//currentTask = stream;
 	sock->write(getFileList().toUtf8());
 }
+
+void ComAudio::clientConnectedStreamFileList(QTcpSocket * sock)
+{
+	//StreamServe* stream = new StreamServe(sock, pathFile);
+	//currentTask = stream;
+	sock->write(getFileList().toUtf8());
+}
+
 
 void ComAudio::clientConnectedFileTx(QTcpSocket * sock)
 {
@@ -467,7 +505,7 @@ void ComAudio::initTab(Task::Type task)
 		fileSelectionTab = newTab;
 
 		fileListModel = new QStringListModel();
-		(qobject_cast<TabFileTx*>(newTab))->ui->listView_files->setSelectionMode(QAbstractItemView::ExtendedSelection);
+		(qobject_cast<TabAudioStream*>(newTab))->ui->listView_files->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
 		tabName = ((TabAudioStream*)newTab)->TAB_NAME;
 		ok = true;

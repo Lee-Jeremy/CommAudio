@@ -73,6 +73,11 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		emit clientConnectedFileTx(sock);
 		resetConnectionState();
 		break;
+	case STREAM_FILE_LIST:
+		sock->write(buffer, sizeof(struct StartPacket));
+		emit clientConnectedStreamFileList(sock);
+		resetConnectionState();
+		break;
 	default:
 		break;
 	}
@@ -175,6 +180,18 @@ void TaskManager::connectedToServer()
 		{
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
 			emit connectedToServerFileList(currentConnectingSocket);
+		}
+		break;
+	case TaskType::STREAM_FILE_LIST:
+		if (!currentConnectingSocket->waitForReadyRead(5000))
+		{
+			//timeout error
+			break;
+		}
+		else
+		{
+			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
+			emit connectedToServerStreamFileList(currentConnectingSocket);
 		}
 		break;
 	case TaskType::FILE_TX:

@@ -27,6 +27,7 @@ typedef struct StartPacket {
 
 enum TaskType
 {
+	STREAM_FILE_LIST = 0x09,
 	SONG_STREAM = 0x10,
 	VOICE_STREAM = 0x11,
 	MULTICAST_LISTEN = 0x12,
