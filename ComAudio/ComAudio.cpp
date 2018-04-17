@@ -121,13 +121,13 @@ void ComAudio::startFileTransfer()
 
 void ComAudio::startMulticastTx()
 {
-	serverVoip = new UDPTask();
+	serverVoip = new UDPTask(this);
 	serverVoip->startMulticastSend();
 }
 
 void ComAudio::startMulticastRx()
 {
-	serverVoip = new UDPTask();
+	serverVoip = new UDPTask(this);
 	serverVoip->startMulticastListen();
 }
 

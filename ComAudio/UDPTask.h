@@ -8,6 +8,7 @@
 #include <QDataStream>
 #include <QIODevice>
 #include <QTcpSocket>
+#include <QNetworkInterface>
 #include "global.h"
 
 
@@ -16,7 +17,7 @@ class UDPTask : public QObject
 	Q_OBJECT
 public:
 	UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp);
-	UDPTask();
+	UDPTask(QObject* parent);
 	~UDPTask();
 	bool connectToHost();
 	int sendTo();
@@ -30,10 +31,16 @@ public:
 public slots:
 	void handleError();
 	void playData();
+	void sendDatagram();
 
 private:
 	QUdpSocket*		mSocket;
+	QUdpSocket*		mSocketIPv6;
 	QUdpSocket*		mOutputSocket;
+	QHostAddress*	mGroupAddr4;
+	QHostAddress*	mGroupAddr6;
+	QHostAddress*	mDestAddr4;
+	QHostAddress*	mDestAddr6;
 	QBuffer*		mBuffer;
 	QByteArray*		mByteArray;
 	QAudioFormat*	mFormat;
