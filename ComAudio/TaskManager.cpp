@@ -7,16 +7,19 @@ TaskManager::TaskManager(QObject *parent, short port)
 {
 	isConnecting = false;
 	tcpConnections = new QVector<QTcpSocket *>();
-
-	server = new TcpServer(this);
-	server->listen(QHostAddress::Any, port);
-
-	connect(server, &TcpServer::newConnection, this, &TaskManager::onConnect, Qt::QueuedConnection);
-	qDebug() << "task manager created and socket connected to callback";
+	portToConn = port;
 }
 
 TaskManager::~TaskManager()
 {
+}
+
+void TaskManager::start(short port)
+{
+	server = new TcpServer(this);
+	server->listen(QHostAddress::Any, port);
+
+	connect(server, &TcpServer::newConnection, this, &TaskManager::onConnect, Qt::QueuedConnection);
 }
 
 QTcpSocket * TaskManager::OpenTcpSocket()
@@ -36,6 +39,7 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 	char buffer[sizeof(struct StartPacket)];
 	memset(buffer, 0, sizeof(struct StartPacket));
 	qint64 bytesRead = sock->read(buffer, sizeof(struct StartPacket));
+
 
 	int sockerror;
 	int sockstate;
@@ -59,9 +63,14 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		emit clientConnectedVoip(udp, sock);
 		resetConnectionState();
 		break;
-	case FILE_TRANSFER:
+	case FILE_LIST:
 		sock->write(buffer, sizeof(struct StartPacket));
-		emit clientConnectedFileTransfer(sock);
+		emit clientConnectedFileList(sock);
+		resetConnectionState();
+		break;
+	case FILE_TX:
+		sock->write(buffer, sizeof(struct StartPacket));
+		emit clientConnectedFileTx(sock);
 		resetConnectionState();
 		break;
 	default:
@@ -82,8 +91,8 @@ bool TaskManager::SendHandshake(QTcpSocket * s, TaskType t)
 {
 	char buffer[sizeof(struct StartPacket)];
 	memset(buffer, t, sizeof(struct StartPacket));
-	s->write(buffer);
-	
+	s->write(buffer, 10);
+
 	return true;
 }
 
@@ -101,7 +110,7 @@ bool TaskManager::ConnectTo(QString ipaddr, short port, TaskType t)
 			this, &TaskManager::displayError);
 		return true;
 	}
-	
+
 	resetConnectionState();
 
 	return false;
@@ -113,7 +122,7 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 	case QAbstractSocket::RemoteHostClosedError:
 		break;
 	case QAbstractSocket::HostNotFoundError:
-		QMessageBox::information((QWidget*) this->parent(), tr("Task manager"),
+		QMessageBox::information((QWidget*)this->parent(), tr("Task manager"),
 			tr("The host was not found. Please check the "
 				"host name and port settings."));
 		break;
@@ -125,7 +134,7 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 				"settings are correct."));
 		break;
 	default:
-		QMessageBox::information((QWidget*) this->parent(), tr("task Manager"),
+		QMessageBox::information((QWidget*)this->parent(), tr("task Manager"),
 			tr("The following error occurred: %1.")
 			.arg(currentConnectingSocket->errorString()));
 	}
@@ -157,9 +166,9 @@ void TaskManager::connectedToServer()
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
 			emit connectedToServerVoip(sock, currentConnectingSocket);
 		}
-		
+
 		break;
-	case TaskType::FILE_TRANSFER:
+	case TaskType::FILE_LIST:
 		if (!currentConnectingSocket->waitForReadyRead(5000))
 		{
 			//timeout error
@@ -168,7 +177,19 @@ void TaskManager::connectedToServer()
 		else
 		{
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
-			emit connectedToServerFileTransfer(currentConnectingSocket);
+			emit connectedToServerFileList(currentConnectingSocket);
+		}
+		break;
+	case TaskType::FILE_TX:
+		if (!currentConnectingSocket->waitForReadyRead(5000))
+		{
+			//timeout error
+			break;
+		}
+		else
+		{
+			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
+			emit connectedToServerFileTx(currentConnectingSocket);
 		}
 		break;
 	case TaskType::SONG_STREAM:

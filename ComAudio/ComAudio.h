@@ -27,6 +27,7 @@
 #include <QPushButton>
 #include <QAbstractItemView>
 #include <QThread>
+#include <QStringListModel>
 
 #include "StreamServe.h"
 #include "StreamRecv.h"
@@ -85,20 +86,28 @@ public slots:
 
 	// Audio chat
 	void initTabAudioChat();
+
 	void connectedToServerVoip(QUdpSocket * sock, QTcpSocket *);
 	void connectedToServerStream(QTcpSocket * sock);
-	void connectedToServerFileTransfer(QTcpSocket * sock);
+	void connectedToServerFileList(QTcpSocket * sock);
+	void connectedToServerFileTx(QTcpSocket * sock);
 
-	void clientConnectedStream(QTcpSocket * );
-	void clientConnectedFileTransfer(QTcpSocket * );
+	void clientConnectedStream(QTcpSocket *);
+	void clientConnectedFileList(QTcpSocket *);
+	void clientConnectedFileTx(QTcpSocket *);
 	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 
 
 	void startStream();
 	void startVoip();
-	void startFileTransfer();
+
+
 	void startMulticastTx();
 	void startMulticastRx();
+
+	void startFileList();
+	void startFileTx();
+
 
 	void stopCurrentTask();
 
@@ -144,9 +153,16 @@ private:
 	QString trackInfo;
 	QString statusInfo;
 
+
 	void ComAudio::debug(QString str);
 
 	// constants
+
+	// file Tx
+	QStringListModel *fileListModel;
+	QString fileToRecv;
+
+
 	const QString PATH_LOCAL_INIT = QDir::currentPath();
 	const QStringList FILE_FILTER = QStringList{ "*.wav" };
 	const qint64 SIZE_SEGMENT = 1024;

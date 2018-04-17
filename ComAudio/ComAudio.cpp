@@ -153,17 +153,25 @@ int ComAudio::initUi()
 
 	// task manager ----------------------------------------------------
 	taskManager = new TaskManager(this, DEFAULT_PORT);
+	connect(ui->pushButton_main_server_start, &QPushButton::pressed, this, &ComAudio::startServer);
 	connect(taskManager, &TaskManager::clientConnectedVoip, this, &ComAudio::clientConnectedVoip);
-	connect(taskManager, &TaskManager::clientConnectedFileTransfer, this, &ComAudio::clientConnectedFileTransfer);
+	connect(taskManager, &TaskManager::clientConnectedFileList, this, &ComAudio::clientConnectedFileList);
+	connect(taskManager, &TaskManager::clientConnectedFileTx, this, &ComAudio::clientConnectedFileTx);
 	connect(taskManager, &TaskManager::clientConnectedStream, this, &ComAudio::clientConnectedStream);
-
-	connect(taskManager, &TaskManager::connectedToServerFileTransfer, this, &ComAudio::connectedToServerFileTransfer);
+	connect(taskManager, &TaskManager::connectedToServerFileList, this, &ComAudio::connectedToServerFileList);
+	connect(taskManager, &TaskManager::connectedToServerFileTx, this, &ComAudio::connectedToServerFileTx);
 	connect(taskManager, &TaskManager::connectedToServerStream, this, &ComAudio::connectedToServerStream);
 	connect(taskManager, &TaskManager::connectedToServerVoip, this, &ComAudio::connectedToServerVoip);
+
 
 	//connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::startStream);
 	//connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::startVoip);
 	// -----------------------------------------------------------------
+
+
+
+	// TODO connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::startFileList);
+	// TODO: connect(ui->pushButton_fileTx_download, &QPushButton::pressed, this, &ComAudio::startFileTx);
 
 
 	// task tab view ---------------------------------------------------
@@ -171,17 +179,17 @@ int ComAudio::initUi()
 	ui->tabWidget_taskViews->removeTab(0);
 
 
+	// file transfer list
+	fileListModel = new QStringListModel();
+	//TO DO ui->listView_fileTx_list->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-	// UI EVENT
 	connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::initTabAudioStream);
 	connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::initTabFileTx);
 	connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::initTabAudioChat);
 	connect(ui->pushButton_tasks_multicast, &QPushButton::pressed, this, &ComAudio::initTabMulticast);
-	// -----------------------------------------------------------------
 
 	return 0;
 }
-
 
 
 
@@ -203,7 +211,14 @@ void ComAudio::setTrackInfo(const QString &info)
 #pragma endregion Private functions
 
 
-#pragma region
+
+
+void ComAudio::startServer()
+{
+	double port = (ui->lineEdit_main_server_port->text()).toDouble();
+	taskManager->start(port);
+}
+
 
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
@@ -218,9 +233,25 @@ void ComAudio::connectedToServerStream(QTcpSocket * sock)
 	currentTask = sRecv;
 }
 
-void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
+void ComAudio::connectedToServerFileList(QTcpSocket * sock)
 {
-	FileTransfer* fileTransfer = new FileTransfer(this, sock);
+	QString data = QString(sock->readAll());
+	QStringList list = data.split('\n');
+	fileListModel->setStringList(list);
+	// TODO ui->listView_fileTx_list->setModel(fileListModel);
+}
+
+void ComAudio::connectedToServerFileTx(QTcpSocket * sock)
+{
+	// TODO QModelIndex index = ui->listView_fileTx_list->currentIndex();
+	/*QString fileName = index.data(Qt::DisplayRole).toString();
+
+	qDebug() << "filename: " << fileName;
+	QByteArray buf = QByteArray(fileName.toUtf8());
+	buf.resize(255);
+	sock->write(buf, 255);
+	FileTransfer* fileTransfer = new FileTransfer(this, sock, fileName);*/
+
 }
 
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
@@ -230,10 +261,26 @@ void ComAudio::clientConnectedStream(QTcpSocket * sock)
 	stream->sendFile();
 }
 
-void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
+void ComAudio::clientConnectedFileList(QTcpSocket * sock)
 {
 	StreamServe* stream = new StreamServe(sock, pathFile);
 	currentTask = stream;
+	sock->write(getFileList().toUtf8());
+}
+
+void ComAudio::clientConnectedFileTx(QTcpSocket * sock)
+{
+	QByteArray buf;
+	if (sock->waitForReadyRead(30000))
+	{
+		buf = sock->read(255);
+	}
+	
+	QString f = QString(buf);
+	//buf = sock->read(255);
+	QString fileToSend = buf;
+	qDebug() << "File name received: " << f;
+	StreamServe* stream = new StreamServe(sock, f);
 	stream->sendFile();
 }
 
@@ -285,17 +332,21 @@ void ComAudio::startVoip()
 	}
 }
 
-void ComAudio::startFileTransfer()
+void ComAudio::startFileList()
 {
+
 	if (taskManager == nullptr)
 	{
 		return;
 	}
-	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::FILE_TRANSFER))
+
+	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::FILE_LIST))
+
 	{
 		//grey out other options
 	}
 }
+
 
 void ComAudio::startMulticastTx()
 {
@@ -307,9 +358,14 @@ void ComAudio::startMulticastRx()
 	qDebug() << "start receiveing multicast";
 }
 
-void ComAudio::startServer()
+
+
+void ComAudio::startFileTx()
 {
-	taskManager = new TaskManager(this, serverPort);
+	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::FILE_TX))
+	{
+		//grey out other options
+	}
 }
 
 
@@ -477,7 +533,6 @@ void ComAudio::initTabMulticast()
 
 QString ComAudio::getFileList()
 {
-	//QString fileName = fileModel->fileName(QModelIndex index())
 	QDir a(pathLocal);
 	QStringList filters;
 	QStringList fileList;
@@ -493,7 +548,9 @@ QString ComAudio::getFileList()
 }
 #pragma endregion Slot functions
 
-void ComAudio::debug(QString str)
-{
-	QMessageBox::information(this, tr("Debug"), str);
-}
+//void ComAudio::debug(QString str)
+//{
+//	QMessageBox::information(this, tr("Debug"), str);
+//	return fileList.join('\n');
+//
+//}

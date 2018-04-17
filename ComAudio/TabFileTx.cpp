@@ -52,9 +52,9 @@ TabFileTx::TabFileTx(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	QObject::connect(ui->pushButton_connect, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startFileTransfer);
+	QObject::connect(ui->pushButton_connect, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startFileList);
 
-	//QObject::connect(ui->pushButton_download, &QPushButton::pressed, this, &TabFileTx::download);
+	QObject::connect(ui->pushButton_download, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startFileTx);
 	QObject::connect(ui->pushButton_close, &QPushButton::pressed, this, &TabFileTx::closeWindow);
 
 	QObject::connect(ui->lineEdit_ip, &QLineEdit::textChanged, this, &TabFileTx::ipChanged);

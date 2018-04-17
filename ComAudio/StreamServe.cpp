@@ -29,13 +29,16 @@ void StreamServe::sendFile()
 {
 	outgoing = new QFile();
 	outgoing->setFileName(path);
+	qDebug() << path;
 	if (!outgoing->open(QIODevice::ReadOnly))
 	{
+		qDebug() << "failed to send";
 		return;
 	}
 
 	while (!outgoing->atEnd() && running)
 	{
+		qDebug() << "sent";
 		QByteArray line = outgoing->readLine();
 		tcp->write(line);
 	}
