@@ -1,3 +1,26 @@
+/*-----------------------------------------------------------------------------------------
+--	SOURCE FILE:	StreamRecv.cpp
+--
+--	PROGRAM:		CommAudio
+--
+--	FUNCTIONS:			
+--				StreamRecv(QObject *parent, QTcpSocket*);
+--				~StreamRecv();
+--				void stop();
+--				void start();
+--				void readBytes();
+--
+--	DATE:			Apr. 14, 2018
+--
+--	REVISION:
+--
+--	DESIGNER:		D. Elliot, J. Chou, J. Lee, W. Hu
+--
+--	PROGRAMMER:		D. Elliot, J. Chou
+--
+--	NOTES:
+--	This class is used to receive and playback a song sent over TCP.
+-----------------------------------------------------------------------------------------*/
 #include "StreamRecv.h"
 
 StreamRecv::StreamRecv(QObject *parent, QTcpSocket* tcp)
@@ -27,6 +50,24 @@ void StreamRecv::start()
 }
 
 
+
+/*-----------------------------------------------------------------------------------------
+--	FUNCTION:	readBytes
+--
+--	DATE:		Apr. 14, 2018
+--
+--	DESIGNER:	D. Elliot, J. Chou, J. Lee, W. Hu
+--
+--	PROGRAMMER:	D. Elliot, J. Chou
+--
+--	INTERFACE:	void StreamRecv::readBytes()
+--	RETURNS:
+--
+--	NOTES:
+--	A slot called when data is ready on the socket. reads all bytes into QBuffer. 
+--	the QBuffer is attached to a QAudioOutput which plays the audio as the data is read in
+--	off the socket.
+-----------------------------------------------------------------------------------------*/
 void StreamRecv::readBytes()
 {
 	data = tcp->readAll();

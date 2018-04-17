@@ -1,3 +1,32 @@
+/*----------------------------------------------------------------------
+-- SOURCE FILE:	TaskManager.cpp	- Handles initial connections and creation
+--								- of sockets and passing of info.
+-- PROGRAM:		ComAudio
+--
+-- FUNCTIONS:
+--					TcpServer * server;
+--					QTcpSocket * OpenTcpSocket();
+--					bool AcceptHandshake(QTcpSocket * sock);
+--					bool SendHandshake(QTcpSocket * s, TaskType t);
+--					bool ConnectTo(QString ipaddr, short port, TaskType t);
+--					void resetConnectionState();
+--					void start(short port);
+--					void onConnect();
+-					void connectedToServer();
+--					void displayError(QAbstractSocket::SocketError);
+--
+-- DATE:		April 16, 2018
+--
+-- DESIGNER:	Delan Elliot
+--
+-- PROGRAMMER:	Delan Elliot
+--
+-- NOTES:
+-- The task manager is resonsible for making connections and generating events that
+-- can be handled by the ComAudio main class. Everything is asynchronous where possible.
+--
+----------------------------------------------------------------------*/
+
 #include "TaskManager.h"
 
 

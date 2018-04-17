@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------------------
---	SOURCE FILE:	StreamServer.cpp
+--	SOURCE FILE:	StreamServe.cpp
 --
 --	PROGRAM:		CommAudio
 --

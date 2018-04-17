@@ -51,8 +51,6 @@ signals:
 	void connectedToServerStream(QTcpSocket * sock);
 
 private:
-
-
 	QTcpSocket * currentConnectingSocket;
 	TaskType currentConnectingType;
 	bool isConnecting;
