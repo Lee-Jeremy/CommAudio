@@ -158,11 +158,13 @@ void ComAudio::connectedToServerFileTx(QTcpSocket * sock)
 {
 	QModelIndex index = ui->listView_fileTx_list->currentIndex();
 	QString fileName = index.data(Qt::DisplayRole).toString();
+
 	qDebug() << "filename: " << fileName;
 	QByteArray buf = QByteArray(fileName.toUtf8());
 	buf.resize(255);
 	sock->write(buf, 255);
 	FileTransfer* fileTransfer = new FileTransfer(this, sock, fileName);
+
 }
 
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
@@ -178,8 +180,17 @@ void ComAudio::clientConnectedFileList(QTcpSocket * sock)
 
 void ComAudio::clientConnectedFileTx(QTcpSocket * sock)
 {
-	QString fileToSend = QString(sock->readAll());
-	StreamServe* stream = new StreamServe(sock, fileToSend);
+	QByteArray buf;
+	if (sock->waitForReadyRead(30000))
+	{
+		buf = sock->read(255);
+	}
+	
+	QString f = QString(buf);
+	//buf = sock->read(255);
+	QString fileToSend = buf;
+	qDebug() << "File name received: " << f;
+	StreamServe* stream = new StreamServe(sock, f);
 	stream->sendFile();
 }
 
