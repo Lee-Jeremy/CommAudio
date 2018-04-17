@@ -85,7 +85,7 @@ bool TaskManager::SendHandshake(QTcpSocket * s, TaskType t)
 {
 	char buffer[sizeof(struct StartPacket)];
 	memset(buffer, t, sizeof(struct StartPacket));
-	s->write(buffer);
+	s->write(buffer, 10);
 
 	return true;
 }
