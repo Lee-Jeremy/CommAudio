@@ -29,7 +29,7 @@ private:
 	QFile inputFile;
 	QTcpSocket* tcp;
 	QByteArray data;
-	QByteArray * data2;
+	QByteArray * tmpData;
 	QBuffer* buffer;
 	QAudioOutput* aOutput;
 	bool firstRun;

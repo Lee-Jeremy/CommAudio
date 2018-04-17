@@ -27,7 +27,6 @@ private:
 	void connect();
 	void accept();
 	void start();
-	void stop();
 	void ipChanged();
 	void portChanged();
 	void closeWindow();
