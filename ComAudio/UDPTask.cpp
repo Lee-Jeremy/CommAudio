@@ -13,9 +13,9 @@
 --					playData()
 --					sendDatagram()
 --
---	DATE:			Apr. 14, 2018
+--	DATE:			Apr. 2, 2018
 --
---	REVISION:		Apr. 15, 2018
+--	REVISION:		Apr. 12, 2018
 --						- Added VOIP functionality
 --					Apr. 16, 2018
 --						- Added multicast functionality, fixed VOIP
@@ -38,14 +38,14 @@
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	UDPTask
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 12, 2018
 --
 --	REVISIONS:	Apr. 15, 2018
 --					- Moved format initialization to constructor
 --
 --	DESIGNER:	W. Hu, D. Elliot, J. Chou, J. Lee
 --
---	PROGRAMMER:	W. Hu, D. Elliot
+--	PROGRAMMER:	W. Hu, D. Elliot, J. Chou
 --
 --	INTERFACE:	UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp)
 --					QObject* parent: parent QObject that owns this object (ComAudio)
@@ -82,9 +82,10 @@ UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket*
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	UDPTask
 --
---	DATE:		Apr. 16, 2018
+--	DATE:		Apr. 10, 2018
 --
---	REVISIONS:
+--	REVISIONS:	Apr. 15, 2018
+--					- Modified to use as Multicast constructor
 --
 --	DESIGNER:	W. Hu, D. Elliot, J. Chou, J. Lee
 --
@@ -115,7 +116,7 @@ UDPTask::UDPTask(QObject* parent)
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	~UDPTask
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 10, 2018
 --
 --	REVISIONS:	Apr. 15, 2018
 --					- Added functionality.
@@ -175,14 +176,14 @@ void UDPTask::start()
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	startVOIP
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 12, 2018
 --
 --	REVISIONS:	Apr. 15, 2018
 --					- Modified mAudioOutput and mAudioInput parameters so that it works.
 --
 --	DESIGNER:	W. Hu, D. Elliot, J. Chou, J. Lee
 --
---	PROGRAMMER:	W. Hu, D. Elliot
+--	PROGRAMMER:	W. Hu, D. Elliot, J. Chou
 --
 --	INTERFACE:	bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
 --					QAudioOutput* output: QAudioObject pointer owned and passed by the parent ComAudio object.
@@ -233,7 +234,7 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	endVOIP
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 12, 2018
 --
 --	REVISIONS:
 --
@@ -278,13 +279,13 @@ bool UDPTask::endVOIP()
 --
 --	FUNCTION:	startMulticastTx
 --
---	DATE:		Apr. 16, 2018
+--	DATE:		Apr. 14, 2018
 --
 --	REVISIONS:
 --
 --	DESIGNER:	W. Hu, D. Elliot, J. Chou, J. Lee
 --
---	PROGRAMMER:	W. Hu, D. Elliot
+--	PROGRAMMER:	W. Hu, D. Elliot, J. Chou
 --
 --	INTERFACE:	bool UDPTask::startMulticastTx()
 --
@@ -335,10 +336,11 @@ bool UDPTask::startMulticastTx()
 --	DATE:		Apr. 14, 2018
 --
 --	REVISIONS:	Apr. 15, 2018
+--					- Fixed multicast IP issue
 --
 --	DESIGNER:	W. Hu, D. Elliot, J. Chou, J. Lee
 --
---	PROGRAMMER:	W. Hu, D. Elliot
+--	PROGRAMMER:	W. Hu, D. Elliot, J. Chou
 --
 --	INTERFACE:	bool UDPTask::startMulticastRx()
 --
@@ -378,7 +380,7 @@ bool UDPTask::startMulticastRx()
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	playData
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 12, 2018
 --
 --	REVISIONS:
 --
@@ -408,7 +410,7 @@ void UDPTask::playData()
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	sendDatagram
 --
---	DATE:		Apr. 16, 2018
+--	DATE:		Apr. 15, 2018
 --
 --	REVISIONS:
 --

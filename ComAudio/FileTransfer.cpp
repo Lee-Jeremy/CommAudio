@@ -11,9 +11,9 @@
 --					void stop();
 --					void start();
 --					void readBytes();
---				
 --
--- DATE:		April 14, 2018
+--
+-- DATE:		April 10, 2018
 --
 -- DESIGNER:	Delan Elliot
 --
@@ -43,7 +43,7 @@ FileTransfer::~FileTransfer()
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	setOutputFile
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 10, 2018
 --
 --	DESIGNER:	D. Elliot
 --
@@ -65,7 +65,7 @@ void FileTransfer::setOutputFile(QString path)
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	stop
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 10, 2018
 --
 --	DESIGNER:	D. Elliot
 --
@@ -93,7 +93,7 @@ void FileTransfer::start()
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	readBytes
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 10, 2018
 --
 --	DESIGNER:	D. Elliot
 --

@@ -3,14 +3,14 @@
 --
 --	PROGRAM:		CommAudio
 --
---	FUNCTIONS:			
+--	FUNCTIONS:
 --				StreamRecv(QObject *parent, QTcpSocket*);
 --				~StreamRecv();
 --				void stop();
 --				void start();
 --				void readBytes();
 --
---	DATE:			Apr. 14, 2018
+--	DATE:			Apr. 11, 2018
 --
 --	REVISION:
 --
@@ -54,7 +54,7 @@ void StreamRecv::start()
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	readBytes
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 11, 2018
 --
 --	DESIGNER:	D. Elliot, J. Chou, J. Lee, W. Hu
 --
@@ -64,7 +64,7 @@ void StreamRecv::start()
 --	RETURNS:
 --
 --	NOTES:
---	A slot called when data is ready on the socket. reads all bytes into QBuffer. 
+--	A slot called when data is ready on the socket. reads all bytes into QBuffer.
 --	the QBuffer is attached to a QAudioOutput which plays the audio as the data is read in
 --	off the socket.
 -----------------------------------------------------------------------------------------*/
@@ -95,7 +95,7 @@ void StreamRecv::readBytes()
 
 		aOutput = new QAudioOutput(format, audioParent);
 		aOutput->setVolume(1);
-		
+
 		buffer = new QBuffer(tmpData);
 		buffer->open(QIODevice::ReadOnly);
 
@@ -104,7 +104,7 @@ void StreamRecv::readBytes()
 			if (newState == QAudio::IdleState)   // finished playing (i.e., no more data)
 			{
 				qDebug() << "finished playing sound";
-				
+
 			}
 
 			if (newState == QAudio::ActiveState)   // finished playing (i.e., no more data)
