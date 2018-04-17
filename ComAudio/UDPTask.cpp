@@ -1,6 +1,45 @@
+/*-----------------------------------------------------------------------------------------
+--	SOURCE FILE:
+--
+--	PROGRAM:
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISION:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
+
 #include "UDPTask.h"
 
-
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp)
 	: QObject(parent)
 	, mSocket(socket)
@@ -18,6 +57,26 @@ UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket*
 	mFormat->setSampleType(QAudioFormat::UnSignedInt);
 }
 
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 UDPTask::UDPTask(QObject* parent)
 	: QObject(parent)
 {
@@ -30,27 +89,77 @@ UDPTask::UDPTask(QObject* parent)
 	mFormat->setSampleType(QAudioFormat::UnSignedInt);
 }
 
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 UDPTask::~UDPTask()
 {
 
 }
 
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 bool UDPTask::connectToHost()
 {
 	return false;
 }
 
-int UDPTask::sendTo()
-{
-	return 0;
-}
 
-int UDPTask::recvFrom()
-{
-	return 0;
-}
-
-
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format)
 {
 	format = new QAudioFormat();
@@ -92,6 +201,27 @@ bool UDPTask::startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* 
 	return false;
 }
 
+
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 bool UDPTask::endVOIP()
 {
 	mAudioOutput->stop();
@@ -105,6 +235,27 @@ bool UDPTask::endVOIP()
 	return false;
 }
 
+
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 bool UDPTask::startMulticastSend()
 {
 	mSocket = new QUdpSocket();
@@ -141,21 +292,41 @@ bool UDPTask::startMulticastSend()
 
 	return true;
 }
+
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 bool UDPTask::startMulticastListen()
 {
 	mSocket = new QUdpSocket();
-	mSocket->bind(QHostAddress(QHostAddress::AnyIPv4), 0);
-	mSocketIPv6->bind(QHostAddress(QHostAddress::AnyIPv6), mSocket->localPort());
-	
-	mSocket->setSocketOption(QAbstractSocket::MulticastTtlOption, 5);
-	
-	for (int i = 0; i < 100; i++)
-	{
-		QByteArray datagram = "asdfasdfasdfasdfasdfasdf";
-		mSocket->writeDatagram(datagram, *mDestAddr4, DEFAULT_MC_PORT);
-		mSocket->writeDatagram(datagram, *mDestAddr6, DEFAULT_MC_PORT);
-	}
+	mSocketIPv6 = new QUdpSocket();
 
+	mGroupAddr4 = new QHostAddress(QStringLiteral("123.123.123.123"));
+	mGroupAddr6 = new QHostAddress(QStringLiteral("ff12::2115"));
+
+	mSocket->bind(QHostAddress::AnyIPv4, DEFAULT_MC_PORT, QUdpSocket::ShareAddress);
+	mSocketIPv6->bind(QHostAddress::AnyIPv6, DEFAULT_MC_PORT, QUdpSocket::ShareAddress);
+
+	mSocket->setSocketOption(QAbstractSocket::MulticastTtlOption, 5);
+	mSocket->joinMulticastGroup(*mGroupAddr4);
+	
 	connect(mSocket, SIGNAL(readyRead()), this, SLOT(playData()));
 
 	mAudioOutput = new QAudioOutput(*mFormat, this->parent());
@@ -173,6 +344,27 @@ void UDPTask::handleError()
 {
 }
 
+
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 void UDPTask::playData()
 {
 	//You need to read datagrams from the udp socket
@@ -185,6 +377,27 @@ void UDPTask::playData()
 	}
 }
 
+
+/*-----------------------------------------------------------------------------------------
+--
+--	FUNCTIONS:
+--
+--	DATE:
+--
+--	REVISIONS:
+--
+--	DESIGNER:
+--
+--	PROGRAMMER:
+--
+--	INTERFACE:
+--
+--	RETURNS:
+--
+--	NOTES:
+--
+--
+-----------------------------------------------------------------------------------------*/
 void UDPTask::sendDatagram()
 {
 	QByteArray datagram = "asdfasdfasdfasdfasdfasdf";
