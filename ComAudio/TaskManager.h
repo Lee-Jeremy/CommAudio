@@ -28,6 +28,8 @@ public:
 	bool ConnectTo(QString ipaddr, short port, TaskType t);
 	void resetConnectionState();
 	void start(short port);
+
+
 	
 public slots:
 	void onConnect();

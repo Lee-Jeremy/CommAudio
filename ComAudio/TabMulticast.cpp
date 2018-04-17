@@ -59,13 +59,17 @@ TabMulticast::TabMulticast(Mode mode, QWidget *parent)
 
 	if (mode == Mode::client) // client mode
 	{
-		QObject::connect(ui->pushButton_connect, &QPushButton::pressed, this, &TabMulticast::connect);
+		QObject::connect(ui->pushButton_connect, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startMulticastRx);
+		QObject::connect(ui->pushButton_start, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startMulticastRx);
+		ui->lineEdit_ip->setDisabled(true);
+		ui->lineEdit_port->setDisabled(true);
 	}
 	else if (mode == Mode::server) // server mode
 	{
 		ui->lineEdit_ip->setDisabled(true);
 		ui->lineEdit_port->setDisabled(true);
-		ui->pushButton_connect->setText("Start Broadcasting");
+		ui->pushButton_connect->setDisabled(true);
+		ui->pushButton_start->setText("Start Broadcasting");
 		QObject::connect(ui->pushButton_start, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startMulticastTx);
 	}
 

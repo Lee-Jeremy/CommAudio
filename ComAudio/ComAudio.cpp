@@ -168,13 +168,6 @@ int ComAudio::initUi()
 	connect(taskManager, &TaskManager::connectedToServerVoip, this, &ComAudio::connectedToServerVoip);
 
 
-	//connect(ui->pushButton_tasks_audioStream, &QPushButton::pressed, this, &ComAudio::startStream);
-	//connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::startVoip);
-	// -----------------------------------------------------------------
-
-
-
-
 
 
 	// task tab view ---------------------------------------------------
@@ -188,6 +181,7 @@ int ComAudio::initUi()
 	connect(ui->pushButton_tasks_fileTransfer, &QPushButton::pressed, this, &ComAudio::initTabFileTx);
 	connect(ui->pushButton_tasks_audioChat, &QPushButton::pressed, this, &ComAudio::initTabAudioChat);
 	connect(ui->pushButton_tasks_multicast, &QPushButton::pressed, this, &ComAudio::initTabMulticast);
+
 
 	return 0;
 }
@@ -387,6 +381,20 @@ void ComAudio::startFileList()
 	}
 }
 
+void ComAudio::startMulticastTx()
+{
+	serverVoip = new UDPTask(this);
+	serverVoip->startMulticastTx();
+	currentTask = serverVoip;
+}
+
+
+
+void ComAudio::startMulticastRx()
+{
+	serverVoip = new UDPTask(this);
+	serverVoip->startMulticastRx();
+}
 
 void ComAudio::startStreamFileList()
 {
@@ -402,18 +410,6 @@ void ComAudio::startStreamFileList()
 		//grey out other options
 	}
 }
-
-
-void ComAudio::startMulticastTx()
-{
-	qDebug() << "start sending multicast";
-}
-
-void ComAudio::startMulticastRx()
-{
-	qDebug() << "start receiveing multicast";
-}
-
 
 
 void ComAudio::startFileTx()
@@ -625,9 +621,3 @@ QString ComAudio::getFileList()
 }
 #pragma endregion Slot functions
 
-//void ComAudio::debug(QString str)
-//{
-//	QMessageBox::information(this, tr("Debug"), str);
-//	return fileList.join('\n');
-//
-//}

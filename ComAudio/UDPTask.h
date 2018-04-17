@@ -9,6 +9,7 @@
 #include <QIODevice>
 #include <QTcpSocket>
 #include "Task.h"
+#include <QNetworkInterface>
 #include "global.h"
 
 
@@ -17,6 +18,7 @@ class UDPTask : public QObject, public Task
 	Q_OBJECT
 public:
 	UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp);
+	UDPTask(QObject* parent);
 	~UDPTask();
 	bool connectToHost();
 	int sendTo();
@@ -24,20 +26,29 @@ public:
 	void stop();
 	void start();
 	bool startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format);
+
 	bool endVOIP();
+	bool startMulticastTx();
+	bool startMulticastRx();
 
 public slots:
-	void handleError();
 	void playData();
+	void sendDatagram();
 
 private:
-	QUdpSocket*		mSocket;
-	QUdpSocket*		mOutputSocket;
-	QBuffer*		mBuffer;
-	QByteArray*		mByteArray;
-	QAudioOutput*	mAudioOutput;
-	QAudioInput*	mAudioInput;
-	QIODevice*		mDevice;
+	QUdpSocket*		mSocket = nullptr;
+	//QUdpSocket*		mSocketIPv6;
+	QUdpSocket*		mOutputSocket = nullptr;
+	QHostAddress*	mGroupAddr4 = nullptr;
+	QHostAddress*	mGroupAddr6 = nullptr;
+	QHostAddress*	mDestAddr4 = nullptr;
+	QHostAddress*	mDestAddr6 = nullptr;
+	QBuffer*		mBuffer = nullptr;
+	QByteArray*		mByteArray = nullptr;
+	QAudioFormat*	mFormat = nullptr;
+	QAudioOutput*	mAudioOutput = nullptr;
+	QAudioInput*	mAudioInput = nullptr;
+	QIODevice*		mDevice = nullptr;
 
 	TaskType mTask;
 };

@@ -103,10 +103,6 @@ public slots:
 	void startStream();
 	void startVoip();
 
-
-	void startMulticastTx();
-	void startMulticastRx();
-
 	void startFileList();
 	void startStreamFileList();
 	void startFileTx();
@@ -119,6 +115,10 @@ public slots:
 	
 	void setIp(const QString&);
 	void setPort(const QString&);
+
+	void startMulticastTx();
+	void startMulticastRx();
+
 
 private:
 	int initUi(); // initializes UI components
@@ -136,15 +136,14 @@ private:
 	short serverPort;
 
 
-	UDPTask* serverVoip;
-
 	QAudioOutput*	mAudioOutput;
 	QAudioInput*	mAudioInput;
 	QAudioFormat*	mFormat;
 
+	TaskManager * taskManager;
+	UDPTask* serverVoip;
 	UDPTask* clientVoip;
 
-	TaskManager * taskManager;
 
 	// audio player
 	QMediaPlayer *player;

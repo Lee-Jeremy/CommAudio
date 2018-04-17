@@ -56,7 +56,6 @@ bool TaskManager::AcceptHandshake(QTcpSocket * sock)
 		break;
 	case VOICE_STREAM:
 		udp = new QUdpSocket(this->parent());
-
 		sockerror = udp->error();
 		sockstate = udp->state();
 		numWritten = sock->write(buffer, sizeof(struct StartPacket));
@@ -142,7 +141,6 @@ void TaskManager::displayError(QAbstractSocket::SocketError socketError)
 	}
 
 	resetConnectionState();
-
 }
 
 void TaskManager::connectedToServer()
@@ -168,7 +166,6 @@ void TaskManager::connectedToServer()
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
 			emit connectedToServerVoip(sock, currentConnectingSocket);
 		}
-
 		break;
 	case TaskType::FILE_LIST:
 		if (!currentConnectingSocket->waitForReadyRead(5000))
@@ -181,6 +178,7 @@ void TaskManager::connectedToServer()
 			currentConnectingSocket->read(buffer, sizeof(struct StartPacket));
 			emit connectedToServerFileList(currentConnectingSocket);
 		}
+
 		break;
 	case TaskType::STREAM_FILE_LIST:
 		if (!currentConnectingSocket->waitForReadyRead(5000))
