@@ -245,6 +245,7 @@ void ComAudio::connectedToServerFileTx(QTcpSocket * sock)
 	QString fileName = index.data(Qt::DisplayRole).toString();
 
 	qDebug() << "filename: " << fileName;
+	fileName.remove('\r');
 	QByteArray buf = QByteArray(fileName.toUtf8());
 	buf.resize(255);
 	sock->write(buf, 255);
