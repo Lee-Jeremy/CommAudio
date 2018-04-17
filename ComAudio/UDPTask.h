@@ -21,8 +21,8 @@ public:
 	~UDPTask();
 	void startVOIP(QAudioOutput* output, QAudioInput* input, QAudioFormat* format);
 	bool endVOIP();
-	bool startMulticastSend();
-	bool startMulticastListen();
+	bool startMulticastTx();
+	bool startMulticastRx();
 
 public slots:
 	void playData();
