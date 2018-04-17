@@ -54,7 +54,10 @@
 --
 --	NOTES:
 --	This is a parameterized constructor used to initialize the UDPTask object for
---	1..1 VOIP chat.
+--	1..1 VOIP chat. It sets the QAudioFormat used to create a QAudioInput/Output object.
+--
+--	This constructor initializes the second QUdpSocket used to send VOIP datagrams to the
+--	other connected host.
 -----------------------------------------------------------------------------------------*/
 UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket* tcp)
 	: QObject(parent)
@@ -91,7 +94,8 @@ UDPTask::UDPTask(QObject* parent, QUdpSocket* socket, TaskType task, QTcpSocket*
 --
 --	NOTES:
 --	This is a 1 parameter constructor used to initialize the UDPTask object for
---	listening or sending to a multicast address.
+--	listening or sending to a multicast address. It initializes the QAudioFormat
+--  object used to create QAudioInput/Output objects.
 --
 -----------------------------------------------------------------------------------------*/
 UDPTask::UDPTask(QObject* parent)
@@ -129,7 +133,31 @@ UDPTask::UDPTask(QObject* parent)
 -----------------------------------------------------------------------------------------*/
 UDPTask::~UDPTask()
 {
-
+	if (mSocket != nullptr)
+		delete mSocket;
+	//delete mSocketIPv6;
+	if (mOutputSocket != nullptr)
+		delete mOutputSocket;
+	if (mGroupAddr4 != nullptr)
+		delete mGroupAddr4;
+	if (mGroupAddr6 != nullptr)
+		delete mGroupAddr6;
+	if (mDestAddr4 != nullptr)
+		delete mDestAddr4;
+	if (mDestAddr6 != nullptr)
+		delete mDestAddr6;
+	if (mBuffer != nullptr)
+		delete mBuffer;
+	if (mByteArray != nullptr)
+		delete mByteArray;
+	if (mFormat != nullptr)
+		delete mFormat;
+	if (mAudioOutput != nullptr)
+		delete mAudioOutput;
+	if (mAudioInput != nullptr)
+		delete mAudioInput;
+	if (mDevice != nullptr)
+		delete mDevice;
 }
 
 /*-----------------------------------------------------------------------------------------

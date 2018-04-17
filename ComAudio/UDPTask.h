@@ -29,19 +29,19 @@ public slots:
 	void sendDatagram();
 
 private:
-	QUdpSocket*		mSocket;
-	QUdpSocket*		mSocketIPv6;
-	QUdpSocket*		mOutputSocket;
-	QHostAddress*	mGroupAddr4;
-	QHostAddress*	mGroupAddr6;
-	QHostAddress*	mDestAddr4;
-	QHostAddress*	mDestAddr6;
-	QBuffer*		mBuffer;
-	QByteArray*		mByteArray;
-	QAudioFormat*	mFormat;
-	QAudioOutput*	mAudioOutput;
-	QAudioInput*	mAudioInput;
-	QIODevice*		mDevice;
+	QUdpSocket*		mSocket = nullptr;
+	//QUdpSocket*		mSocketIPv6;
+	QUdpSocket*		mOutputSocket = nullptr;
+	QHostAddress*	mGroupAddr4 = nullptr;
+	QHostAddress*	mGroupAddr6 = nullptr;
+	QHostAddress*	mDestAddr4 = nullptr;
+	QHostAddress*	mDestAddr6 = nullptr;
+	QBuffer*		mBuffer = nullptr;
+	QByteArray*		mByteArray = nullptr;
+	QAudioFormat*	mFormat = nullptr;
+	QAudioOutput*	mAudioOutput = nullptr;
+	QAudioInput*	mAudioInput = nullptr;
+	QIODevice*		mDevice = nullptr;
 
 	TaskType mTask;
 };
