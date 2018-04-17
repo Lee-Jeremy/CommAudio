@@ -5,7 +5,7 @@
 #include <QTcpSocket>
 #include "Task.h"
 
-class StreamServe : public QObject, Task
+class StreamServe : public QObject, public Task
 {
 	Q_OBJECT
 
@@ -14,6 +14,8 @@ public:
 	~StreamServe();
 
 	void stop();
+
+	void start();
 
 	void sendFile();
 

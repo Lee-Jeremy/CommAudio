@@ -18,10 +18,12 @@ TabAudioChat::TabAudioChat(Mode mode, QWidget *parent)
 		QObject::connect(ui->pushButton_start, &QPushButton::pressed, this, &TabAudioChat::accept);
 	}
 
-	QObject::connect(ui->pushButton_start, &QPushButton::pressed, this, &TabAudioChat::start);
+	QObject::connect(ui->lineEdit_ip, &QLineEdit::textChanged, this, &TabAudioChat::ipChanged);
+	QObject::connect(ui->lineEdit_port, &QLineEdit::textChanged, this, &TabAudioChat::portChanged);
+
 	QObject::connect(ui->pushButton_start, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startVoip);
 
-	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, this, &TabAudioChat::stop);
+	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::stopCurrentTask);
 	QObject::connect(ui->pushButton_close, &QPushButton::pressed, this, &TabAudioChat::closeWindow);
 }
 
@@ -45,10 +47,6 @@ void TabAudioChat::start()
 
 }
 
-void TabAudioChat::stop()
-{
-
-}
 
 void TabAudioChat::ipChanged()
 {

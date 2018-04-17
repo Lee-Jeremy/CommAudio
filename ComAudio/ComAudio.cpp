@@ -55,6 +55,7 @@ ComAudio::ComAudio(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::ComAudio)
 	, taskManager(nullptr)
+	, currentTask(nullptr)
 {
 	int resultInitUi;
 
@@ -151,7 +152,7 @@ int ComAudio::initUi()
 	// -----------------------------------------------------------------
 
 	// task manager ----------------------------------------------------
-	//taskManager = new TaskManager(this, DEFAULT_PORT);
+	taskManager = new TaskManager(this, DEFAULT_PORT);
 	connect(taskManager, &TaskManager::clientConnectedVoip, this, &ComAudio::clientConnectedVoip);
 	connect(taskManager, &TaskManager::clientConnectedFileTransfer, this, &ComAudio::clientConnectedFileTransfer);
 	connect(taskManager, &TaskManager::clientConnectedStream, this, &ComAudio::clientConnectedStream);
@@ -207,12 +208,14 @@ void ComAudio::setTrackInfo(const QString &info)
 void ComAudio::connectedToServerVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
 	clientVoip = new UDPTask(nullptr, udp, VOICE_STREAM, tcp);
+	currentTask = clientVoip;
 	clientVoip->startVOIP(mAudioOutput, mAudioInput, mFormat);
 }
 
 void ComAudio::connectedToServerStream(QTcpSocket * sock)
 {
 	StreamRecv * sRecv = new StreamRecv(this, sock);
+	currentTask = sRecv;
 }
 
 void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
@@ -223,21 +226,31 @@ void ComAudio::connectedToServerFileTransfer(QTcpSocket * sock)
 void ComAudio::clientConnectedStream(QTcpSocket * sock)
 {
 	StreamServe* stream = new StreamServe(sock, pathFile);
+	currentTask = stream;
 	stream->sendFile();
 }
 
 void ComAudio::clientConnectedFileTransfer(QTcpSocket * sock)
 {
 	StreamServe* stream = new StreamServe(sock, pathFile);
+	currentTask = stream;
 	stream->sendFile();
 }
 
 void ComAudio::clientConnectedVoip(QUdpSocket * udp, QTcpSocket * tcp)
 {
 	serverVoip = new UDPTask(nullptr, udp, VOICE_STREAM, tcp);
+	currentTask = serverVoip;
 	serverVoip->startVOIP(mAudioOutput, mAudioInput, mFormat);
 }
 
+void ComAudio::stopCurrentTask()
+{
+	if (currentTask != nullptr)
+	{
+		currentTask->stop();
+	}
+}
 
 void ComAudio::serverPortValueChanged()
 {
@@ -267,6 +280,7 @@ void ComAudio::startVoip()
 	if (taskManager->ConnectTo(ipAddr, clientPort, TaskType::VOICE_STREAM))
 	{
 		//grey out other options
+
 	}
 }
 
@@ -280,6 +294,16 @@ void ComAudio::startFileTransfer()
 	{
 		//grey out other options
 	}
+}
+
+void ComAudio::startMulticastTx()
+{
+	qDebug() << "start sending multicast";
+}
+
+void ComAudio::startMulticastRx()
+{
+	qDebug() << "start receiveing multicast";
 }
 
 void ComAudio::startServer()

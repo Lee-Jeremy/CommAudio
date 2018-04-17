@@ -25,6 +25,12 @@ void FileTransfer::stop()
 }
 
 
+void FileTransfer::start()
+{
+
+}
+
+
 void FileTransfer::readBytes()
 {
 	data = tcp->readAll();

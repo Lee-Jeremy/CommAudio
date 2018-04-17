@@ -11,7 +11,7 @@
 #include "Task.h"
 
 
-class FileTransfer : public QObject, Task
+class FileTransfer : public QObject, public Task
 {
 	Q_OBJECT
 
@@ -23,6 +23,8 @@ public:
 	void setOutputFile(QString path);
 
 	void stop();
+
+	void start();
 
 public slots:
 	void readBytes();

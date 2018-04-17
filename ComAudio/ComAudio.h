@@ -38,11 +38,6 @@
 #include "ui_ComAudio.h"
 #include "windows.h"
 
-namespace Task
-{
-	enum Type { fileTx, stream, chat, multicast };
-}
-
 namespace PlayMode
 {
 	enum Type { local, stream, test };
@@ -102,6 +97,10 @@ public slots:
 	void startStream();
 	void startVoip();
 	void startFileTransfer();
+	void startMulticastTx();
+	void startMulticastRx();
+
+	void stopCurrentTask();
 
 	// Multicast
 	void initTabMulticast();
@@ -153,7 +152,7 @@ private:
 	const qint64 SIZE_SEGMENT = 1024;
 	const int SLIDER_DIVISOR = 10;
 
-	Task currentTask;
+	Task* currentTask;
 	QFile* outputFile;
 
 };

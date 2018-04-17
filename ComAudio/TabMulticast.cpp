@@ -3,6 +3,7 @@
 TabMulticast::TabMulticast(Mode mode, QWidget *parent)
 	: QWidget(parent)
 	, ui(new Ui::TabMulticast)
+	, IP("231.123.123.123")
 {
 	ui->setupUi(this);
 
@@ -14,12 +15,12 @@ TabMulticast::TabMulticast(Mode mode, QWidget *parent)
 	{
 		ui->lineEdit_ip->setDisabled(true);
 		ui->lineEdit_port->setDisabled(true);
-		ui->pushButton_connect->setText("Accept");
-		QObject::connect(ui->pushButton_connect, &QPushButton::pressed, this, &TabMulticast::accept);
+		ui->pushButton_connect->setText("Start Broadcasting");
+		QObject::connect(ui->pushButton_start, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::startMulticastTx);
+
 	}
 
-	QObject::connect(ui->pushButton_start, &QPushButton::pressed, this, &TabMulticast::start);
-	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, this, &TabMulticast::stop);
+	QObject::connect(ui->pushButton_stop, &QPushButton::pressed, qobject_cast<ComAudio*>(this->parent()), &ComAudio::stopCurrentTask);
 	QObject::connect(ui->pushButton_close, &QPushButton::pressed, this, &TabMulticast::closeWindow);
 }
 

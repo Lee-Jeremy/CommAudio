@@ -21,6 +21,10 @@ void StreamRecv::stop()
 	disconnect(tcp, 0, 0, 0);
 }
 
+void StreamRecv::start()
+{
+}
+
 
 void StreamRecv::readBytes()
 {

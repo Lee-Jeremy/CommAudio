@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include "ComAudio.h"
 #include "ui_TabMulticast.h"
 
 class TabMulticast : public QWidget
@@ -20,10 +21,12 @@ public:
 signals:
 	void sigCloseTab(QWidget* tab);
 
+
 private:
 	void connect();
 	void accept();
 	void start();
 	void stop();
 	void closeWindow();
+	QString IP;
 };

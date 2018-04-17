@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include "ui_TabFileTx.h"
+#include "ComAudio.h"
 
 class TabFileTx : public QWidget
 {
@@ -21,5 +22,7 @@ signals:
 private:
 	void connect();
 	void download();
+	void ipChanged();
+	void portChanged();
 	void closeWindow();
 };

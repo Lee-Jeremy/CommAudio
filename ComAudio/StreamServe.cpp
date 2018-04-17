@@ -20,6 +20,11 @@ void StreamServe::stop()
 	running = false;
 }
 
+void StreamServe::start()
+{
+
+}
+
 void StreamServe::sendFile()
 {
 	outgoing = new QFile();

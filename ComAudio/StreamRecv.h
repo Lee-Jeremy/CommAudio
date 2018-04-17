@@ -10,7 +10,7 @@
 #include <QBuffer>
 #include "Task.h"
 
-class StreamRecv : public QObject, Task
+class StreamRecv : public QObject, public Task
 {
 	Q_OBJECT
 
@@ -19,6 +19,8 @@ public:
 	~StreamRecv();
 
 	void stop();
+
+	void start();
 
 
 public slots:
