@@ -18,7 +18,7 @@
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- NOTES:
 -- A class definition of TabAudioStream class.
@@ -36,7 +36,7 @@
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	TabAudioStream(QWidget *parent)
 --
@@ -45,6 +45,8 @@
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Class constructor.
+-- Initializes UI and connects UI components to corresponding functions.
 ----------------------------------------------------------------------*/
 TabAudioStream::TabAudioStream(QWidget *parent)
 	: QWidget(parent)
@@ -65,7 +67,7 @@ TabAudioStream::TabAudioStream(QWidget *parent)
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	~TabAudioStream()
 --
@@ -74,6 +76,8 @@ TabAudioStream::TabAudioStream(QWidget *parent)
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Class desctructor.
+-- Releases memory allocated for members.
 ----------------------------------------------------------------------*/
 TabAudioStream::~TabAudioStream()
 {
@@ -87,7 +91,7 @@ TabAudioStream::~TabAudioStream()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void connect()
 --
@@ -96,6 +100,7 @@ TabAudioStream::~TabAudioStream()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Connect" push button.
 ----------------------------------------------------------------------*/
 void TabAudioStream::connect()
 {
@@ -109,7 +114,7 @@ void TabAudioStream::connect()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void start()
 --
@@ -118,6 +123,7 @@ void TabAudioStream::connect()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Start" push button.
 ----------------------------------------------------------------------*/
 void TabAudioStream::start()
 {
@@ -131,7 +137,7 @@ void TabAudioStream::start()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void stop()
 --
@@ -140,6 +146,7 @@ void TabAudioStream::start()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Stop" push button.
 ----------------------------------------------------------------------*/
 void TabAudioStream::stop()
 {
@@ -153,7 +160,7 @@ void TabAudioStream::stop()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void closeWindow()
 --
@@ -162,6 +169,7 @@ void TabAudioStream::stop()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Emits a signal to close the corresponding tab and closes itself.
 ----------------------------------------------------------------------*/
 void TabAudioStream::closeWindow()
 {

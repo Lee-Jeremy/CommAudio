@@ -18,7 +18,7 @@
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- NOTES:
 -- A class definition of TabAudioChat class.
@@ -36,7 +36,7 @@
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	TabAudioChat(Mode mode, QWidget *parent)
 --
@@ -45,6 +45,9 @@
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Class constructor.
+-- Sets a mode (client or server) and connects UI components to
+-- corresponding functions.
 ----------------------------------------------------------------------*/
 TabAudioChat::TabAudioChat(Mode mode, QWidget *parent)
 	: QWidget(parent)
@@ -76,7 +79,7 @@ TabAudioChat::TabAudioChat(Mode mode, QWidget *parent)
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	~TabAudioChat()
 --
@@ -85,6 +88,8 @@ TabAudioChat::TabAudioChat(Mode mode, QWidget *parent)
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Class desctructor.
+-- Releases memory allocated for members.
 ----------------------------------------------------------------------*/
 TabAudioChat::~TabAudioChat()
 {
@@ -98,7 +103,7 @@ TabAudioChat::~TabAudioChat()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void connect()
 --
@@ -107,6 +112,7 @@ TabAudioChat::~TabAudioChat()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Connect" push button.
 ----------------------------------------------------------------------*/
 void TabAudioChat::connect()
 {
@@ -120,7 +126,7 @@ void TabAudioChat::connect()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void accept()
 --
@@ -129,6 +135,7 @@ void TabAudioChat::connect()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Accept" push button.
 ----------------------------------------------------------------------*/
 void TabAudioChat::accept()
 {
@@ -142,7 +149,7 @@ void TabAudioChat::accept()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void start()
 --
@@ -151,6 +158,7 @@ void TabAudioChat::accept()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Start" push button.
 ----------------------------------------------------------------------*/
 void TabAudioChat::start()
 {
@@ -164,7 +172,7 @@ void TabAudioChat::start()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void stop()
 --
@@ -173,6 +181,7 @@ void TabAudioChat::start()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Stop" push button.
 ----------------------------------------------------------------------*/
 void TabAudioChat::stop()
 {
@@ -186,7 +195,7 @@ void TabAudioChat::stop()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void closeWindow()
 --
@@ -195,6 +204,7 @@ void TabAudioChat::stop()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Emits a signal to close the corresponding tab and closes itself.
 ----------------------------------------------------------------------*/
 void TabAudioChat::closeWindow()
 {

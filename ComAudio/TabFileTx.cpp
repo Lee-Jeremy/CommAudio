@@ -17,7 +17,7 @@
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- NOTES:
 -- A class definition of TabFileTx class.
@@ -34,7 +34,7 @@
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	TabFileTx(QWidget *parent)
 --
@@ -43,6 +43,8 @@
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Class constructor.
+-- Initializes UI and connects UI components to corresponding functions.
 ----------------------------------------------------------------------*/
 TabFileTx::TabFileTx(QWidget *parent)
 	: QWidget(parent)
@@ -62,7 +64,7 @@ TabFileTx::TabFileTx(QWidget *parent)
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	~TabFileTx()
 --
@@ -71,6 +73,8 @@ TabFileTx::TabFileTx(QWidget *parent)
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Class desctructor.
+-- Releases memory allocated for members.
 ----------------------------------------------------------------------*/
 TabFileTx::~TabFileTx()
 {
@@ -84,7 +88,7 @@ TabFileTx::~TabFileTx()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void connect()
 --
@@ -93,6 +97,7 @@ TabFileTx::~TabFileTx()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Connect" push button.
 ----------------------------------------------------------------------*/
 void TabFileTx::connect()
 {
@@ -106,7 +111,7 @@ void TabFileTx::connect()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void download()
 --
@@ -115,6 +120,7 @@ void TabFileTx::connect()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Download" push button.
 ----------------------------------------------------------------------*/
 void TabFileTx::download()
 {
@@ -128,7 +134,7 @@ void TabFileTx::download()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void closeWindow()
 --
@@ -137,6 +143,7 @@ void TabFileTx::download()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Emits a signal to close the corresponding tab and closes itself.
 ----------------------------------------------------------------------*/
 void TabFileTx::closeWindow()
 {

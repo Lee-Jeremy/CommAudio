@@ -18,7 +18,7 @@
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- NOTES:
 -- A class definition of TabMulticast class.
@@ -36,16 +36,19 @@
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	TabMulticast(Mode mode, QWidget *parent)
 --
--- ARGUMENT:    mode						- 
---				parent						- 
+-- ARGUMENT:    mode						- client or server.
+--				parent						- A parent widget class.
 --
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Class constructor.
+-- Sets a mode (client or server) and connects UI components to
+-- corresponding functions.
 ----------------------------------------------------------------------*/
 TabMulticast::TabMulticast(Mode mode, QWidget *parent)
 	: QWidget(parent)
@@ -77,7 +80,7 @@ TabMulticast::TabMulticast(Mode mode, QWidget *parent)
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	~TabMulticast()
 --
@@ -86,6 +89,8 @@ TabMulticast::TabMulticast(Mode mode, QWidget *parent)
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Class desctructor.
+-- Releases memory allocated for members.
 ----------------------------------------------------------------------*/
 TabMulticast::~TabMulticast()
 {
@@ -99,7 +104,7 @@ TabMulticast::~TabMulticast()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void connect()
 --
@@ -108,6 +113,7 @@ TabMulticast::~TabMulticast()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Connect" push button.
 ----------------------------------------------------------------------*/
 void TabMulticast::connect()
 {
@@ -130,6 +136,7 @@ void TabMulticast::connect()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Accept" push button.
 ----------------------------------------------------------------------*/
 void TabMulticast::accept()
 {
@@ -152,6 +159,7 @@ void TabMulticast::accept()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Start" push button.
 ----------------------------------------------------------------------*/
 void TabMulticast::start()
 {
@@ -165,7 +173,7 @@ void TabMulticast::start()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void stop()
 --
@@ -174,6 +182,7 @@ void TabMulticast::start()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Function called by the "Stop" push button.
 ----------------------------------------------------------------------*/
 void TabMulticast::stop()
 {
@@ -187,7 +196,7 @@ void TabMulticast::stop()
 --
 -- DESIGNER:	Jeremy Lee
 --
--- PROGRAMMER:	Jeremy Lee
+-- PROGRAMMER:	Jeremy Lee, Delan Elliot
 --
 -- INTERFACE:	void closeWindow()
 --
@@ -196,6 +205,7 @@ void TabMulticast::stop()
 -- RETURNS:	    void
 --
 -- NOTES:
+-- Emits a signal to close the corresponding tab and closes itself.
 ----------------------------------------------------------------------*/
 void TabMulticast::closeWindow()
 {
