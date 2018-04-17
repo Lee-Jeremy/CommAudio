@@ -38,6 +38,7 @@ signals:
 	void clientConnectedVoip(QUdpSocket *, QTcpSocket *);
 	void clientConnectedStream(QTcpSocket *);
 	void clientConnectedFileList(QTcpSocket *);
+	void clientConnectedFileName(QTcpSocket *);
 	void clientConnectedFileTx(QTcpSocket *);
 
 	void connectedToServerFileList(QTcpSocket * sock);
