@@ -7,25 +7,25 @@
 --					StreamServe::~StreamServe()
 --					void StreamServe::sendFile()
 --
---	DATE:			Apr. 14, 2018
+--	DATE:			Apr. 11, 2018
 --
---	REVISION:		
+--	REVISION:
 --
 --	DESIGNER:		D. Elliot, J. Chou, J. Lee, W. Hu
 --
---	PROGRAMMER:		D. Elliot, J. Chou		
+--	PROGRAMMER:		D. Elliot, J. Chou
 --
 --	NOTES:
---	This class is used to stream (transmit) an audio file over TCP. 
+--	This class is used to stream (transmit) an audio file over TCP.
 --  It is initialized by the parent object (ComAudio) to handle a file streaming request
---	by a client ComAudio application. 
+--	by a client ComAudio application.
 -----------------------------------------------------------------------------------------*/
 #include "StreamServe.h"
 
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	StreamServe
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 11, 2018
 --
 --	DESIGNER:	D. Elliot, J. Chou, J. Lee, W. Hu
 --
@@ -37,10 +37,10 @@
 --	RETURNS:
 --
 --	NOTES:
---	This constructor is used to initialize a StreamServe object. 
---  It takes a QTcpSocket* and QString parameter representing the filepath. 
---	
---	The QTcpSocket* passed in is created by the parent object to handle a new client 
+--	This constructor is used to initialize a StreamServe object.
+--  It takes a QTcpSocket* and QString parameter representing the filepath.
+--
+--	The QTcpSocket* passed in is created by the parent object to handle a new client
 --  client connection. The path argument contains the path and name of the file requested
 --  by the client application.
 -----------------------------------------------------------------------------------------*/
@@ -55,9 +55,9 @@ StreamServe::StreamServe(QTcpSocket* tcp, QString path)
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	~StreamServe
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 11, 2018
 --
---	REVISIONS:	
+--	REVISIONS:
 --
 --	DESIGNER:	D. Elliot, J. Chou, J. Lee, W. Hu
 --
@@ -89,15 +89,15 @@ void StreamServe::start()
 /*-----------------------------------------------------------------------------------------
 --	FUNCTION:	sendFile
 --
---	DATE:		Apr. 14, 2018
+--	DATE:		Apr. 11, 2018
 --
---	REVISIONS:	
+--	REVISIONS:
 --
 --	DESIGNER:	D. Elliot, J. Chou, J. Lee, W. Hu
 --
 --	PROGRAMMER:	D. Elliot, J. Chou
 --
---	INTERFACE:	
+--	INTERFACE:
 --
 --	RETURNS:
 --
