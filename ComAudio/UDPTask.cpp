@@ -288,7 +288,7 @@ bool UDPTask::startMulticastSend()
 	mSocket->bind(QHostAddress(QHostAddress::AnyIPv4), 0);
 	//mSocketIPv6->bind(QHostAddress(QHostAddress::AnyIPv6), mSocket->localPort());
 
-	mDestAddr4 = new QHostAddress(QStringLiteral("123.123.123.123"));
+	mDestAddr4 = new QHostAddress(QStringLiteral("231.123.123.123"));
 
 	mSocket->setSocketOption(QAbstractSocket::MulticastTtlOption, 5);
 
@@ -338,7 +338,7 @@ bool UDPTask::startMulticastListen()
 	mSocket = new QUdpSocket();
 	//mSocketIPv6 = new QUdpSocket();
 
-	mGroupAddr4 = new QHostAddress(QStringLiteral("123.123.123.123"));
+	mGroupAddr4 = new QHostAddress(QStringLiteral("231.123.123.123"));
 	//mGroupAddr6 = new QHostAddress(QStringLiteral("ff12::2115"));
 
 	mSocket->bind(QHostAddress::AnyIPv4, DEFAULT_MC_PORT, QUdpSocket::ShareAddress);
